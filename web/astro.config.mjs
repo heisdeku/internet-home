@@ -15,6 +15,8 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, PUBLIC_SITE_URL } = loa
 
 export default defineConfig({
 	site: PUBLIC_SITE_URL || 'https://feranmiadedokun.com',
+	// One URL per page: canonical tags, the sitemap and the server all agree on no trailing slash.
+	trailingSlash: 'never',
 	// Standalone Node server: Brimble runs `node web/dist/server/entry.mjs` and passes PORT.
 	adapter: node({ mode: 'standalone' }),
 	integrations: [

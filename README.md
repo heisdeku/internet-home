@@ -63,8 +63,10 @@ Follows the same approach as the AAIF and Medspa sites.
 
 - **Per-document `seo` object**: meta title and description, keywords, share image, canonical URL, noindex/nofollow and a JSON-LD override. Everything falls back to the document's own title and summary, then to the defaults in Site Settings (which also holds `siteUrl`).
 - **Head** (`web/src/lib/seo.ts`, `Base.astro`): title template, description, canonical, robots, Open Graph and Twitter cards.
+- **Seeded copy**: `bun run --cwd studio seed:seo` fills meta titles, descriptions and keywords for every document (`studio/scripts/seed-seo.ts`). Titles get the site name appended on render, so keep them under ~36 characters.
+- **One URL per page**: `trailingSlash: 'never'` in `astro.config.mjs`, so canonical tags, the sitemap and the server's 301s all agree.
 - **Structured data** (`web/src/lib/structuredData.ts`): WebSite and Person on every page, WebPage per page, BlogPosting for posts, CreativeWork or SoftwareApplication for works and products, BreadcrumbList on detail pages.
-- **Share images on the fly**: `/og/<kind>/<slug>.png` is a Vercel function (`web/src/pages/og/[kind]/[slug].png.ts`) that renders a 1200×630 card with satori from the document's title and summary. Uploading an image in the SEO tab overrides it.
+- **Share images on the fly**: `/og/<kind>/<slug>.png` is a server route (`web/src/pages/og/[kind]/[slug].png.ts`) that renders a 1200×630 card with satori from the document's title and summary. Uploading an image in the SEO tab overrides it.
 - **Sitemap and robots**: `@astrojs/sitemap` builds `sitemap-index.xml` from the static routes; `robots.txt` points at it. Both exclude `/intro`.
 - **Intro pages** are always `noindex, nofollow` and excluded from the sitemap and robots, but still get full meta tags and a generated share image so links unfurl in email and chat.
 
