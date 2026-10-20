@@ -18,19 +18,24 @@ const { settings } = Astro.props;
 		{settings.footerPrompt && <span class="text-[13px] text-mist">{settings.footerPrompt}</span>}
 		<a
 			href={`mailto:${settings.email}`}
-			class="text-[clamp(32px,6.4vw,104px)] leading-none font-medium tracking-[-.04em] break-words text-paper transition-colors hover:text-accent-light"
+			class="text-[clamp(28px,6.4vw,104px)] leading-none font-medium tracking-[-.04em] [overflow-wrap:anywhere] text-paper transition-colors hover:text-accent-light"
 		>
 			{settings.email}
 		</a>
 	</div>
-	<div class="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-x-6 gap-y-4 text-[13px] text-mist">
+	<!-- Phones: wordmark and year on one row, the links together on the next. From md the links spread across columns. -->
+	<div
+		class="flex flex-wrap items-center gap-x-6 gap-y-5 text-[13px] text-mist md:grid md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:gap-y-4"
+	>
 		<span class="font-semibold tracking-[.08em] uppercase text-paper">{settings.displayName}</span>
-		{
-			settings.footerLinks?.map((link) => (
-				<SmartLink link={link} resumeUrl={settings.resumeUrl} icon="auto" class="text-paper hover:text-accent-light" />
-			))
-		}
-		<span class="justify-self-end font-mono">© {new Date().getFullYear()}</span>
+		<div class="flex flex-wrap gap-x-5 gap-y-2 max-md:order-last max-md:basis-full md:contents">
+			{
+				settings.footerLinks?.map((link) => (
+					<SmartLink link={link} resumeUrl={settings.resumeUrl} icon="auto" class="text-paper hover:text-accent-light" />
+				))
+			}
+		</div>
+		<span class="font-mono max-md:ml-auto md:justify-self-end">© {new Date().getFullYear()}</span>
 	</div>
 </footer>
 
