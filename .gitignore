@@ -3,3 +3,6 @@ node_modules/
 .env
 .env.*
 !.env.example
+
+# Vercel build output (moved here from web/ by the root build script)
+.vercel/

@@ -78,4 +78,4 @@ To wire it up: create an app at developer.spotify.com, authorise it once with th
 
 ## Deploy
 
-The site uses `@astrojs/vercel`. Set the root directory of the Vercel project to `web` and add the env vars above. Deploy the Studio with `npm run deploy --prefix studio`.
+The site uses `@astrojs/vercel`. The Vercel project builds from the repository root with `npm run build`, which builds `web` and moves its Build Output to `.vercel/output` where Vercel expects it. Add the `PUBLIC_*` and `SPOTIFY_*` env vars in the Vercel project. Deploy the Studio with `npm run deploy --workspace=studio`.
