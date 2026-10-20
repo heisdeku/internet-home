@@ -3,14 +3,20 @@
   "configurations": [
     {
       "name": "web",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--workspace=web"],
+      "runtimeExecutable": "bun",
+      "runtimeArgs": [
+        "run",
+        "dev:web"
+      ],
       "port": 4321
     },
     {
       "name": "studio",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--workspace=studio"],
+      "runtimeExecutable": "bun",
+      "runtimeArgs": [
+        "run",
+        "dev:studio"
+      ],
       "port": 3333
     }
   ]

@@ -1,15 +1,15 @@
 #:schema https://brimble.io/schema/brimble.json
 
 # The Astro site runs as a Node web service so the share-image and Spotify
-# routes work. Builds run from the repo root because studio/ and web/ are npm
-# workspaces that share one lockfile.
+# routes work. Builds run from the repo root because studio/ and web/ are bun
+# workspaces that share one lockfile; the server itself runs on Node.
 
 [services.web]
 type = "web"
 
 [services.web.build]
-install = "npm ci"
-command = "npm run build"
+install = "bun install --frozen-lockfile"
+command = "bun run build"
 runtime = { node = "24" }
 cache = true
 

@@ -11,12 +11,12 @@ portfolio/
 ## Run it
 
 ```bash
-npm run dev          # Studio on :3333 and site on :4321 together (run-p)
-npm run dev:studio   # http://localhost:3333
-npm run dev:web      # http://localhost:4321
+bun run dev          # Studio on :3333 and site on :4321 together (run-p)
+bun run dev:studio   # http://localhost:3333
+bun run dev:web      # http://localhost:4321
 ```
 
-`studio` and `web` are npm workspaces, so a single `npm install` at the root installs everything.
+`studio` and `web` are bun workspaces, so a single `bun install` at the root installs everything.
 
 ## Environment
 
@@ -37,15 +37,15 @@ Pages are composed in the Studio, following the AAIF conventions: a `page` docum
 
 Sections: hero, page heading (heading, description, button), works (pick which works, grid/index), products grid, writing list, information (text plus columns that can list companies from Experience), experience (pick which companies), intro greeting (supports `?to=Acme` on `/intro`), list columns, contact band (email plus buttons), rich text.
 
-Adding a section: define it in `studio/schemaTypes/sections`, register it in `schemaTypes/pageBuilder.ts` and `schemaTypes/index.ts`, project its fields in `PAGE_BUILDER` (`web/src/sanity/queries.ts`), run `npm run typegen`, then add a component under `web/src/components/sections` and a case in `PageBuilder.astro`.
+Adding a section: define it in `studio/schemaTypes/sections`, register it in `schemaTypes/pageBuilder.ts` and `schemaTypes/index.ts`, project its fields in `PAGE_BUILDER` (`web/src/sanity/queries.ts`), run `bun run typegen`, then add a component under `web/src/components/sections` and a case in `PageBuilder.astro`.
 
 ## Scripts (from the root)
 
 | Script | What it does |
 | --- | --- |
-| `npm run schema:deploy` | Pushes the schema to Sanity so MCP and agent tooling can see it |
-| `npm run typegen` | Extracts the schema and generates `web/src/sanity/types.ts` from the GROQ queries. Re-run after changing schema or queries |
-| `npm run seed` | Upserts the real content (v1 site, GitHub) by slug. Safe to re-run; it replaces the two singletons |
+| `bun run schema:deploy` | Pushes the schema to Sanity so MCP and agent tooling can see it |
+| `bun run typegen` | Extracts the schema and generates `web/src/sanity/types.ts` from the GROQ queries. Re-run after changing schema or queries |
+| `bun run seed` | Upserts the real content (v1 site, GitHub) by slug. Safe to re-run; it replaces the two singletons |
 
 ## Motion
 
@@ -78,4 +78,4 @@ To wire it up: create an app at developer.spotify.com, authorise it once with th
 
 ## Deploy
 
-The site is hosted on Brimble as a Node web service, configured by `brimble.toml` at the repo root: `npm ci` and `npm run build` from the root (the workspaces share one lockfile), then `npm start`, which runs the standalone Node server from `@astrojs/node`. That server serves the prerendered pages and runs the share-image and Spotify routes on demand. Public env vars are in `brimble.toml`; add the `SPOTIFY_*` secrets in the Brimble dashboard. Deploy the Studio with `npm run deploy --workspace=studio`.
+The site is hosted on Brimble as a Node web service, configured by `brimble.toml` at the repo root: `bun install --frozen-lockfile` and `bun run build` from the root (the workspaces share one lockfile), then `npm start`, which runs the standalone Node server from `@astrojs/node`. That server serves the prerendered pages and runs the share-image and Spotify routes on demand. Public env vars are in `brimble.toml`; add the `SPOTIFY_*` secrets in the Brimble dashboard. Deploy the Studio with `bun run --cwd studio deploy`.
