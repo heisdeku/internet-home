@@ -19,6 +19,8 @@ const icon = (size: number) => `${portraitUrl}?w=${size}&h=${size}&fit=crop&fm=p
 const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const brimbleId = import.meta.env.PUBLIC_BRIMBLE_WEBSITE_ID;
+// Quality comment widget; it only activates on hosts enabled in the Quality project settings.
+const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 ---
 
 <html lang="en">
@@ -69,6 +71,17 @@ const brimbleId = import.meta.env.PUBLIC_BRIMBLE_WEBSITE_ID;
 		<JsonLd graph={jsonLd} override={meta.jsonLdOverride} />
 		<script is:inline>document.documentElement.classList.add('js');</script>
 		{brimbleId && <script is:inline defer src="https://scripts.brimble.io/analytics/brimble.js" data-website-id={brimbleId} />}
+		{
+			qualitySiteId && (
+				<script
+					is:inline
+					async
+					src="https://embed.usequality.app/loader.js"
+					data-site-id={qualitySiteId}
+					data-api-origin="https://server.usequality.app"
+				/>
+			)
+		}
 		{
 			gaId && (
 				<>
