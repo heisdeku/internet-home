@@ -11,8 +11,8 @@ export default defineConfig({
   name: 'default',
   title: 'Portfolio',
 
-  projectId: '1dyyk69c',
-  dataset: 'production',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID || '1dyyk69c',
+  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
   plugins: [structureTool({structure}), visionTool(), codeInput()],
 
