@@ -11,9 +11,7 @@
     "dev": "sanity dev",
     "start": "sanity start",
     "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
-    "seed": "sanity exec scripts/seed.ts --with-user-token",
-    "schema:deploy": "sanity schema deploy",
-    "seed:seo": "sanity exec scripts/seed-seo.ts --with-user-token"
+    "schema:deploy": "sanity schema deploy"
   },
   "keywords": [
     "sanity"

@@ -67,23 +67,23 @@ const number = (i: number) => String(i + 1).padStart(2, "0");
     }
   </div>
 
-  <div data-view-panel="index" class="dim-siblings flex flex-col">
+  <div data-view-panel="index" class="dim-siblings flex flex-col max-md:gap-4">
     {
       works.map((work, i) => (
         <a
           href={`/work/${work.slug}`}
-          class="group grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-x-6 gap-y-2 border-b border-line py-5.5 text-sm row-slide transition-colors duration-300"
+          class="group grid gap-x-6 gap-y-2 text-sm max-md:py-4 md:border-b md:border-line md:py-5.5 md:row-slide md:transition-colors md:duration-300 md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]"
         >
-          <span class="font-mono text-xs text-faint">
+          <span class="font-mono text-xs text-faint max-md:hidden">
             N°{number(i)} — {work.year}
           </span>
-          <span class="text-lg font-medium tracking-[-.01em]">
+          <span class="text-lg font-medium tracking-[-.01em] max-md:w-fit max-md:text-[17px] max-md:underline max-md:decoration-line max-md:decoration-dotted max-md:underline-offset-6">
             {work.title}
           </span>
-          <span class="col-span-2 max-w-[60ch] leading-normal text-muted text-pretty">
+          <span class="max-w-[60ch] leading-normal text-muted text-pretty md:col-span-2">
             {work.summary}
           </span>
-          <span class="inline-flex items-center gap-1.5 justify-self-end text-[13px]">
+          <span class="inline-flex items-center gap-1.5 text-[13px] max-md:hidden md:justify-self-end">
             Case study{" "}
             <ArrowRight
               class="icon-inline"

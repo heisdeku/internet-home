@@ -12,7 +12,6 @@
     "build": "bun run --cwd web build",
     "start": "node web/dist/server/entry.mjs",
     "typegen": "bun run --cwd studio typegen",
-    "seed": "bun run --cwd studio seed",
     "schema:deploy": "bun run --cwd studio schema:deploy"
   },
   "devDependencies": {

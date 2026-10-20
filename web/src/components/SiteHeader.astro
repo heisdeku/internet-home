@@ -40,8 +40,8 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
       </div>
     )
   }
-  <!-- Below md the nav drops to its own row; a single line that scrolls sideways if it ever overflows. -->
-  <nav class="flex basis-full gap-x-4.5 overflow-x-auto whitespace-nowrap max-md:mt-3 md:ml-auto md:basis-auto">
+  <!-- Below md the nav drops to its own row under the wordmark. -->
+  <nav class="flex basis-full gap-x-4.5 whitespace-nowrap max-md:mt-3 md:ml-auto md:basis-auto">
     {
       settings.navigation?.map((link) => (
         <SmartLink

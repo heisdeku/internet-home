@@ -20,7 +20,7 @@ bun run dev:web      # http://localhost:4321
 
 ## Environment
 
-- `studio/.env` — `SANITY_AUTH_TOKEN` (the developer token). Used by the CLI for `schema:deploy`, `seed` and `typegen`. The dataset is public, so the site reads without a token.
+- `studio/.env` — `SANITY_AUTH_TOKEN` (the developer token). Used by the CLI for `schema:deploy`, `deploy` and `typegen`. The dataset is public, so the site reads without a token.
 - `web/.env` — `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `PUBLIC_SITE_URL`, `PUBLIC_GA_MEASUREMENT_ID` (Google Analytics) and `PUBLIC_BRIMBLE_WEBSITE_ID` (Brimble analytics; empty disables either tag) and the three `SPOTIFY_*` values for the "Listening now" player. Copy `web/.env.example` to get started.
 
 ## Content model
@@ -45,7 +45,6 @@ Adding a section: define it in `studio/schemaTypes/sections`, register it in `sc
 | --- | --- |
 | `bun run schema:deploy` | Pushes the schema to Sanity so MCP and agent tooling can see it |
 | `bun run typegen` | Extracts the schema and generates `web/src/sanity/types.ts` from the GROQ queries. Re-run after changing schema or queries |
-| `bun run seed` | Upserts the real content (v1 site, GitHub) by slug. Safe to re-run; it replaces the two singletons |
 
 ## Motion
 
@@ -63,7 +62,7 @@ Follows the same approach as the AAIF and Medspa sites.
 
 - **Per-document `seo` object**: meta title and description, keywords, share image, canonical URL, noindex/nofollow and a JSON-LD override. Everything falls back to the document's own title and summary, then to the defaults in Site Settings (which also holds `siteUrl`).
 - **Head** (`web/src/lib/seo.ts`, `Base.astro`): title template, description, canonical, robots, Open Graph and Twitter cards.
-- **Seeded copy**: `bun run --cwd studio seed:seo` fills meta titles, descriptions and keywords for every document (`studio/scripts/seed-seo.ts`). Titles get the site name appended on render, so keep them under ~36 characters.
+- **Meta copy**: edit meta titles, descriptions and keywords in each document's SEO tab. Titles get the site name appended on render, so keep them under ~36 characters.
 - **One URL per page**: `trailingSlash: 'never'` in `astro.config.mjs`, so canonical tags, the sitemap and the server's 301s all agree.
 - **Structured data** (`web/src/lib/structuredData.ts`): WebSite and Person on every page, WebPage per page, BlogPosting for posts, CreativeWork or SoftwareApplication for works and products, BreadcrumbList on detail pages.
 - **Share images on the fly**: `/og/<kind>/<slug>.png` is a server route (`web/src/pages/og/[kind]/[slug].png.ts`) that renders a 1200×630 card with satori from the document's title and summary. Uploading an image in the SEO tab overrides it.
