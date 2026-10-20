@@ -84,8 +84,8 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
               <Minus class="hidden size-4 group-open:block" />
             </span>
           </summary>
-          <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-6 gap-y-8 pb-8 text-[15px] leading-[1.55]">
-            <div class="flex flex-col gap-6">
+          <div class:list={[columns, "gap-y-8 pb-8 text-[15px] leading-[1.55]"]}>
+            <div class="flex flex-col gap-6 max-md:col-span-2">
               {roles.map((role) => (
                 <div class="flex flex-col gap-2">
                   <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -108,7 +108,7 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
                 </div>
               ))}
             </div>
-            <div class="flex flex-col items-start gap-2.5">
+            <div class="flex flex-col items-start gap-2.5 max-md:col-span-2 md:col-span-3">
               {job.location && (
                 <>
                   <span class="label">Location</span>
