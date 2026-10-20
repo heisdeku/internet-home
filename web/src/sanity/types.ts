@@ -558,6 +558,13 @@ export type SiteSettings = {
   jobTitle: string;
   timeZone: string;
   timeZoneLabel: string;
+  portrait?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   availableForWork?: boolean;
   email: string;
   resume?: {
@@ -740,7 +747,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings"][0]{  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, email,  "resumeUrl": resume.asset->url, showListeningPlayer,  navigation[] { ..., internal->{ _type, "slug": slug.current } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_id == "siteSettings"][0]{  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, email,  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,  navigation[] { ..., internal->{ _type, "slug": slug.current } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type SITE_SETTINGS_QUERY_RESULT =
   | {
       displayName: null;
@@ -751,6 +758,7 @@ export type SITE_SETTINGS_QUERY_RESULT =
       availableForWork: null;
       email: null;
       resumeUrl: null;
+      portraitUrl: null;
       showListeningPlayer: null;
       navigation: null;
       footerLinks: null;
@@ -768,6 +776,7 @@ export type SITE_SETTINGS_QUERY_RESULT =
       availableForWork: null;
       email: null;
       resumeUrl: null;
+      portraitUrl: null;
       showListeningPlayer: null;
       navigation: null;
       footerLinks: null;
@@ -794,6 +803,7 @@ export type SITE_SETTINGS_QUERY_RESULT =
       availableForWork: boolean | null;
       email: string;
       resumeUrl: string | null;
+      portraitUrl: string | null;
       showListeningPlayer: boolean | null;
       navigation: Array<{
         _key: string;
@@ -2523,7 +2533,7 @@ export type OG_DOC_QUERY_RESULT =
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_id == "siteSettings"][0]{\n  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, email,\n  "resumeUrl": resume.asset->url, showListeningPlayer,\n  navigation[] { ..., internal->{ _type, "slug": slug.current } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': SITE_SETTINGS_QUERY_RESULT;
+    '*[_id == "siteSettings"][0]{\n  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, email,\n  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,\n  navigation[] { ..., internal->{ _type, "slug": slug.current } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current)]{ "slug": slug.current }': PAGE_SLUGS_QUERY_RESULT;
     '*[_type == "page" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[]{\n  _key, _type,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, cta { ..., internal->{ _type, "slug": slug.current } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView,\n    "works": select(\n      count(works) > 0 => works[]-> { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current)] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[]-> { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current } } },\n    "companies": *[_type == "experience"] | order(order asc).company\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience"] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } }\n}\n}': PAGE_QUERY_RESULT;
     '*[_type == "outreach" && defined(slug.current)]{ "slug": slug.current }': OUTREACH_SLUGS_QUERY_RESULT;

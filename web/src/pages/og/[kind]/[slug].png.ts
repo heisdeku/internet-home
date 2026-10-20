@@ -34,7 +34,7 @@ const fonts = Promise.all([fontFile(400), fontFile(500), fontFile(600)]).then(([
 
 const truncate = (text: string, max: number) => (text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text);
 
-type Card = { eyebrow: string; title: string; description: string | null; wordmark: string; footer: string };
+type Card = { eyebrow: string; title: string; description: string | null; wordmark: string; footer: string; portrait: string | null };
 
 const monthYear = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' });
 
@@ -47,7 +47,7 @@ function titleSize(title: string) {
 // satori takes React-like element objects; this keeps the layout readable without JSX.
 const el = (type: string, style: Record<string, unknown>, children?: unknown) => ({ type, props: { style, children } });
 
-function card({ eyebrow, title, description, wordmark, footer }: Card) {
+function card({ eyebrow, title, description, wordmark, footer, portrait }: Card) {
 	return el(
 		'div',
 		{
@@ -68,10 +68,15 @@ function card({ eyebrow, title, description, wordmark, footer }: Card) {
 				el('div', { fontWeight: 600, letterSpacing: '0.08em' }, wordmark.toUpperCase()),
 				el('div', { color: COLORS.faint, letterSpacing: '0.06em', textTransform: 'uppercase' }, truncate(eyebrow, 48)),
 			]),
-			el('div', { display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 1000 }, [
-				el('div', { width: 64, height: 6, background: COLORS.accent, borderRadius: 3 }),
-				el('div', { fontSize: titleSize(title), fontWeight: 500, lineHeight: 1.05, letterSpacing: '-0.03em' }, title),
-				...(description ? [el('div', { fontSize: 28, lineHeight: 1.4, color: COLORS.muted, maxWidth: 900 }, description)] : []),
+			el('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }, [
+				el('div', { display: 'flex', flexDirection: 'column', gap: 24, maxWidth: portrait ? 800 : 1000 }, [
+					el('div', { width: 64, height: 6, background: COLORS.accent, borderRadius: 3 }),
+					el('div', { fontSize: titleSize(title), fontWeight: 500, lineHeight: 1.05, letterSpacing: '-0.03em' }, title),
+					...(description ? [el('div', { fontSize: 28, lineHeight: 1.4, color: COLORS.muted }, description)] : []),
+				]),
+				...(portrait
+					? [{ type: 'img', props: { src: portrait, width: 220, height: 220, style: { borderRadius: 28, objectFit: 'cover', flexShrink: 0 } } }]
+					: []),
 			]),
 			el(
 				'div',
@@ -101,12 +106,15 @@ export const GET: APIRoute = async ({ params }) => {
 	const type = kind in KIND_TO_TYPE ? KIND_TO_TYPE[kind as keyof typeof KIND_TO_TYPE] : null;
 	const doc = type ? await sanityClient.fetch(OG_DOC_QUERY, { type, slug }) : null;
 
+	// A 440px crop keeps the card under the size limits of most link previewers.
+	const portrait = settings.portraitUrl ? `${settings.portraitUrl}?w=440&h=440&fit=crop&fm=png` : null;
 	let content: Card = {
 		eyebrow: settings.jobTitle ?? '',
 		title: name,
 		description: settings.seo?.metaDescription ?? null,
 		wordmark,
 		footer: domain,
+		portrait,
 	};
 	if (doc?.title) {
 		const EYEBROW: Record<string, string> = { page: name, work: 'Selected work', product: 'Product', post: 'Writing', outreach: 'Hello' };
@@ -120,6 +128,7 @@ export const GET: APIRoute = async ({ params }) => {
 			description: doc.description ? truncate(doc.description, 160) : null,
 			wordmark,
 			footer: `${settings.fullName} · ${settings.jobTitle}`,
+			portrait,
 		};
 	}
 

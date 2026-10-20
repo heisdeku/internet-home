@@ -10,9 +10,12 @@ interface Props {
 	theme?: 'paper' | 'accent';
 	/** Set on intro pages: the visitor is greeted by this name site-wide for the session. */
 	recipient?: string | null;
+	/** Sanity asset URL of the portrait in Site Settings; drives the favicon. */
+	portraitUrl?: string | null;
 }
 
-const { meta, jsonLd, theme = 'paper', recipient } = Astro.props;
+const { meta, jsonLd, theme = 'paper', recipient, portraitUrl } = Astro.props;
+const icon = (size: number) => `${portraitUrl}?w=${size}&h=${size}&fit=crop&fm=png`;
 const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
@@ -23,7 +26,17 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content={background} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		{
+			portraitUrl ? (
+				<>
+					<link rel="icon" type="image/png" sizes="32x32" href={icon(32)} />
+					<link rel="icon" type="image/png" sizes="192x192" href={icon(192)} />
+					<link rel="apple-touch-icon" sizes="180x180" href={icon(180)} />
+				</>
+			) : (
+				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+			)
+		}
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

@@ -38,6 +38,13 @@ export const siteSettings = defineType({
       initialValue: 'Lagos',
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'portrait',
+      description: 'Square photo used for the favicon and the generated share images',
+      type: 'image',
+      group: 'identity',
+      options: {hotspot: true},
+    }),
     defineField({name: 'availableForWork', type: 'boolean', group: 'identity', initialValue: true}),
     defineField({
       name: 'email',
