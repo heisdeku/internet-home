@@ -21,7 +21,7 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
 ---
 
 <header
-  class="px-gutter sticky top-0 z-10 flex items-center gap-x-8 bg-paper/90 py-4.5 text-[13px] backdrop-blur-[10px]"
+  class="px-gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 bg-paper/90 py-4.5 text-[13px] backdrop-blur-[10px]"
 >
   <a href="/" class="shrink-0 text-sm font-semibold tracking-[.08em] uppercase">
     {displayName}
@@ -40,7 +40,8 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
       </div>
     )
   }
-  <nav class="ml-auto flex flex-wrap gap-x-4.5 gap-y-1.5 whitespace-nowrap sm:flex-nowrap">
+  <!-- Below md the nav drops to its own row; a single line that scrolls sideways if it ever overflows. -->
+  <nav class="flex basis-full gap-x-4.5 overflow-x-auto whitespace-nowrap max-md:mt-3 md:ml-auto md:basis-auto">
     {
       settings.navigation?.map((link) => (
         <SmartLink
@@ -52,7 +53,7 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
       ))
     }
   </nav>
-  <div class="hidden shrink-0 font-mono text-muted sm:block">
+  <div class="hidden shrink-0 font-mono text-muted lg:block">
     {settings.timeZoneLabel}{' '}
     <time data-local-clock data-time-zone={settings.timeZone}></time>
   </div>

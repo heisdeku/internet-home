@@ -1,5 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 
 export const post = defineType({
   name: 'post',
@@ -15,6 +16,7 @@ export const post = defineType({
     defineField({
       name: 'slug',
       type: 'slug',
+      components: {input: SlugWithUrlInput},
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),

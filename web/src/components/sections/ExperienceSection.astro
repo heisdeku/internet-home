@@ -31,7 +31,9 @@ const EMPLOYMENT: Record<string, string> = {
 
 const host = (url: string) =>
   url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-const columns = "grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_170px_24px] gap-4";
+// Below md the row is company + toggle, with role and period stacked under the company.
+const columns =
+  "grid grid-cols-[minmax(0,1fr)_24px] gap-x-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_170px_24px]";
 
 
 const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
@@ -48,7 +50,10 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
     )
   }
   <div data-reveal class:list={[columns, "label border-b border-ink pb-3"]}>
-    <span>Company</span><span>Role</span><span>Period</span><span></span>
+    <span>Company</span>
+    <span class="hidden md:block">Role</span>
+    <span class="hidden md:block">Period</span>
+    <span></span>
   </div>
   {
     experience.map((job, i) => {
@@ -70,11 +75,11 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
             <span class="text-[clamp(18px,2vw,26px)] font-medium tracking-[-.02em]">
               {job.company}
             </span>
-            <span class="text-sm text-muted">{latest?.title}</span>
-            <span class="font-mono text-xs text-faint">
+            <span class="text-sm text-muted max-md:col-start-1 max-md:mt-1.5">{latest?.title}</span>
+            <span class="font-mono text-xs text-faint max-md:col-start-1 max-md:mt-1.5">
               {roles.length > 0 && tenure(roles)}
             </span>
-            <span class="justify-self-end text-accent" aria-hidden="true">
+            <span class="justify-self-end text-accent max-md:col-start-2 max-md:row-start-1" aria-hidden="true">
               <Plus class="size-4 group-open:hidden" />
               <Minus class="hidden size-4 group-open:block" />
             </span>

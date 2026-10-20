@@ -1,5 +1,6 @@
 import {DocumentIcon} from '@sanity/icons/Document'
 import {defineField, defineType} from 'sanity'
+import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 import {pageBuilderField} from '../pageBuilder'
 
 export const page = defineType({
@@ -23,6 +24,7 @@ export const page = defineType({
       name: 'slug',
       description: 'The page URL. Use "home" for the front page.',
       type: 'slug',
+      components: {input: SlugWithUrlInput},
       group: 'content',
       options: {source: 'title'},
       validation: (rule) => rule.required(),

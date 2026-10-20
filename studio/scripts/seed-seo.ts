@@ -38,7 +38,7 @@ const pages: Record<string, Seo> = {
   products: {
     metaTitle: 'Open source products',
     metaDescription:
-      'Open source tools built by Oluwaferanmi Adedokun: a11ydesk for accessibility reports, clean-injected-loader for repo malware removal, and a Sanity content architecture kit.',
+      'Open source tools by Oluwaferanmi Adedokun: a11ydesk accessibility reports, clean-injected-loader malware cleanup, and a Sanity content architecture kit.',
     keywords: 'open source frontend tools, accessibility audit tool, Sanity starter kit, Astro Sanity template, npm malware cleanup tool',
   },
   writing: {

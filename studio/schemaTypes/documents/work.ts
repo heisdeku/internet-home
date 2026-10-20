@@ -1,5 +1,6 @@
 import {CaseIcon} from '@sanity/icons/Case'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 
 export const work = defineType({
   name: 'work',
@@ -15,6 +16,7 @@ export const work = defineType({
     defineField({
       name: 'slug',
       type: 'slug',
+      components: {input: SlugWithUrlInput},
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),

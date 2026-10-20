@@ -1,5 +1,6 @@
 import {PackageIcon} from '@sanity/icons/Package'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 
 export const product = defineType({
   name: 'product',
@@ -15,6 +16,7 @@ export const product = defineType({
     defineField({
       name: 'slug',
       type: 'slug',
+      components: {input: SlugWithUrlInput},
       options: {source: 'name'},
       validation: (rule) => rule.required(),
     }),

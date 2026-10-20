@@ -1,5 +1,6 @@
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {defineField, defineType} from 'sanity'
+import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 import {pageBuilderField} from '../pageBuilder'
 
 /** A personalised intro page at /intro/[slug], for job applications, cold emails and outreach. Never indexed. */
@@ -25,6 +26,7 @@ export const outreach = defineType({
       name: 'slug',
       description: 'The page lives at /intro/<slug>',
       type: 'slug',
+      components: {input: SlugWithUrlInput},
       group: 'content',
       options: {source: 'title'},
       validation: (rule) => rule.required(),
