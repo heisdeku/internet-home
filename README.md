@@ -21,7 +21,7 @@ bun run dev:web      # http://localhost:4321
 ## Environment
 
 - `studio/.env` — `SANITY_AUTH_TOKEN` (the developer token). Used by the CLI for `schema:deploy`, `seed` and `typegen`. The dataset is public, so the site reads without a token.
-- `web/.env` — `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `PUBLIC_SITE_URL`, `PUBLIC_GA_MEASUREMENT_ID` (Google Analytics, empty disables the tag) and the three `SPOTIFY_*` values for the "Listening now" player. Copy `web/.env.example` to get started.
+- `web/.env` — `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `PUBLIC_SITE_URL`, `PUBLIC_GA_MEASUREMENT_ID` (Google Analytics) and `PUBLIC_BRIMBLE_WEBSITE_ID` (Brimble analytics; empty disables either tag) and the three `SPOTIFY_*` values for the "Listening now" player. Copy `web/.env.example` to get started.
 
 ## Content model
 

@@ -18,6 +18,7 @@ const { meta, jsonLd, theme = 'paper', recipient, portraitUrl } = Astro.props;
 const icon = (size: number) => `${portraitUrl}?w=${size}&h=${size}&fit=crop&fm=png`;
 const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const brimbleId = import.meta.env.PUBLIC_BRIMBLE_WEBSITE_ID;
 ---
 
 <html lang="en">
@@ -67,6 +68,7 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 
 		<JsonLd graph={jsonLd} override={meta.jsonLdOverride} />
 		<script is:inline>document.documentElement.classList.add('js');</script>
+		{brimbleId && <script is:inline defer src="https://scripts.brimble.io/analytics/brimble.js" data-website-id={brimbleId} />}
 		{
 			gaId && (
 				<>
