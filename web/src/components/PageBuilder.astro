@@ -1,0 +1,64 @@
+---
+import ContactSection from "@/components/sections/ContactSection.astro";
+import ExperienceSection from "@/components/sections/ExperienceSection.astro";
+import HeroSection from "@/components/sections/HeroSection.astro";
+import InfoSection from "@/components/sections/InfoSection.astro";
+import IntroSection from "@/components/sections/IntroSection.astro";
+import ListColumnsSection from "@/components/sections/ListColumnsSection.astro";
+import PageHeading from "@/components/sections/PageHeading.astro";
+import ProductsSection from "@/components/sections/ProductsSection.astro";
+import RichTextSection from "@/components/sections/RichTextSection.astro";
+import WorksSection from "@/components/sections/WorksSection.astro";
+import WritingSection from "@/components/sections/WritingSection.astro";
+import type {
+  PAGE_QUERY_RESULT,
+  SITE_SETTINGS_QUERY_RESULT,
+} from "@/sanity/types";
+
+export type Section = NonNullable<
+  NonNullable<PAGE_QUERY_RESULT>["pageBuilder"]
+>[number];
+
+interface Props {
+  sections: Section[];
+  settings: NonNullable<SITE_SETTINGS_QUERY_RESULT>;
+}
+
+const { sections, settings } = Astro.props;
+const { resumeUrl, email } = settings;
+---
+
+{
+  sections.map((section) => {
+    switch (section._type) {
+      case "heroSection":
+        return <HeroSection section={section} />;
+      case "pageHeading":
+        return <PageHeading section={section} resumeUrl={resumeUrl} />;
+      case "worksSection":
+        return <WorksSection section={section} />;
+      case "productsSection":
+        return <ProductsSection section={section} />;
+      case "writingSection":
+        return <WritingSection section={section} resumeUrl={resumeUrl} />;
+      case "infoSection":
+        return <InfoSection section={section} resumeUrl={resumeUrl} />;
+      case "experienceSection":
+        return <ExperienceSection section={section} />;
+      case "introSection":
+        return <IntroSection section={section} />;
+      case "listColumnsSection":
+        return <ListColumnsSection section={section} resumeUrl={resumeUrl} />;
+      case "contactSection":
+        return (
+          <ContactSection
+            section={section}
+            email={email}
+            resumeUrl={resumeUrl}
+          />
+        );
+      case "richTextSection":
+        return <RichTextSection section={section} />;
+    }
+  })
+}

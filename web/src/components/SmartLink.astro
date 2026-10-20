@@ -1,0 +1,52 @@
+---
+import ArrowDown from 'reicon-astro/icons/ArrowDown.astro';
+import ArrowRight from 'reicon-astro/icons/ArrowRight.astro';
+import ArrowUpRight from 'reicon-astro/icons/ArrowUpRight.astro';
+import { opensInNewTab, resolveHref, type LinkData } from '@/sanity/links';
+
+/**
+ * Renders a Studio `simpleLink`. Falls back to a plain span when the link
+ * cannot resolve (e.g. a résumé link with no file uploaded). `icon="auto"`
+ * appends an arrow that matches the link type.
+ */
+interface Props {
+	link: LinkData;
+	resumeUrl: string | null;
+	class?: string;
+	icon?: 'auto' | 'none';
+	'aria-current'?: 'page';
+}
+
+const { link, resumeUrl, class: className, icon = 'none', 'aria-current': ariaCurrent } = Astro.props;
+const href = resolveHref(link, resumeUrl);
+const newTab = opensInNewTab(link);
+
+const ICON_BY_TYPE = {
+	external: { component: ArrowUpRight, nudge: 'translate(3px, -3px)' },
+	resume: { component: ArrowDown, nudge: 'translateY(3px)' },
+};
+const trailing =
+	icon === 'auto'
+		? (ICON_BY_TYPE[link.type as keyof typeof ICON_BY_TYPE] ?? { component: ArrowRight, nudge: 'translateX(4px)' })
+		: null;
+---
+
+{
+	href ? (
+		<a
+			href={href}
+			class:list={[trailing && 'group inline-flex items-center gap-1.5', className]}
+			target={newTab ? '_blank' : undefined}
+			rel={newTab ? 'noopener' : undefined}
+			aria-current={ariaCurrent}
+		>
+			<slot>{link.label}</slot>
+			{trailing && <trailing.component class="icon-inline" style={`--icon-nudge:${trailing.nudge}`} />}
+		</a>
+	) : (
+		<span class:list={[trailing && 'inline-flex items-center gap-1.5', className]}>
+			<slot>{link.label}</slot>
+			{trailing && <trailing.component class="icon-inline" />}
+		</span>
+	)
+}

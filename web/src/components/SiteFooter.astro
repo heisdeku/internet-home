@@ -1,0 +1,37 @@
+---
+import ListeningNow from '@/components/ListeningNow.astro';
+import SmartLink from '@/components/SmartLink.astro';
+import type { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
+
+interface Props {
+	settings: NonNullable<SITE_SETTINGS_QUERY_RESULT>;
+}
+
+const { settings } = Astro.props;
+---
+
+<footer
+	id="contact"
+	class="px-gutter flex flex-col gap-[clamp(64px,10vw,140px)] bg-ink pt-[clamp(64px,10vw,140px)] pb-7 text-paper"
+>
+	<div class="flex flex-col gap-5">
+		{settings.footerPrompt && <span class="text-[13px] text-mist">{settings.footerPrompt}</span>}
+		<a
+			href={`mailto:${settings.email}`}
+			class="text-[clamp(32px,6.4vw,104px)] leading-none font-medium tracking-[-.04em] break-words text-paper transition-colors hover:text-accent-light"
+		>
+			{settings.email}
+		</a>
+	</div>
+	<div class="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-x-6 gap-y-4 text-[13px] text-mist">
+		<span class="font-semibold tracking-[.08em] uppercase text-paper">{settings.displayName}</span>
+		{
+			settings.footerLinks?.map((link) => (
+				<SmartLink link={link} resumeUrl={settings.resumeUrl} icon="auto" class="text-paper hover:text-accent-light" />
+			))
+		}
+		<span class="justify-self-end font-mono">© {new Date().getFullYear()}</span>
+	</div>
+</footer>
+
+{settings.showListeningPlayer && <ListeningNow />}

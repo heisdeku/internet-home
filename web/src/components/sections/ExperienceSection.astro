@@ -1,0 +1,139 @@
+---
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+import ArrowUpRight from "reicon-astro/icons/ArrowUpRight.astro";
+import Sparkle from 'reicon-astro/icons/Sparkle.astro';
+import Minus from "reicon-astro/icons/Minus.astro";
+import Plus from "reicon-astro/icons/Plus.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "experienceSection" }>;
+}
+
+const { section } = Astro.props;
+const experience = section.entries ?? [];
+
+const monthYear = new Intl.DateTimeFormat("en", {
+  month: "short",
+  year: "numeric",
+});
+
+const formatDate = (date: string | null) =>
+  date ? monthYear.format(new Date(date)) : "Present";
+
+const EMPLOYMENT: Record<string, string> = {
+  fullTime: "Full-time",
+  contract: "Contract",
+  freelance: "Freelance",
+  partTime: "Part-time",
+  internship: "Internship",
+};
+
+const host = (url: string) =>
+  url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const columns = "grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_170px_24px] gap-4";
+
+
+const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
+  const last = roles[roles.length - 1];
+  const first = roles[0];
+  return `${formatDate(last.startDate)} — ${formatDate(first.endDate)}`;
+};
+---
+
+<section class="px-gutter pb-[clamp(80px,10vw,160px)]">
+  {
+    section.heading?.text && (
+      <Heading value={section.heading} size="XS" class="mb-6" />
+    )
+  }
+  <div data-reveal class:list={[columns, "label border-b border-ink pb-3"]}>
+    <span>Company</span><span>Role</span><span>Period</span><span></span>
+  </div>
+  {
+    experience.map((job, i) => {
+      const roles = job.roles ?? [];
+      const latest = roles[0];
+      return (
+        <details
+          name="experience"
+          open={section.openFirst !== false && i === 0}
+          data-reveal
+          class="group border-b border-line"
+        >
+          <summary
+            class:list={[
+              columns,
+              "cursor-pointer list-none items-baseline py-5.5 hover:text-accent [&::-webkit-details-marker]:hidden",
+            ]}
+          >
+            <span class="text-[clamp(18px,2vw,26px)] font-medium tracking-[-.02em]">
+              {job.company}
+            </span>
+            <span class="text-sm text-muted">{latest?.title}</span>
+            <span class="font-mono text-xs text-faint">
+              {roles.length > 0 && tenure(roles)}
+            </span>
+            <span class="justify-self-end text-accent" aria-hidden="true">
+              <Plus class="size-4 group-open:hidden" />
+              <Minus class="hidden size-4 group-open:block" />
+            </span>
+          </summary>
+          <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-x-6 gap-y-8 pb-8 text-[15px] leading-[1.55]">
+            <div class="flex flex-col gap-6">
+              {roles.map((role) => (
+                <div class="flex flex-col gap-2">
+                  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span class="font-medium">{role.title}</span>
+                    <span class="font-mono text-xs text-faint">
+                      {EMPLOYMENT[role.employmentType] ?? role.employmentType} ·{" "}
+                      {formatDate(role.startDate)} — {formatDate(role.endDate)}
+                    </span>
+                  </div>
+                  {role.highlights && role.highlights.length > 0 && (
+                    <ul class="flex max-w-[60ch] flex-col gap-1.5 text-body">
+                      {role.highlights.map((line) => (
+                        <li class="flex gap-2.5 text-pretty">
+                          <Sparkle class="mt-[3px] size-4 shrink-0 text-accent" aria-hidden="true" />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div class="flex flex-col items-start gap-2.5">
+              {job.location && (
+                <>
+                  <span class="label">Location</span>
+                  <span>{job.location}</span>
+                </>
+              )}
+              {job.stack && (
+                <>
+                  <span class="label">Stack</span>
+                  <span>{job.stack}</span>
+                </>
+              )}
+              {job.url && (
+                <a
+                  href={job.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="group inline-flex items-center gap-1.5 font-medium text-accent"
+                >
+                  {host(job.url)}{" "}
+                  <ArrowUpRight
+                    class="icon-inline"
+                    style="--icon-nudge:translate(3px,-3px)"
+                  />
+                </a>
+              )}
+            </div>
+          </div>
+        </details>
+      );
+    })
+  }
+</section>

@@ -1,0 +1,26 @@
+---
+interface Props {
+  label: string;
+  class?: string;
+  dark?: boolean;
+}
+
+const { label, class: className, dark = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    "flex items-end rounded p-3.5",
+    dark ? "bg-stripes-dark" : "bg-stripes",
+    className,
+  ]}
+>
+  <span
+    class:list={[
+      "rounded-sm px-2 py-1 font-mono text-[11px]",
+      dark ? "text-mist" : "bg-paper text-[#6e6e69]",
+    ]}
+  >
+    {label}
+  </span>
+</div>

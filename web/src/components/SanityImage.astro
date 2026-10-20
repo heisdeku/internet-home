@@ -1,0 +1,45 @@
+---
+import { urlFor, type SanityImageSource } from '@/sanity/image';
+import Placeholder from '@/components/Placeholder.astro';
+
+/**
+ * Renders a Sanity image over its pixelated LQIP, fading in once decoded, or
+ * the striped placeholder when the field is empty. `class` is applied to both
+ * branches so layouts match.
+ */
+interface Props {
+	image: (SanityImageSource & { alt?: string | null; lqip?: string | null }) | null | undefined;
+	placeholder: string;
+	width: number;
+	height: number;
+	class?: string;
+	loading?: 'lazy' | 'eager';
+	dark?: boolean;
+}
+
+const { image, placeholder, width, height, class: className, loading = 'lazy', dark = false } = Astro.props;
+const hasAsset = image != null && 'asset' in image && image.asset != null;
+---
+
+{
+	hasAsset ? (
+		<span
+			class:list={['img-frame rounded bg-tile', className]}
+			style={image.lqip ? `background-image:url(${image.lqip})` : undefined}
+		>
+			<img
+				src={urlFor(image).width(width).height(height).fit('crop').url()}
+				srcset={`${urlFor(image).width(width).height(height).fit('crop').url()} 1x, ${urlFor(image).width(width * 2).height(height * 2).fit('crop').url()} 2x`}
+				alt={image.alt ?? ''}
+				width={width}
+				height={height}
+				loading={loading}
+				decoding="async"
+				data-fade-in
+				class="object-cover"
+			/>
+		</span>
+	) : (
+		<Placeholder label={placeholder} class={className} dark={dark} />
+	)
+}

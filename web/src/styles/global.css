@@ -1,0 +1,263 @@
+@import 'tailwindcss';
+@import 'lenis/dist/lenis.css';
+
+@theme {
+	--font-sans: 'Geist', Helvetica, Arial, sans-serif;
+	--font-mono: 'Geist Mono', ui-monospace, monospace;
+
+	--color-ink: #0f0f10;
+	--color-ink-soft: #1f1f1e;
+	--color-body: #3a3a37;
+	--color-muted: #5c5c58;
+	--color-faint: #7d7d78;
+	--color-mist: #a3a39e;
+	--color-paper: #f1f1ef;
+	--color-line: #d7d7d3;
+	--color-line-soft: #e0e0dc;
+	--color-tile: #e4e4e1;
+	--color-tile-dark: #dcdcd8;
+	--color-accent: #2a51c8;
+	--color-accent-dark: #2346b3;
+	--color-accent-light: #5b7fe6;
+	--color-accent-pale: #dfe6fb;
+
+	--ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--ease-in-out-soft: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+	--animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+	--animate-eq: eq 0.9s ease-in-out infinite;
+	--animate-fade-up: fade-up 0.5s var(--ease-out-soft) both;
+
+	@keyframes pulse-dot {
+		0%,
+		100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.35;
+		}
+	}
+	@keyframes eq {
+		0%,
+		100% {
+			transform: scaleY(0.3);
+		}
+		50% {
+			transform: scaleY(1);
+		}
+	}
+	@keyframes fade-up {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+}
+
+@utility px-gutter {
+	padding-inline: clamp(20px, 4vw, 48px);
+}
+
+@utility bg-stripes {
+	background: repeating-linear-gradient(135deg, var(--color-tile) 0 10px, var(--color-tile-dark) 10px 20px);
+}
+
+@utility bg-stripes-dark {
+	background: repeating-linear-gradient(135deg, #1d1d1c 0 10px, #191918 10px 20px);
+}
+
+@utility label {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-faint);
+}
+
+@layer base {
+	html {
+		-webkit-font-smoothing: antialiased;
+		interpolate-size: allow-keywords;
+	}
+	[id] {
+		scroll-margin-top: 72px;
+	}
+	body {
+		background: var(--color-paper);
+		color: var(--color-ink);
+		font-family: var(--font-sans);
+	}
+	a {
+		color: inherit;
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+	a:hover {
+		color: var(--color-accent);
+	}
+}
+
+/* Reveal: sections blur-up into place as they enter the viewport (and on load). */
+.js [data-reveal],
+.js [data-reveal-stagger] > * {
+	opacity: 0;
+	filter: blur(3px);
+	transform: translateY(6px);
+	transition:
+		opacity 0.55s var(--ease-out-soft),
+		filter 0.55s var(--ease-out-soft),
+		transform 0.55s var(--ease-out-soft);
+	transition-delay: var(--reveal-delay, 0ms);
+	will-change: opacity, filter, transform;
+}
+.js [data-reveal].is-revealed,
+.js [data-reveal-stagger].is-revealed > * {
+	opacity: 1;
+	filter: blur(0);
+	transform: none;
+}
+/* Accent phrase inside a heading; the blue theme swaps it for the pale tint. */
+@utility text-highlight {
+	color: var(--highlight, var(--color-accent));
+}
+
+/* Icons sit on the text baseline and nudge along their link's hover. */
+@utility icon-inline {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.15em;
+	flex: none;
+	transition: transform 0.5s var(--ease-out-soft);
+	.group:hover > &,
+	.group:hover > * > & {
+		transform: var(--icon-nudge, none);
+	}
+}
+
+/* Sliding underline for inline and nav links. */
+@utility link-underline {
+	position: relative;
+	&::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -2px;
+		height: 1px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform 0.45s var(--ease-out-soft);
+	}
+	&:hover::after,
+	&[aria-current='page']::after {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+}
+
+/* List rows slide their content right on hover. Transform, not padding, so nothing reflows mid-animation. */
+@utility row-slide {
+	& > * {
+		transition: transform 0.5s var(--ease-out-soft);
+	}
+	@media (hover: hover) {
+		&:hover > * {
+			transform: translateX(12px);
+		}
+	}
+}
+
+/* Hovering one item in a list quietens its siblings. */
+@utility dim-siblings {
+	& > * {
+		transition: opacity 0.35s var(--ease-in-out-soft);
+	}
+	@media (hover: hover) {
+		&:has(> :hover) > :not(:hover) {
+			opacity: 0.45;
+		}
+	}
+}
+
+/* Wordmark: the surname slides out on hover. */
+@utility wordmark-more {
+	display: inline-grid;
+	grid-template-columns: 0fr;
+	opacity: 0;
+	transition:
+		grid-template-columns 0.45s var(--ease-out-soft),
+		opacity 0.3s ease;
+	& > span {
+		min-width: 0;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	a:hover > &,
+	a:focus-visible > & {
+		grid-template-columns: 1fr;
+		opacity: 1;
+	}
+}
+
+/* Images: a pixelated LQIP sits underneath until the full image has decoded. */
+@utility img-frame {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+	image-rendering: pixelated;
+	& > img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		image-rendering: auto;
+	}
+	.js & > img[data-fade-in] {
+		opacity: 0;
+		transform: scale(1.02);
+		transition:
+			opacity 0.5s ease-out,
+			transform 0.7s var(--ease-out-soft);
+	}
+	.js & > img[data-fade-in].is-loaded {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* Accordion panels ease open where the browser supports it. */
+details::details-content {
+	height: 0;
+	overflow: clip;
+	transition:
+		height 0.45s var(--ease-out-soft),
+		content-visibility 0.45s allow-discrete;
+}
+details[open]::details-content {
+	height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js [data-reveal],
+	.js [data-reveal-stagger] > * {
+		opacity: 1;
+		filter: none;
+		transform: none;
+		transition: none;
+	}
+	.js .img-frame > img[data-fade-in] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+	details::details-content {
+		transition: none;
+	}
+}

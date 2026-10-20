@@ -1,0 +1,35 @@
+---
+import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
+import type { SITE_SETTINGS_QUERY_RESULT } from "@/sanity/types";
+
+interface Props {
+  settings: NonNullable<SITE_SETTINGS_QUERY_RESULT>;
+}
+
+const { settings } = Astro.props;
+---
+
+<header
+  class="px-gutter flex flex-wrap items-center justify-between gap-4 py-4.5 text-[13px] [&_a:hover]:text-highlight"
+>
+  <a href="/" class="text-sm font-semibold tracking-[.08em] uppercase"
+    >{settings.displayName}</a
+  >
+  <div class="flex items-center gap-6">
+    <span class="font-mono text-(--tone-muted)">
+      {settings.timeZoneLabel}{" "}
+      <time data-local-clock data-time-zone={settings.timeZone}></time>
+    </span>
+    <a href="/" class="group inline-flex items-center gap-1.5">
+      Full portfolio <ArrowRight
+        class="icon-inline"
+        style="--icon-nudge:translateX(4px)"
+      />
+    </a>
+  </div>
+</header>
+
+<script>
+  import { startClocks } from "@/scripts/clock";
+  startClocks();
+</script>

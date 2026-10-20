@@ -1,0 +1,98 @@
+---
+import { sanityClient } from 'sanity:client';
+import ArrowLeft from 'reicon-astro/icons/ArrowLeft.astro';
+import ArrowRight from 'reicon-astro/icons/ArrowRight.astro';
+import PortableText from '@/components/portable-text/PortableText.astro';
+import Site from '@/layouts/Site.astro';
+import { buildMeta, siteOrigin } from '@/lib/seo';
+import { articleNode, breadcrumbNode, siteGraph, webPageNode } from '@/lib/structuredData';
+import { POST_QUERY, SITE_SETTINGS_QUERY } from '@/sanity/queries';
+
+export async function getStaticPaths() {
+	const { sanityClient } = await import('sanity:client');
+	const { POSTS_QUERY } = await import('@/sanity/queries');
+	const posts = await sanityClient.fetch(POSTS_QUERY);
+	
+	return posts.map((post, i) => ({
+		params: { slug: post.slug },
+		props: { previous: posts[i + 1] ?? null, next: posts[i - 1] ?? null },
+	}));
+}
+
+interface Props {
+	previous: { slug: string; title: string } | null;
+	next: { slug: string; title: string } | null;
+}
+
+const { previous, next } = Astro.props;
+const { slug } = Astro.params;
+const [post, settings] = await Promise.all([sanityClient.fetch(POST_QUERY, { slug }), sanityClient.fetch(SITE_SETTINGS_QUERY)]);
+if (!post || !settings) return Astro.rewrite('/404');
+
+const path = `/writing/${post.slug}`;
+const origin = siteOrigin(settings, Astro.site, Astro.url);
+const meta = buildMeta({ settings, origin, path, seo: post.seo, title: post.title, description: post.excerpt, ogType: 'article', og: { kind: 'post', slug: post.slug ?? '' } });
+const jsonLd = [
+	...siteGraph(origin, settings),
+	webPageNode({ origin, path, name: meta.title, description: meta.description, updatedAt: post._updatedAt }),
+	articleNode({ origin, path, headline: post.title ?? '', description: post.excerpt, publishedAt: post.publishedAt, updatedAt: post._updatedAt, imageUrl: meta.ogImage, keywords: post.tags }),
+	breadcrumbNode(origin, [{ name: 'Home', path: '/' }, { name: 'Writing', path: '/writing' }, { name: post.title ?? '', path }]),
+];
+
+const date = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(new Date(post.publishedAt));
+---
+
+<Site meta={meta} jsonLd={jsonLd} settings={settings}>
+	<article class="px-gutter flex flex-col items-center pt-[clamp(56px,9vw,128px)] pb-[clamp(64px,8vw,120px)]">
+		<header data-reveal-stagger class="flex w-full max-w-190 flex-col gap-6 border-b border-line pb-10">
+			<div class="flex flex-wrap gap-3 text-[13px] text-muted">
+				<a href="/#writing" class="text-muted">Writing</a><span>/</span>
+				<span class="font-mono">{date}{post.readingTime && ` · ${post.readingTime} min read`}</span>
+			</div>
+			<h1 class="text-[clamp(34px,5vw,64px)] leading-[1.02] font-medium tracking-[-.035em] text-balance">{post.title}</h1>
+			<p class="text-[clamp(18px,1.6vw,21px)] leading-[1.45] text-body text-pretty">{post.excerpt}</p>
+			{
+				post.tags && post.tags.length > 0 && (
+					<div class="flex flex-wrap gap-2">
+						{post.tags.map((tag) => (
+							<span class="rounded-full border border-accent px-2.25 py-1.25 font-mono text-[11px] text-accent">{tag}</span>
+						))}
+					</div>
+				)
+			}
+		</header>
+
+		<div data-reveal class="flex w-full max-w-190 flex-col gap-6 pt-10 text-lg leading-[1.65] text-ink-soft">
+			<PortableText value={post.body} />
+		</div>
+
+		{
+			(previous || next) && (
+				<nav data-reveal class="mt-16 grid w-full max-w-190 grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+					{previous && (
+						<a
+							href={`/writing/${previous.slug}`}
+							class="group flex flex-col gap-2 rounded-md border border-line p-5 hover:border-accent hover:text-accent"
+						>
+							<span class="inline-flex items-center gap-1.5 font-mono text-xs text-faint">
+								<ArrowLeft class="icon-inline" style="--icon-nudge:translateX(-4px)" /> Previous
+							</span>
+							<span class="font-medium">{previous.title}</span>
+						</a>
+					)}
+					{next && (
+						<a
+							href={`/writing/${next.slug}`}
+							class="group flex flex-col gap-2 rounded-md border border-line p-5 text-right hover:border-accent hover:text-accent"
+						>
+							<span class="inline-flex items-center justify-end gap-1.5 font-mono text-xs text-faint">
+								Next <ArrowRight class="icon-inline" style="--icon-nudge:translateX(4px)" />
+							</span>
+							<span class="font-medium">{next.title}</span>
+						</a>
+					)}
+				</nav>
+			)
+		}
+	</article>
+</Site>

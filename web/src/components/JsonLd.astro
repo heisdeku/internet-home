@@ -1,0 +1,16 @@
+---
+import type { JsonLdNode } from "@/lib/structuredData";
+
+interface Props {
+  graph: JsonLdNode[];
+  override: string | null;
+}
+
+const { graph, override } = Astro.props;
+const json =
+  override ??
+  JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
+const safe = json.replace(/</g, "\\u003c");
+---
+
+<script type="application/ld+json" set:html={safe} />

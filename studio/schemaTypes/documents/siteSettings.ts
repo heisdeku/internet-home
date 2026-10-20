@@ -1,0 +1,95 @@
+import {CogIcon} from '@sanity/icons/Cog'
+import {defineArrayMember, defineField, defineType} from 'sanity'
+
+export const siteSettings = defineType({
+  name: 'siteSettings',
+  title: 'Site Settings',
+  type: 'document',
+  icon: CogIcon,
+  groups: [
+    {name: 'identity', title: 'Identity', default: true},
+    {name: 'navigation', title: 'Navigation'},
+    {name: 'seo', title: 'SEO defaults'},
+  ],
+  fields: [
+    defineField({
+      name: 'displayName',
+      title: 'Display name',
+      description: 'Shown in the header and footer wordmark',
+      type: 'string',
+      group: 'identity',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({name: 'fullName', type: 'string', group: 'identity', validation: (rule) => rule.required()}),
+    defineField({name: 'jobTitle', type: 'string', group: 'identity', validation: (rule) => rule.required()}),
+    defineField({
+      name: 'timeZone',
+      description: 'IANA time zone used for the live clock, e.g. Africa/Lagos',
+      type: 'string',
+      group: 'identity',
+      initialValue: 'Africa/Lagos',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'timeZoneLabel',
+      description: 'City name shown next to the clock',
+      type: 'string',
+      group: 'identity',
+      initialValue: 'Lagos',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({name: 'availableForWork', type: 'boolean', group: 'identity', initialValue: true}),
+    defineField({
+      name: 'email',
+      description: 'Used by the footer and the contact band',
+      type: 'string',
+      group: 'identity',
+      validation: (rule) => rule.required().email(),
+    }),
+    defineField({name: 'resume', type: 'file', group: 'identity', options: {accept: 'application/pdf'}}),
+    defineField({
+      name: 'showListeningPlayer',
+      title: 'Show "Listening now" player',
+      type: 'boolean',
+      group: 'identity',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'navigation',
+      title: 'Header links',
+      type: 'array',
+      group: 'navigation',
+      of: [defineArrayMember({type: 'simpleLink'})],
+    }),
+    defineField({
+      name: 'footerLinks',
+      title: 'Footer links',
+      type: 'array',
+      group: 'navigation',
+      of: [defineArrayMember({type: 'simpleLink'})],
+    }),
+    defineField({
+      name: 'footerPrompt',
+      description: 'Line above the email in the footer',
+      type: 'string',
+      group: 'navigation',
+      initialValue: 'Have a project in mind?',
+    }),
+    defineField({
+      name: 'siteUrl',
+      description: 'Production origin, e.g. https://feranmiadedokun.com. Used for canonical URLs, the sitemap and share images.',
+      type: 'url',
+      group: 'seo',
+    }),
+    defineField({
+      name: 'siteTitle',
+      description: 'Appended to page titles',
+      type: 'string',
+      group: 'seo',
+    }),
+    defineField({name: 'seo', title: 'Defaults', type: 'seo', group: 'seo'}),
+  ],
+  preview: {
+    prepare: () => ({title: 'Site Settings'}),
+  },
+})

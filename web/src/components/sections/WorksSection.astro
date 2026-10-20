@@ -1,0 +1,128 @@
+---
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+import SanityImage from "@/components/SanityImage.astro";
+import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "worksSection" }>;
+}
+
+const { section } = Astro.props;
+const works = section.works ?? [];
+const number = (i: number) => String(i + 1).padStart(2, "0");
+---
+
+<section
+  id="works"
+  data-reveal-stagger
+  class="px-gutter pb-[clamp(80px,10vw,160px)]"
+  data-works
+  data-view={section.defaultView ?? "grid"}
+>
+  <div
+    class="mb-6 flex flex-wrap items-baseline justify-between gap-4 border-b border-line pb-4 text-[13px]"
+  >
+    <div class="flex items-baseline gap-2">
+      <Heading value={section.heading} size="XS" />
+      <span class="font-mono text-[13px] text-faint"
+        >({number(works.length - 1)})</span
+      >
+    </div>
+    <div class="flex gap-4" role="group" aria-label="Layout">
+      <button
+        type="button"
+        data-set-view="grid"
+        class="cursor-pointer opacity-40 aria-pressed:opacity-100">Grid</button
+      >
+      <button
+        type="button"
+        data-set-view="index"
+        class="cursor-pointer opacity-40 aria-pressed:opacity-100">Index</button
+      >
+    </div>
+  </div>
+
+  <div
+    data-view-panel="grid"
+    class="dim-siblings grid grid-cols-[repeat(auto-fill,minmax(min(100%,420px),1fr))] gap-x-[clamp(16px,2vw,24px)] gap-y-[clamp(16px,2vw,28px)]"
+  >
+    {
+      works.map((work, i) => (
+        <a href={`/work/${work.slug}`} class="group flex flex-col gap-3">
+          <SanityImage
+            image={work.heroImage}
+            placeholder={`${work.slug} — screenshot / video`}
+            width={1120}
+            height={840}
+            class="aspect-4/3 w-full transition-transform duration-500 ease-out-soft group-hover:scale-[.985]"
+          />
+          <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-4 text-[13px]">
+            <span class="font-medium">{work.title}</span>
+            <span class="text-muted">{work.category}</span>
+            <span class="font-mono text-faint">N°{number(i)}</span>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+
+  <div data-view-panel="index" class="dim-siblings flex flex-col">
+    {
+      works.map((work, i) => (
+        <a
+          href={`/work/${work.slug}`}
+          class="group grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-x-6 gap-y-2 border-b border-line py-5.5 text-sm row-slide transition-colors duration-300"
+        >
+          <span class="font-mono text-xs text-faint">
+            N°{number(i)} — {work.year}
+          </span>
+          <span class="text-lg font-medium tracking-[-.01em]">
+            {work.title}
+          </span>
+          <span class="col-span-2 max-w-[60ch] leading-normal text-muted text-pretty">
+            {work.summary}
+          </span>
+          <span class="inline-flex items-center gap-1.5 justify-self-end text-[13px]">
+            Case study{" "}
+            <ArrowRight
+              class="icon-inline"
+              style="--icon-nudge:translateX(4px)"
+            />
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  [data-works][data-view="grid"] [data-view-panel="index"],
+  [data-works][data-view="index"] [data-view-panel="grid"] {
+    display: none;
+  }
+  [data-works][data-view="grid"] [data-view-panel="grid"],
+  [data-works][data-view="index"] [data-view-panel="index"] {
+    animation: var(--animate-fade-up);
+  }
+</style>
+
+<script>
+  for (const section of document.querySelectorAll<HTMLElement>(
+    "[data-works]",
+  )) {
+    const buttons =
+      section.querySelectorAll<HTMLButtonElement>("[data-set-view]");
+    const apply = (view: string) => {
+      section.dataset.view = view;
+      for (const button of buttons)
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.setView === view),
+        );
+    };
+    apply(section.dataset.view ?? "grid");
+    for (const button of buttons)
+      button.addEventListener("click", () => apply(button.dataset.setView!));
+  }
+</script>

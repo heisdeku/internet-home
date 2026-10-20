@@ -1,0 +1,26 @@
+---
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "heroSection" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<section
+  data-reveal-stagger
+  class="px-gutter grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-end gap-10 pt-[clamp(80px,14vw,200px)] pb-[clamp(64px,8vw,120px)]"
+>
+  <div class="flex flex-col gap-1.5 text-[13px] text-muted">
+    {
+      section.meta?.map((line, i) => (
+        <span class:list={[i === 0 && "font-mono tracking-[.06em] uppercase"]}>
+          {line}
+        </span>
+      ))
+    }
+  </div>
+  <Heading value={section.heading} size="XL" class="col-span-2 max-w-[18ch]" />
+</section>

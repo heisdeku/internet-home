@@ -1,0 +1,43 @@
+---
+import type { MarkProps } from 'astro-portabletext/types';
+import { pathFor } from '@/sanity/links';
+
+type LinkDef = {
+	linkType?: 'external' | 'internal';
+	href?: string;
+	internal?: Parameters<typeof pathFor>[0] | null;
+	openInNewTab?: boolean;
+};
+type Props = MarkProps<LinkDef>;
+
+const { node } = Astro.props;
+
+let href: string | null = null;
+let newTab = false;
+if (node.markType === 'link') {
+	const def = node.markDef;
+	href = def.linkType === 'internal' ? (def.internal ? pathFor(def.internal) : null) : (def.href ?? null);
+	newTab = def.openInNewTab === true;
+}
+---
+
+{
+	node.markType === 'link' ? (
+		<a
+			href={href ?? undefined}
+			class="underline underline-offset-[3px] decoration-current/40 transition-colors hover:text-accent hover:decoration-current"
+			target={newTab ? '_blank' : undefined}
+			rel={newTab ? 'noopener' : undefined}
+		>
+			<slot />
+		</a>
+	) : node.markType === 'code' ? (
+		<code class="rounded-[3px] bg-current/10 px-1.5 py-0.5 font-mono text-[.85em]"><slot /></code>
+	) : node.markType === 'em' ? (
+		<em><slot /></em>
+	) : node.markType === 'underline' ? (
+		<span class="underline underline-offset-[3px]"><slot /></span>
+	) : (
+		<strong class="font-medium"><slot /></strong>
+	)
+}

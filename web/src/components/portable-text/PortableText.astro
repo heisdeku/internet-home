@@ -1,0 +1,25 @@
+---
+import Block from "@/components/portable-text/Block.astro";
+import Code from "@/components/portable-text/Code.astro";
+import Figure from "@/components/portable-text/Figure.astro";
+import Mark from "@/components/portable-text/Mark.astro";
+import { PortableText as PortableTextRenderer } from "astro-portabletext";
+import type { TypedObject } from "astro-portabletext/types";
+
+interface Props {
+  value: TypedObject[];
+}
+
+const { value } = Astro.props;
+
+const components = {
+  block: Block,
+  mark: Mark,
+  type: {
+    image: Figure,
+    code: Code,
+  },
+};
+---
+
+<PortableTextRenderer value={value} components={components} />

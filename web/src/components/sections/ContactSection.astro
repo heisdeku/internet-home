@@ -1,0 +1,40 @@
+---
+import Cta from "@/components/Cta.astro";
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "contactSection" }>;
+  email: string | null;
+  resumeUrl: string | null;
+}
+
+const { section, email, resumeUrl } = Astro.props;
+const mailto = `mailto:${email}${section.emailSubject ? `?subject=${encodeURIComponent(section.emailSubject)}` : ""}`;
+---
+
+<section
+  data-reveal
+  class="px-gutter flex flex-col gap-7 bg-ink py-[clamp(48px,7vw,96px)] text-paper"
+>
+  <Heading value={section.heading} size="XS" class="font-normal text-mist" />
+  {
+    email && (
+      <a
+        href={mailto}
+        class="text-[clamp(30px,5.6vw,88px)] leading-none font-medium tracking-[-.04em] wrap-break-word hover:text-accent-light"
+      >
+        {email}
+      </a>
+    )
+  }
+  {
+    section.ctas && section.ctas.length > 0 && (
+      <div class="flex flex-wrap gap-2.5">
+        {section.ctas.map((cta) => (
+          <Cta cta={cta} resumeUrl={resumeUrl} tone="dark" />
+        ))}
+      </div>
+    )
+  }
+</section>

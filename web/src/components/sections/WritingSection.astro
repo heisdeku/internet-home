@@ -1,0 +1,72 @@
+---
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+import SmartLink from "@/components/SmartLink.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "writingSection" }>;
+  resumeUrl: string | null;
+}
+
+const { section, resumeUrl } = Astro.props;
+const posts = section.limit
+  ? section.posts.slice(0, section.limit)
+  : section.posts;
+const stacked = section.layout === "stack";
+const monthYear = new Intl.DateTimeFormat("en", {
+  month: "short",
+  year: "numeric",
+});
+const hasAside = section.heading?.text || section.link;
+---
+
+<section
+  id="writing"
+  data-reveal-stagger
+  class:list={[
+    "px-gutter",
+    stacked
+      ? "pb-[clamp(80px,10vw,160px)]"
+      : "grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-line py-[clamp(64px,8vw,120px)]",
+  ]}
+>
+  {
+    hasAside && (
+      <div class="flex flex-col items-start gap-3">
+        <Heading value={section.heading} size="XS" />
+        {section.link && (
+          <SmartLink
+            link={section.link}
+            resumeUrl={resumeUrl}
+            icon="auto"
+            class="text-[13px] text-muted"
+          />
+        )}
+      </div>
+    )
+  }
+  <div class:list={["dim-siblings flex flex-col", !stacked && "col-span-2"]}>
+    {
+      posts.map((post) => (
+        <a
+          href={`/writing/${post.slug}`}
+          class="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 border-b border-line py-5 row-slide transition-colors duration-300"
+        >
+          <span class="text-[clamp(17px,1.6vw,22px)] font-medium tracking-[-.015em] text-pretty">
+            {post.title}
+          </span>
+          <span class="font-mono text-xs text-faint">
+            {stacked
+              ? monthYear.format(new Date(post.publishedAt))
+              : post.publishedAt.slice(0, 4)}
+          </span>
+          {stacked && (
+            <span class="col-span-2 max-w-[60ch] text-sm leading-normal text-muted text-pretty">
+              {post.excerpt}
+            </span>
+          )}
+        </a>
+      ))
+    }
+  </div>
+</section>

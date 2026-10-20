@@ -1,0 +1,26 @@
+---
+import SanityImage from "@/components/SanityImage.astro";
+import type { SanityImageSource } from "@/sanity/image";
+import type { TypedObjectProps } from "astro-portabletext/types";
+
+type Props = TypedObjectProps & {
+  node: SanityImageSource & { alt?: string; caption?: string };
+};
+
+const { node } = Astro.props;
+---
+
+<figure class="my-2 flex flex-col gap-2.5">
+  <SanityImage
+    image={node}
+    placeholder="image"
+    width={1520}
+    height={855}
+    class="aspect-video w-full"
+  />
+  {
+    node.caption && (
+      <figcaption class="text-[13px] text-muted">{node.caption}</figcaption>
+    )
+  }
+</figure>

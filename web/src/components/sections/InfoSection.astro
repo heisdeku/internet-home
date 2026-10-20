@@ -1,0 +1,53 @@
+---
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+import PortableText from "@/components/portable-text/PortableText.astro";
+import SmartLink from "@/components/SmartLink.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "infoSection" }>;
+  resumeUrl: string | null;
+}
+
+const { section, resumeUrl } = Astro.props;
+---
+
+<section
+  id="info"
+  data-reveal-stagger
+  class="px-gutter grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-line py-[clamp(64px,8vw,120px)]"
+>
+  <Heading value={section.heading} size="XS" />
+  <div class="col-span-2 flex flex-col gap-14">
+    <div
+      class="max-w-[34ch] text-[clamp(20px,2vw,28px)] leading-[1.35] tracking-[-.015em]"
+    >
+      <PortableText value={section.body} />
+    </div>
+    {
+      section.columns && section.columns.length > 0 && (
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-10 text-sm">
+          {section.columns.map((column) => (
+            <div class="flex flex-col gap-3.5">
+              <span class="label">{column.label}</span>
+              {(column.source === "experience"
+                ? section.companies
+                : (column.items ?? [])
+              ).map((item) => (
+                <span class="border-b border-line-soft pb-3">{item}</span>
+              ))}
+              {column.link && (
+                <SmartLink
+                  link={column.link}
+                  resumeUrl={resumeUrl}
+                  icon="auto"
+                  class="font-medium text-accent"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

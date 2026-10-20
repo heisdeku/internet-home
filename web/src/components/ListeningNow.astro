@@ -1,0 +1,98 @@
+---
+
+---
+
+<a
+  data-listening-now
+  href="https://open.spotify.com/"
+  target="_blank"
+  rel="noopener"
+  class="hidden data-[playing]:grid fixed bottom-[clamp(12px,2vw,24px)] left-[clamp(12px,2vw,24px)] z-20 w-[min(300px,calc(100vw-24px))] grid-cols-[52px_minmax(0,1fr)] gap-3 rounded-lg bg-ink p-2.5 text-paper shadow-[0_10px_30px_rgba(0,0,0,.18)] hover:text-paper"
+>
+  <img data-art alt="" class="size-[52px] rounded bg-[#232321] object-cover" />
+  <div class="flex min-w-0 flex-col justify-center gap-1.5">
+    <div
+      class="flex items-center gap-2 font-mono text-[10px] tracking-[.06em] text-mist uppercase"
+    >
+      <span class="flex h-2.5 items-end gap-0.5" aria-hidden="true">
+        <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq"
+        ></span>
+        <span
+          class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.2s]"
+        ></span>
+        <span
+          class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.4s]"
+        ></span>
+      </span>
+      <span>Listening now</span>
+    </div>
+    <span data-title class="truncate text-[13px] font-medium"></span>
+    <div class="flex items-center gap-2 text-[11px] text-mist">
+      <span data-artist class="flex-1 truncate"></span>
+      <span data-elapsed class="font-mono"></span>
+    </div>
+    <div class="h-0.5 overflow-hidden rounded-sm bg-body">
+      <div data-progress class="h-full bg-accent-light" style="width:0%"></div>
+    </div>
+  </div>
+</a>
+
+<script>
+  import type { NowPlaying } from "@/pages/api/now-playing.json";
+
+  const card = document.querySelector<HTMLAnchorElement>(
+    "[data-listening-now]",
+  );
+
+  if (card) {
+    const art = card.querySelector<HTMLImageElement>("[data-art]")!;
+    const title = card.querySelector("[data-title]")!;
+    const artist = card.querySelector("[data-artist]")!;
+    const elapsed = card.querySelector("[data-elapsed]")!;
+    const progress = card.querySelector<HTMLElement>("[data-progress]")!;
+
+    let track: Extract<NowPlaying, { isPlaying: true }> | null = null;
+    let fetchedAt = 0;
+
+    const mmss = (ms: number) => {
+      const s = Math.floor(ms / 1000);
+      return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    };
+
+    const paint = () => {
+      if (!track) return;
+      const position = Math.min(
+        track.progressMs + (Date.now() - fetchedAt),
+        track.durationMs,
+      );
+      elapsed.textContent = `${mmss(position)} / ${mmss(track.durationMs)}`;
+      progress.style.width = `${(position / track.durationMs) * 100}%`;
+    };
+
+    const poll = async () => {
+      try {
+        const response = await fetch("/api/now-playing.json");
+        const data: NowPlaying = await response.json();
+        if (!data.isPlaying) {
+          track = null;
+          delete card.dataset.playing;
+          return;
+        }
+        track = data;
+        fetchedAt = Date.now();
+        card.href = data.url;
+        art.src = data.albumArt;
+        title.textContent = data.title;
+        artist.textContent = data.artist;
+        paint();
+        card.dataset.playing = "";
+      } catch {
+        delete card.dataset.playing;
+      }
+    };
+
+    poll();
+    setInterval(poll, 30_000);
+    setInterval(paint, 1_000);
+  }
+</script>

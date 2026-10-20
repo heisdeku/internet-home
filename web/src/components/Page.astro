@@ -1,0 +1,90 @@
+---
+import MinimalHeader from "@/components/MinimalHeader.astro";
+import PageBuilder from "@/components/PageBuilder.astro";
+import Base from "@/layouts/Base.astro";
+import Site from "@/layouts/Site.astro";
+import { buildMeta, siteName, siteOrigin } from "@/lib/seo";
+import { breadcrumbNode, siteGraph, webPageNode } from "@/lib/structuredData";
+import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
+import type { OUTREACH_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity/types";
+import { sanityClient } from "sanity:client";
+
+interface Props {
+  page: NonNullable<PAGE_QUERY_RESULT> | NonNullable<OUTREACH_QUERY_RESULT>;
+}
+
+const { page } = Astro.props;
+const sections = page.pageBuilder ?? [];
+
+const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY);
+if (!settings)
+  throw new Error(
+    "Site Settings document is missing. Create it in the Studio.",
+  );
+
+const isOutreach = page._type === "outreach";
+const isHome = !isOutreach && page.slug === "home";
+const path = isOutreach
+  ? `/intro/${page.slug}`
+  : isHome
+    ? "/"
+    : `/${page.slug}`;
+const origin = siteOrigin(settings, Astro.site, Astro.url);
+
+let title = page.title;
+if (isHome) title = `${siteName(settings)} — ${settings.jobTitle}`;
+if (isOutreach && page.company) title = `Hello ${page.company}`;
+
+const meta = buildMeta({
+  settings,
+  origin,
+  path,
+  seo: page.seo,
+  title,
+  og: { kind: isOutreach ? "outreach" : "page", slug: page.slug ?? "home" },
+  noIndex: isOutreach,
+});
+
+const jsonLd = [
+  ...siteGraph(origin, settings),
+  webPageNode({
+    origin,
+    path,
+    name: meta.title,
+    description: meta.description,
+    updatedAt: page._updatedAt,
+  }),
+  ...(isHome || isOutreach
+    ? []
+    : [
+        breadcrumbNode(origin, [
+          { name: "Home", path: "/" },
+          { name: page.title ?? "", path },
+        ]),
+      ]),
+];
+---
+
+{
+  page.chrome === "minimal" ? (
+    <Base
+      meta={meta}
+      jsonLd={jsonLd}
+      theme={page.theme ?? "paper"}
+      recipient={isOutreach ? page.recipient : null}
+    >
+      <div class="flex min-h-screen flex-col">
+        <MinimalHeader settings={settings} />
+        <main class="flex flex-1 flex-col">
+          <PageBuilder sections={sections} settings={settings} />
+        </main>
+      </div>
+    </Base>
+  ) : (
+    <Site meta={meta} jsonLd={jsonLd} settings={settings}>
+      <main>
+        <PageBuilder sections={sections} settings={settings} />
+      </main>
+    </Site>
+  )
+}

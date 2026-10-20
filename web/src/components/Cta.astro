@@ -1,0 +1,39 @@
+---
+import SmartLink from "@/components/SmartLink.astro";
+import type { LinkData } from "@/sanity/links";
+
+interface Props {
+  cta: LinkData;
+  resumeUrl: string | null;
+  tone?: "paper" | "dark" | "accent";
+  class?: string;
+}
+
+const { cta, resumeUrl, tone = "paper", class: className } = Astro.props;
+const variant = cta.variant ?? "default";
+
+const pill =
+  "rounded-full px-5 py-3 text-sm font-medium transition duration-200 active:scale-[.98]";
+const OUTLINE = {
+  paper: "border border-ink hover:border-accent hover:text-accent",
+  dark: "border border-muted hover:border-white hover:text-white",
+  accent: "border border-accent-light hover:border-white hover:text-white",
+};
+const TEXT = {
+  paper: "font-medium text-accent",
+  dark: "font-medium text-paper hover:text-accent-light",
+  accent: "font-medium hover:text-accent-pale",
+};
+const classes = {
+  default: [pill, "bg-accent text-white hover:bg-accent-dark hover:text-white"],
+  secondary: [pill, OUTLINE[tone]],
+  text: [TEXT[tone]],
+}[variant];
+---
+
+<SmartLink
+  link={cta}
+  resumeUrl={resumeUrl}
+  icon={variant === "text" ? "auto" : "none"}
+  class:list={[...classes, className]}
+/>

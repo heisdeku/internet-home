@@ -1,0 +1,23 @@
+---
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+import PortableText from "@/components/portable-text/PortableText.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "richTextSection" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<section
+  data-reveal-stagger
+  class="px-gutter grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-(--tone-line) py-[clamp(64px,8vw,120px)]"
+>
+  <Heading value={section.heading} size="XS" />
+  <div
+    class="col-span-2 flex max-w-[64ch] flex-col gap-6 text-[clamp(17px,1.4vw,20px)] leading-[1.6]"
+  >
+    {section.body && <PortableText value={section.body} />}
+  </div>
+</section>

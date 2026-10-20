@@ -1,0 +1,64 @@
+---
+import SmartLink from '@/components/SmartLink.astro';
+import { resolveHref } from '@/sanity/links';
+import type { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
+
+interface Props {
+  settings: NonNullable<SITE_SETTINGS_QUERY_RESULT>;
+}
+
+const { settings } = Astro.props;
+const { displayName, fullName, resumeUrl } = settings;
+
+// "OLUWAFERANMI" grows into "OLUWAFERANMI ADEDOKUN" on hover when the full name extends the display name.
+const surname =
+  displayName && fullName?.startsWith(displayName) ? fullName.slice(displayName.length).trim() : '';
+
+// The first nav link whose path matches the current page is marked active.
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const pathOf = (href: string | null) => (href ? (href.split('#')[0].replace(/\/$/, '') || '/') : null);
+const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, resumeUrl)) === currentPath)?._key;
+---
+
+<header
+  class="px-gutter sticky top-0 z-10 flex items-center gap-x-8 bg-paper/90 py-4.5 text-[13px] backdrop-blur-[10px]"
+>
+  <a href="/" class="shrink-0 text-sm font-semibold tracking-[.08em] uppercase">
+    {displayName}
+    {surname && <span class="wordmark-more" aria-hidden="true"><span>&nbsp;{surname}</span></span>}
+  </a>
+  <span
+    data-visitor-greeting
+    hidden
+    class="shrink-0 rounded-full bg-accent/10 px-2.5 py-1 font-mono text-[11px] tracking-[.04em] text-accent animate-fade-up"
+  ></span>
+  {
+    settings.availableForWork && (
+      <div class="hidden shrink-0 items-center gap-2 text-muted lg:flex">
+        <span class="size-1.75 rounded-full bg-accent animate-pulse-dot" />
+        <span>Available for work</span>
+      </div>
+    )
+  }
+  <nav class="ml-auto flex flex-wrap gap-x-4.5 gap-y-1.5 whitespace-nowrap sm:flex-nowrap">
+    {
+      settings.navigation?.map((link) => (
+        <SmartLink
+          link={link}
+          resumeUrl={resumeUrl}
+          class:list={['link-underline pb-0.5', link._key === activeKey && 'text-accent']}
+          aria-current={link._key === activeKey ? 'page' : undefined}
+        />
+      ))
+    }
+  </nav>
+  <div class="hidden shrink-0 font-mono text-muted sm:block">
+    {settings.timeZoneLabel}{' '}
+    <time data-local-clock data-time-zone={settings.timeZone}></time>
+  </div>
+</header>
+
+<script>
+  import { startClocks } from '@/scripts/clock';
+  startClocks();
+</script>

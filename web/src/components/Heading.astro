@@ -1,0 +1,52 @@
+---
+interface Props {
+  value:
+    | { text: string | null; type: string | null; fontSize: string | null }
+    | null
+    | undefined;
+  class?: string;
+  size?: Size;
+}
+
+type Size = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "3XL";
+
+const SIZE_CLASS: Record<Size, string> = {
+  XS: "text-[13px] font-medium",
+  S: "text-lg font-medium tracking-[-.01em]",
+  M: "text-[clamp(20px,2vw,28px)] leading-[1.35] font-medium tracking-[-.015em]",
+  L: "text-[26px] leading-[1.2] font-medium tracking-[-.02em]",
+  XL: "text-[clamp(28px,3.6vw,52px)] leading-[1.08] font-medium tracking-[-.025em]",
+  XXL: "text-[clamp(30px,4.6vw,68px)] leading-[1.05] font-medium tracking-[-.03em]",
+  "3XL":
+    "text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em]",
+};
+const DEFAULT_SIZE: Record<string, Size> = {
+  h1: "3XL",
+  h2: "L",
+  h3: "M",
+  h4: "S",
+  p: "M",
+};
+
+const { value, class: className, size } = Astro.props;
+const Tag = (value?.type ?? "h2") as "h1" | "h2" | "h3" | "h4" | "p";
+const resolvedSize =
+  (value?.fontSize as Size | null) ?? size ?? DEFAULT_SIZE[Tag];
+
+const html = (value?.text ?? "")
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/&lt;span&gt;/g, '<span class="text-highlight">')
+  .replace(/&lt;\/span&gt;/g, "</span>")
+  .replace(/&lt;br\s*\/?&gt;/g, "<br />");
+---
+
+{
+  value?.text && (
+    <Tag
+      class:list={["text-pretty", SIZE_CLASS[resolvedSize], className]}
+      set:html={html}
+    />
+  )
+}

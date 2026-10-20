@@ -1,0 +1,38 @@
+---
+import Cta from "@/components/Cta.astro";
+import Heading from "@/components/Heading.astro";
+import type { Section } from "@/components/PageBuilder.astro";
+import PortableText from "@/components/portable-text/PortableText.astro";
+
+interface Props {
+  section: Extract<Section, { _type: "pageHeading" }>;
+  resumeUrl: string | null;
+}
+
+const { section, resumeUrl } = Astro.props;
+const aside =
+  (section.description && section.description.length > 0) || section.cta;
+---
+
+<section
+  data-reveal-stagger
+  class:list={[
+    "px-gutter pt-[clamp(56px,9vw,128px)] pb-[clamp(48px,6vw,88px)]",
+    aside &&
+      "grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-end gap-10",
+  ]}
+>
+  <Heading value={section.heading} size="3XL" />
+  {
+    aside && (
+      <div class="flex flex-col items-start gap-5">
+        {section.description && section.description.length > 0 && (
+          <div class="max-w-[34ch] text-[clamp(18px,1.6vw,22px)] leading-[1.4] text-body">
+            <PortableText value={section.description} />
+          </div>
+        )}
+        {section.cta && <Cta cta={section.cta} resumeUrl={resumeUrl} />}
+      </div>
+    )
+  }
+</section>

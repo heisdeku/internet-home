@@ -1,0 +1,78 @@
+---
+import '@/styles/global.css';
+import JsonLd from '@/components/JsonLd.astro';
+import type { PageMeta } from '@/lib/seo';
+import type { JsonLdNode } from '@/lib/structuredData';
+
+interface Props {
+	meta: PageMeta;
+	jsonLd: JsonLdNode[];
+	theme?: 'paper' | 'accent';
+	/** Set on intro pages: the visitor is greeted by this name site-wide for the session. */
+	recipient?: string | null;
+}
+
+const { meta, jsonLd, theme = 'paper', recipient } = Astro.props;
+const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content={background} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+
+		<title>{meta.title}</title>
+		{meta.description && <meta name="description" content={meta.description} />}
+		{meta.keywords && <meta name="keywords" content={meta.keywords} />}
+		<link rel="canonical" href={meta.canonical} />
+		<meta name="robots" content={meta.robots} />
+
+		<meta property="og:site_name" content={meta.siteName} />
+		<meta property="og:type" content={meta.ogType} />
+		<meta property="og:title" content={meta.title} />
+		{meta.description && <meta property="og:description" content={meta.description} />}
+		<meta property="og:url" content={meta.canonical} />
+		<meta property="og:image" content={meta.ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content="en_US" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={meta.title} />
+		{meta.description && <meta name="twitter:description" content={meta.description} />}
+		<meta name="twitter:image" content={meta.ogImage} />
+
+		<JsonLd graph={jsonLd} override={meta.jsonLdOverride} />
+		<script is:inline>document.documentElement.classList.add('js');</script>
+	</head>
+	<body
+		data-recipient={recipient || undefined}
+		class:list={[
+			theme === 'accent'
+				? 'bg-accent text-white [--highlight:var(--color-accent-pale)] [--tone-muted:var(--color-accent-pale)] [--tone-line:var(--color-accent-light)]'
+				: '[--tone-muted:var(--color-muted)] [--tone-line:var(--color-line)]',
+		]}
+	>
+		<slot />
+		<script>
+			import { startGreeting } from '@/scripts/greeting';
+			import { startImageFades } from '@/scripts/images';
+			import { startLenis } from '@/scripts/lenis';
+			import { startReveal } from '@/scripts/reveal';
+
+			startLenis();
+			startReveal();
+			startImageFades();
+			startGreeting();
+		</script>
+	</body>
+</html>
