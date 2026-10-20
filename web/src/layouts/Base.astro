@@ -14,6 +14,7 @@ interface Props {
 
 const { meta, jsonLd, theme = 'paper', recipient } = Astro.props;
 const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
 
 <html lang="en">
@@ -53,6 +54,21 @@ const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
 
 		<JsonLd graph={jsonLd} override={meta.jsonLdOverride} />
 		<script is:inline>document.documentElement.classList.add('js');</script>
+		{
+			gaId && (
+				<>
+					<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+					<script is:inline define:vars={{ gaId }}>
+						window.dataLayer = window.dataLayer || [];
+						function gtag() {
+							dataLayer.push(arguments);
+						}
+						gtag('js', new Date());
+						gtag('config', gaId);
+					</script>
+				</>
+			)
+		}
 	</head>
 	<body
 		data-recipient={recipient || undefined}
