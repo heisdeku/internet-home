@@ -9,15 +9,19 @@
     "dev": "npx run-p --print-label dev:*",
     "dev:web": "npm run dev --workspace=web",
     "dev:studio": "npm run dev --workspace=studio",
-    "build": "npm run build --workspace=web && rm -rf .vercel/output && mkdir -p .vercel && mv web/.vercel/output .vercel/output",
+    "build": "npm run build --workspace=web",
     "typegen": "npm run typegen --workspace=studio",
     "seed": "npm run seed --workspace=studio",
-    "schema:deploy": "npm run schema:deploy --workspace=studio"
+    "schema:deploy": "npm run schema:deploy --workspace=studio",
+    "start": "node web/dist/server/entry.mjs"
   },
   "devDependencies": {
     "npm-run-all2": "^5.0.2"
   },
   "dependencies": {
     "@sanity/client": "^8.10.0"
+  },
+  "engines": {
+    "node": ">=22.22.0"
   }
 }

@@ -78,4 +78,4 @@ To wire it up: create an app at developer.spotify.com, authorise it once with th
 
 ## Deploy
 
-The site uses `@astrojs/vercel`. The Vercel project builds from the repository root with `npm run build`, which builds `web` and moves its Build Output to `.vercel/output` where Vercel expects it. Add the `PUBLIC_*` and `SPOTIFY_*` env vars in the Vercel project. Deploy the Studio with `npm run deploy --workspace=studio`.
+The site is hosted on Brimble as a Node web service, configured by `brimble.toml` at the repo root: `npm ci` and `npm run build` from the root (the workspaces share one lockfile), then `npm start`, which runs the standalone Node server from `@astrojs/node`. That server serves the prerendered pages and runs the share-image and Spotify routes on demand. Public env vars are in `brimble.toml`; add the `SPOTIFY_*` secrets in the Brimble dashboard. Deploy the Studio with `npm run deploy --workspace=studio`.

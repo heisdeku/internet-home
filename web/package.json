@@ -12,8 +12,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^11.1.9",
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^11.0.16",
     "@fontsource/geist": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
     "@sanity/astro": "^3.5.1",

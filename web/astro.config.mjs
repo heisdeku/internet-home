@@ -1,6 +1,6 @@
 // @ts-check
 import sanity from '@sanity/astro';
-import vercel from '@astrojs/vercel';
+import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
@@ -15,7 +15,8 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, PUBLIC_SITE_URL } = loa
 
 export default defineConfig({
 	site: PUBLIC_SITE_URL || 'https://feranmiadedokun.com',
-	adapter: vercel(),
+	// Standalone Node server: Brimble runs `node web/dist/server/entry.mjs` and passes PORT.
+	adapter: node({ mode: 'standalone' }),
 	integrations: [
 		sanity({
 			projectId: PUBLIC_SANITY_PROJECT_ID,

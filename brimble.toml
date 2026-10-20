@@ -1,0 +1,27 @@
+#:schema https://brimble.io/schema/brimble.json
+
+# The Astro site runs as a Node web service so the share-image and Spotify
+# routes work. Builds run from the repo root because studio/ and web/ are npm
+# workspaces that share one lockfile.
+
+[services.web]
+type = "web"
+
+[services.web.build]
+install = "npm ci"
+command = "npm run build"
+runtime = { node = "24" }
+cache = true
+
+[services.web.deploy]
+start = "npm start"
+health = "/"
+
+[services.web.env]
+NODE_ENV = "production"
+# The Node adapter binds to localhost unless told otherwise; Brimble needs 0.0.0.0.
+HOST = "0.0.0.0"
+PUBLIC_SANITY_PROJECT_ID = "1dyyk69c"
+PUBLIC_SANITY_DATASET = "production"
+PUBLIC_SITE_URL = "https://feranmiadedokun.com"
+PUBLIC_GA_MEASUREMENT_ID = "G-KLRE9PW7VY"
