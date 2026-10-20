@@ -84,19 +84,54 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
               <Minus class="hidden size-4 group-open:block" />
             </span>
           </summary>
-          <div class:list={[columns, "gap-y-8 pb-8 text-[15px] leading-[1.55]"]}>
-            <div class="flex flex-col gap-6 max-md:col-span-2">
+          <!--
+            Facts sit under the company name; the roles and their highlights get the
+            wide side under Role, so an entry with six bullets and one with none both read well.
+          -->
+          <div class:list={[columns, "gap-y-6 pb-8 text-[15px] leading-[1.55]"]}>
+            <dl class="flex flex-col gap-4 max-md:order-last max-md:col-span-2">
+              {job.location && (
+                <div class="flex flex-col gap-1">
+                  <dt class="label">Location</dt>
+                  <dd>{job.location}</dd>
+                </div>
+              )}
+              {job.stack && (
+                <div class="flex flex-col gap-1">
+                  <dt class="label">Stack</dt>
+                  <dd>{job.stack}</dd>
+                </div>
+              )}
+              {job.url && (
+                <div class="flex flex-col gap-1">
+                  <dt class="label">Website</dt>
+                  <dd>
+                    <a
+                      href={job.url}
+                      target="_blank"
+                      rel="noopener"
+                      class="group inline-flex items-center gap-1.5 font-medium text-accent"
+                    >
+                      {host(job.url)}
+                      <ArrowUpRight class="icon-inline" style="--icon-nudge:translate(3px,-3px)" />
+                    </a>
+                  </dd>
+                </div>
+              )}
+            </dl>
+            <div class="flex max-w-[64ch] flex-col gap-7 max-md:col-span-2 md:col-span-3">
               {roles.map((role) => (
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-3">
+                  {/* A single role already has its title in the row above; only its type is new information. */}
                   <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span class="font-medium">{role.title}</span>
+                    {roles.length > 1 && <span class="font-medium">{role.title}</span>}
                     <span class="font-mono text-xs text-faint">
-                      {EMPLOYMENT[role.employmentType] ?? role.employmentType} ·{" "}
-                      {formatDate(role.startDate)} — {formatDate(role.endDate)}
+                      {EMPLOYMENT[role.employmentType] ?? role.employmentType}
+                      {roles.length > 1 && ` · ${formatDate(role.startDate)} — ${formatDate(role.endDate)}`}
                     </span>
                   </div>
                   {role.highlights && role.highlights.length > 0 && (
-                    <ul class="flex max-w-[60ch] flex-col gap-1.5 text-body">
+                    <ul class="flex flex-col gap-2 text-body">
                       {role.highlights.map((line) => (
                         <li class="flex gap-2.5 text-pretty">
                           <Sparkle class="mt-[3px] size-4 shrink-0 text-accent" aria-hidden="true" />
@@ -107,34 +142,6 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
                   )}
                 </div>
               ))}
-            </div>
-            <div class="flex flex-col items-start gap-2.5 max-md:col-span-2 md:col-span-3">
-              {job.location && (
-                <>
-                  <span class="label">Location</span>
-                  <span>{job.location}</span>
-                </>
-              )}
-              {job.stack && (
-                <>
-                  <span class="label">Stack</span>
-                  <span>{job.stack}</span>
-                </>
-              )}
-              {job.url && (
-                <a
-                  href={job.url}
-                  target="_blank"
-                  rel="noopener"
-                  class="group inline-flex items-center gap-1.5 font-medium text-accent"
-                >
-                  {host(job.url)}{" "}
-                  <ArrowUpRight
-                    class="icon-inline"
-                    style="--icon-nudge:translate(3px,-3px)"
-                  />
-                </a>
-              )}
             </div>
           </div>
         </details>
