@@ -105,4 +105,4 @@ The site is hosted on Brimble as a Node web service, configured by `brimble.toml
 - Images render as WebP with width descriptors and a `sizes` hint; heroes carry `fetchpriority="high"` and the Sanity CDN is preconnected.
 - Dates format in UTC so builds anywhere print the same month. Scroll offsets follow the real header height (`--header-h`).
 - Filters and the grid/index view on works sections are kept in the URL (`?category=`, `?view=`).
-- Audit with Lighthouse against a production build (`bun run build && HOST=127.0.0.1 PORT=4999 node web/dist/server/entry.mjs`), and axe-core in the browser; both were clean at the last check.
+- **Gate**: `bun run a11y` runs axe-core (WCAG 2.x A/AA and best practices) against every page type of a running build, including `/intro`, the one page on the blue theme, and fails on any violation. `.github/workflows/a11y.yml` runs it on every push and pull request that touches `web/`. Locally: `bun run build`, serve with `HOST=127.0.0.1 PORT=4999 node web/dist/server/entry.mjs`, then `bun run a11y` (or point `A11Y_BASE_URL` at the dev server). Lighthouse on the same build was clean at the last check.

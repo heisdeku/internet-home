@@ -1,0 +1,56 @@
+name: Accessibility check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'bun.lock'
+      - '.github/workflows/a11y.yml'
+  pull_request:
+    paths:
+      - 'web/**'
+      - 'bun.lock'
+      - '.github/workflows/a11y.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: a11y-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  axe:
+    name: axe-core on every page type
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_SANITY_PROJECT_ID: 1dyyk69c
+      PUBLIC_SANITY_DATASET: production
+      PUBLIC_SITE_URL: https://feranmiadedokun.com
+      HOST: 127.0.0.1
+      PORT: '4999'
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Chromium for Playwright
+        run: cd web && bunx playwright install --with-deps chromium
+
+      - name: Build the site
+        run: bun run build
+
+      - name: Serve the build
+        run: |
+          node web/dist/server/entry.mjs &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:4999/ > /dev/null && break; sleep 1; done
+
+      - name: Run axe on every page type
+        run: bun run a11y
