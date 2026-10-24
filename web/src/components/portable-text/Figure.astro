@@ -3,24 +3,22 @@ import SanityImage from "@/components/SanityImage.astro";
 import type { SanityImageSource } from "@/sanity/image";
 import type { TypedObjectProps } from "astro-portabletext/types";
 
-type Props = TypedObjectProps & {
-  node: SanityImageSource & { alt?: string; caption?: string };
+export type FigureImage = SanityImageSource & {
+  alt?: string;
+  caption?: string;
+  lqip?: string | null;
+  aspectRatio?: number | null;
 };
 
+type Props = TypedObjectProps & { node: FigureImage };
+
 const { node } = Astro.props;
+// Rendered at the asset's own proportions so tall phone screens are not cropped to a landscape box.
+const WIDTH = 1600;
+const height = Math.round(WIDTH / (node.aspectRatio ?? 16 / 9));
 ---
 
 <figure class="my-2 flex flex-col gap-2.5">
-  <SanityImage
-    image={node}
-    placeholder="image"
-    width={1520}
-    height={855}
-    class="aspect-video w-full"
-  />
-  {
-    node.caption && (
-      <figcaption class="text-[13px] text-muted">{node.caption}</figcaption>
-    )
-  }
+  <SanityImage image={node} placeholder="image" width={WIDTH} height={height} class="w-full" />
+  {node.caption && <figcaption class="font-mono text-[11px] tracking-[.04em] text-faint uppercase">{node.caption}</figcaption>}
 </figure>

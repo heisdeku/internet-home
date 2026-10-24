@@ -14,11 +14,20 @@ interface Props {
 	height: number;
 	class?: string;
 	loading?: 'lazy' | 'eager';
+	fetchpriority?: 'high' | 'low' | 'auto';
+	/** How wide the image renders, for the browser to pick a candidate. Defaults to the full viewport. */
+	sizes?: string;
 	dark?: boolean;
 }
 
-const { image, placeholder, width, height, class: className, loading = 'lazy', dark = false } = Astro.props;
+const { image, placeholder, width, height, class: className, loading = 'lazy', fetchpriority, sizes = '100vw', dark = false } = Astro.props;
 const hasAsset = image != null && 'asset' in image && image.asset != null;
+// Candidates up to twice the requested width, so a 420px card never downloads a 2240px file on a phone.
+const CANDIDATES = [480, 720, 960, 1200, 1440, 1920, 2400];
+const ratio = height / width;
+const widths = CANDIDATES.filter((w) => w <= width * 2);
+if (!widths.includes(width)) widths.push(width);
+const src = (w: number) => (hasAsset ? urlFor(image).width(w).height(Math.round(w * ratio)).fit('crop').url() : '');
 ---
 
 {
@@ -28,12 +37,14 @@ const hasAsset = image != null && 'asset' in image && image.asset != null;
 			style={image.lqip ? `background-image:url(${image.lqip})` : undefined}
 		>
 			<img
-				src={urlFor(image).width(width).height(height).fit('crop').url()}
-				srcset={`${urlFor(image).width(width).height(height).fit('crop').url()} 1x, ${urlFor(image).width(width * 2).height(height * 2).fit('crop').url()} 2x`}
+				src={src(width)}
+				srcset={widths.sort((a, b) => a - b).map((w) => `${src(w)} ${w}w`).join(', ')}
+				sizes={sizes}
 				alt={image.alt ?? ''}
 				width={width}
 				height={height}
 				loading={loading}
+				fetchpriority={fetchpriority}
 				decoding="async"
 				data-fade-in
 				class="object-cover"

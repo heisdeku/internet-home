@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import JsonLd from '@/components/JsonLd.astro';
+import { ClientRouter } from 'astro:transitions';
 import type { PageMeta } from '@/lib/seo';
 import type { JsonLdNode } from '@/lib/structuredData';
 
@@ -28,6 +29,7 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+		<ClientRouter />
 		<meta name="theme-color" content={background} />
 		{
 			portraitUrl ? (
@@ -40,6 +42,7 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 			)
 		}
+		<link rel="preconnect" href="https://cdn.sanity.io" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -108,15 +111,24 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 	>
 		<slot />
 		<script>
+			import { trackPageViews } from '@/scripts/analytics';
 			import { startGreeting } from '@/scripts/greeting';
 			import { startImageFades } from '@/scripts/images';
 			import { startLenis } from '@/scripts/lenis';
 			import { startReveal } from '@/scripts/reveal';
+			import { startRotate } from '@/scripts/rotate';
+			import { startSplit } from '@/scripts/split';
 
-			startLenis();
-			startReveal();
-			startImageFades();
-			startGreeting();
+			// Runs on the first load and after every client-side navigation.
+			document.addEventListener('astro:page-load', () => {
+				startLenis();
+				startReveal();
+				startSplit();
+				startRotate();
+				startImageFades();
+				startGreeting();
+			});
+			trackPageViews();
 		</script>
 	</body>
 </html>

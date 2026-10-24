@@ -16,6 +16,7 @@ const experience = section.entries ?? [];
 const monthYear = new Intl.DateTimeFormat("en", {
   month: "short",
   year: "numeric",
+  timeZone: "UTC",
 });
 
 const formatDate = (date: string | null) =>

@@ -10,8 +10,8 @@ import { STATUS_LABEL } from '@/lib/productStatus';
 
 export async function getStaticPaths() {
 	const { sanityClient } = await import('sanity:client');
-	const { PRODUCTS_QUERY } = await import('@/sanity/queries');
-	const products = await sanityClient.fetch(PRODUCTS_QUERY);
+	const { PRODUCT_SLUGS_QUERY } = await import('@/sanity/queries');
+	const products = await sanityClient.fetch(PRODUCT_SLUGS_QUERY);
 	return products.map(({ slug }) => ({ params: { slug } }));
 }
 
@@ -32,11 +32,11 @@ const jsonLd = [
 	breadcrumbNode(origin, [{ name: 'Home', path: '/' }, { name: 'Products', path: '/products' }, { name: product.name ?? '', path }]),
 ];
 
-const year = new Intl.DateTimeFormat('en', { year: 'numeric' });
+const year = new Intl.DateTimeFormat('en', { year: 'numeric', timeZone: 'UTC' });
 ---
 
 <Site meta={meta} jsonLd={jsonLd} settings={settings}>
-	<main class="px-gutter">
+	<main id="main" class="px-gutter">
 		<section
 			data-reveal-stagger
 			class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-end gap-10 pt-[clamp(56px,9vw,128px)] pb-[clamp(40px,5vw,64px)]"
@@ -69,6 +69,8 @@ const year = new Intl.DateTimeFormat('en', { year: 'numeric' });
 				width={1600}
 				height={900}
 				loading="eager"
+			fetchpriority="high"
+			sizes="100vw"
 				dark
 				class="aspect-video w-full"
 			/>

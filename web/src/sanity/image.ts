@@ -5,4 +5,5 @@ export type { SanityImageSource };
 
 const builder = createImageUrlBuilder(sanityClient);
 
-export const urlFor = (source: SanityImageSource) => builder.image(source).auto('format');
+// Every image is delivered as WebP; the share-image route builds its own PNG URLs.
+export const urlFor = (source: SanityImageSource) => builder.image(source).format('webp');

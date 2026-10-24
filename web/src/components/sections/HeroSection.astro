@@ -1,12 +1,26 @@
 ---
 import Heading from "@/components/Heading.astro";
 import type { Section } from "@/components/PageBuilder.astro";
+import Earth from "reicon-astro/icons/Earth.astro";
+import Globe from "reicon-astro/icons/Globe.astro";
+import Location from "reicon-astro/icons/Location.astro";
+import Map from "reicon-astro/icons/Map.astro";
 
 interface Props {
   section: Extract<Section, { _type: "heroSection" }>;
 }
 
 const { section } = Astro.props;
+
+// Meta lines may carry inline icons as [icon:Name] tokens, e.g. "[icon:Map] Based in Lagos, working [icon:Globe] worldwide".
+const ICONS = { Map, Globe, Earth, Location } as const;
+type IconName = keyof typeof ICONS;
+const parts = (line: string) =>
+  line.split(/(\[icon:[A-Za-z]+\])/).filter(Boolean).map((part) => {
+    const match = /^\[icon:([A-Za-z]+)\]$/.exec(part);
+    const Icon = match && match[1] in ICONS ? ICONS[match[1] as IconName] : null;
+    return { Icon, text: part };
+  });
 ---
 
 <section
@@ -16,11 +30,13 @@ const { section } = Astro.props;
   <div class="flex flex-col gap-1.5 text-[13px] text-muted">
     {
       section.meta?.map((line, i) => (
-        <span class:list={[i === 0 && "font-mono tracking-[.06em] uppercase"]}>
-          {line}
+        <span class:list={["inline-flex flex-wrap items-center gap-x-1.5", i === 0 && (section.meta?.length ?? 0) > 1 && "font-mono tracking-[.06em] uppercase"]}>
+          {parts(line).map(({ Icon, text }) =>
+            Icon ? <Icon class="size-3.5 shrink-0 text-accent" aria-hidden="true" /> : <span>{text}</span>,
+          )}
         </span>
       ))
     }
   </div>
-  <Heading value={section.heading} size="XL" class="col-span-2 max-w-[18ch]" />
+  <Heading value={section.heading} size="XL" class="col-span-2 max-w-[32ch]" />
 </section>

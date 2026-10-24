@@ -1,7 +1,8 @@
 export function startClocks() {
   for (const clock of document.querySelectorAll<HTMLElement>(
-    "[data-local-clock]",
+    "[data-local-clock]:not([data-ticking])",
   )) {
+    clock.dataset.ticking = "";
     const timeZone = clock.dataset.timeZone;
     const tick = () => {
       clock.textContent = new Date().toLocaleTimeString("en-GB", {

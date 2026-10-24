@@ -29,36 +29,46 @@ const { resumeUrl, email } = settings;
 ---
 
 {
-  sections.map((section) => {
-    switch (section._type) {
-      case "heroSection":
-        return <HeroSection section={section} />;
-      case "pageHeading":
-        return <PageHeading section={section} resumeUrl={resumeUrl} />;
-      case "worksSection":
-        return <WorksSection section={section} />;
-      case "productsSection":
-        return <ProductsSection section={section} />;
-      case "writingSection":
-        return <WritingSection section={section} resumeUrl={resumeUrl} />;
-      case "infoSection":
-        return <InfoSection section={section} resumeUrl={resumeUrl} />;
-      case "experienceSection":
-        return <ExperienceSection section={section} />;
-      case "introSection":
-        return <IntroSection section={section} />;
-      case "listColumnsSection":
-        return <ListColumnsSection section={section} resumeUrl={resumeUrl} />;
-      case "contactSection":
-        return (
-          <ContactSection
-            section={section}
-            email={email}
-            resumeUrl={resumeUrl}
-          />
-        );
-      case "richTextSection":
-        return <RichTextSection section={section} />;
-    }
-  })
+  sections.map((section) => (
+    <div
+      class:list={[
+        "contents",
+        section.hideOnMobile && "max-md:hidden",
+        section.hideOnDesktop && "md:hidden",
+      ]}
+    >
+      {(() => {
+        switch (section._type) {
+          case "heroSection":
+            return <HeroSection section={section} />;
+          case "pageHeading":
+            return <PageHeading section={section} resumeUrl={resumeUrl} />;
+          case "worksSection":
+            return <WorksSection section={section} resumeUrl={resumeUrl} />;
+          case "productsSection":
+            return <ProductsSection section={section} />;
+          case "writingSection":
+            return <WritingSection section={section} resumeUrl={resumeUrl} />;
+          case "infoSection":
+            return <InfoSection section={section} resumeUrl={resumeUrl} />;
+          case "experienceSection":
+            return <ExperienceSection section={section} />;
+          case "introSection":
+            return <IntroSection section={section} />;
+          case "listColumnsSection":
+            return <ListColumnsSection section={section} resumeUrl={resumeUrl} />;
+          case "contactSection":
+            return (
+              <ContactSection
+                section={section}
+                email={email}
+                resumeUrl={resumeUrl}
+              />
+            );
+          case "richTextSection":
+            return <RichTextSection section={section} />;
+        }
+      })()}
+    </div>
+  ))
 }

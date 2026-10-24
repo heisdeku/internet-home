@@ -2,6 +2,7 @@
 
 ---
 
+<aside aria-label="Now playing" transition:persist>
 <a
   data-listening-now
   href="https://open.spotify.com/"
@@ -12,7 +13,7 @@
   <img data-art alt="" class="size-[52px] rounded bg-[#232321] object-cover" />
   <div class="flex min-w-0 flex-col justify-center gap-1.5">
     <div
-      class="flex items-center gap-2 font-mono text-[10px] tracking-[.06em] text-mist uppercase"
+      class="flex items-center gap-2 font-mono text-[11px] tracking-[.06em] text-mist uppercase"
     >
       <span class="flex h-2.5 items-end gap-0.5" aria-hidden="true">
         <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq"
@@ -36,15 +37,22 @@
     </div>
   </div>
 </a>
+</aside>
 
 <script>
   import type { NowPlaying } from "@/pages/api/now-playing.json";
 
-  const card = document.querySelector<HTMLAnchorElement>(
-    "[data-listening-now]",
-  );
+  // The card persists across page swaps; the guard keeps one poller per card.
+  document.addEventListener("astro:page-load", () => {
+    const card = document.querySelector<HTMLAnchorElement>(
+      "[data-listening-now]:not([data-ready])",
+    );
+    if (!card) return;
+    card.dataset.ready = "";
+    start(card);
+  });
 
-  if (card) {
+  function start(card: HTMLAnchorElement) {
     const art = card.querySelector<HTMLImageElement>("[data-art]")!;
     const title = card.querySelector("[data-title]")!;
     const artist = card.querySelector("[data-artist]")!;
@@ -69,14 +77,25 @@
       progress.style.width = `${(position / track.durationMs) * 100}%`;
     };
 
+    // Poll again just after the current track should end, so a switch shows within a second
+    // or two; otherwise every 12s while playing and every 30s while idle. Paused tabs wait.
+    const IDLE_MS = 30_000;
+    const PLAYING_MS = 12_000;
+    let timer = 0;
+    const schedule = (ms: number) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(poll, ms);
+    };
+
     const poll = async () => {
+      if (document.hidden) return schedule(IDLE_MS);
       try {
         const response = await fetch("/api/now-playing.json");
         const data: NowPlaying = await response.json();
         if (!data.isPlaying) {
           track = null;
           delete card.dataset.playing;
-          return;
+          return schedule(IDLE_MS);
         }
         track = data;
         fetchedAt = Date.now();
@@ -86,13 +105,18 @@
         artist.textContent = data.artist;
         paint();
         card.dataset.playing = "";
+        const remaining = data.durationMs - data.progressMs;
+        schedule(Math.max(1_500, Math.min(remaining + 1_200, PLAYING_MS)));
       } catch {
         delete card.dataset.playing;
+        schedule(IDLE_MS);
       }
     };
 
     poll();
-    setInterval(poll, 30_000);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) poll();
+    });
     setInterval(paint, 1_000);
   }
 </script>

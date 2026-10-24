@@ -5,9 +5,10 @@ const CONFIRM_MS = 1800;
  * If the clipboard is unavailable or refuses, the click opens the mail client instead.
  */
 export function startCopyEmail() {
-	for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-copy-email]')) {
+	for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-copy-email]:not([data-ready])')) {
+		link.dataset.ready = '';
 		link.addEventListener('click', (event) => {
-			if (!navigator.clipboard?.writeText) return;
+			if (!navigator.clipboard?.writeText || event.metaKey || event.ctrlKey || event.shiftKey) return;
 			event.preventDefault();
 			navigator.clipboard.writeText(link.textContent.trim()).then(
 				() => {

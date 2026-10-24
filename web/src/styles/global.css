@@ -9,7 +9,7 @@
 	--color-ink-soft: #1f1f1e;
 	--color-body: #3a3a37;
 	--color-muted: #5c5c58;
-	--color-faint: #7d7d78;
+	--color-faint: #686863; /* 4.95:1 on paper, so 11px labels pass AA */
 	--color-mist: #a3a39e;
 	--color-paper: #f1f1ef;
 	--color-line: #d7d7d3;
@@ -58,6 +58,29 @@
 	}
 }
 
+/* Small inline links and buttons get a 24px+ hit area without changing the layout. */
+/* Skip link: visible only when focused. */
+.skip-link {
+	position: absolute;
+	left: clamp(20px, 4vw, 48px);
+	top: 12px;
+	z-index: 100;
+	padding: 8px 12px;
+	border-radius: 6px;
+	background: var(--color-ink);
+	color: var(--color-paper);
+	font-size: 13px;
+	transform: translateY(-200%);
+	&:focus-visible {
+		transform: none;
+	}
+}
+
+@utility hit {
+	padding-block: 5px;
+	margin-block: -5px;
+}
+
 @utility px-gutter {
 	padding-inline: clamp(20px, 4vw, 48px);
 }
@@ -79,12 +102,27 @@
 }
 
 @layer base {
+	a,
+	button,
+	summary,
+	[role='button'] {
+		touch-action: manipulation;
+	}
+	/* Code stays untranslated and scrollable from the keyboard. */
+	pre {
+		tab-size: 2;
+	}
 	html {
+		--header-h: 100px;
+		-webkit-tap-highlight-color: transparent;
+		@media (min-width: 48rem) {
+			--header-h: 72px;
+		}
 		-webkit-font-smoothing: antialiased;
 		interpolate-size: allow-keywords;
 	}
 	[id] {
-		scroll-margin-top: 72px;
+		scroll-margin-top: var(--header-h, 72px);
 	}
 	body {
 		background: var(--color-paper);
@@ -108,14 +146,18 @@
 	filter: blur(3px);
 	transform: translateY(6px);
 	transition:
-		opacity 0.55s var(--ease-out-soft),
-		filter 0.55s var(--ease-out-soft),
-		transform 0.55s var(--ease-out-soft);
+		opacity var(--reveal-duration, 0.55s) var(--ease-out-soft),
+		filter var(--reveal-duration, 0.55s) var(--ease-out-soft),
+		transform var(--reveal-duration, 0.55s) var(--ease-out-soft);
 	transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal]:not(.is-revealed),
+.js [data-reveal-stagger]:not(.is-revealed) > * {
 	will-change: opacity, filter, transform;
 }
 .js [data-reveal].is-revealed,
-.js [data-reveal-stagger].is-revealed > * {
+.js [data-reveal-stagger].is-revealed > *:not([data-reveal-stagger]),
+.js [data-reveal-stagger].is-revealed > [data-reveal-stagger] {
 	opacity: 1;
 	filter: blur(0);
 	transform: none;
@@ -155,6 +197,7 @@
 		transition: transform 0.45s var(--ease-out-soft);
 	}
 	&:hover::after,
+	&:focus-visible::after,
 	&[aria-current='page']::after {
 		transform: scaleX(1);
 		transform-origin: left;
@@ -167,7 +210,8 @@
 		transition: transform 0.5s var(--ease-out-soft);
 	}
 	@media (hover: hover) {
-		&:hover > * {
+		&:hover > *,
+		&:focus-visible > * {
 			transform: translateX(12px);
 		}
 	}
@@ -260,4 +304,290 @@ details[open]::details-content {
 	details::details-content {
 		transition: none;
 	}
+}
+
+/* ---------- Fluid layer: split headings, hover media, filters, case studies ---------- */
+
+/* Display headings rise in a word at a time. */
+.js [data-split] .split-word {
+	display: inline-block;
+	opacity: 0;
+	transform: translateY(0.4em);
+	filter: blur(6px);
+	transition:
+		opacity 0.6s ease-out,
+		transform 0.8s var(--ease-out-soft),
+		filter 0.6s ease-out;
+	transition-delay: calc(var(--i, 0) * 45ms);
+}
+.js [data-split].is-split-in .split-word {
+	opacity: 1;
+	transform: none;
+	filter: none;
+}
+
+/* Coming-soon items: listed, labelled, not interactive. */
+.soon-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 3px 8px;
+	border: 1px solid var(--color-line);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--color-paper) 85%, transparent);
+	font-family: var(--font-mono);
+	font-size: 10.5px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-muted);
+	white-space: nowrap;
+}
+.is-soon {
+	cursor: default;
+}
+.is-soon .img-frame {
+	filter: saturate(0.6);
+}
+
+/* Rotating word: drifts up and out, swaps, then rises back in. */
+.rotate-word {
+	display: inline-block;
+	white-space: nowrap;
+	transition:
+		transform 0.45s var(--ease-out-soft),
+		opacity 0.3s ease,
+		width 0.5s var(--ease-in-out-soft);
+	&.is-out {
+		opacity: 0;
+		transform: translateY(-0.3em);
+	}
+	&.is-in {
+		opacity: 0;
+		transform: translateY(0.4em);
+		transition: width 0.5s var(--ease-in-out-soft);
+	}
+}
+.rotate-ruler {
+	position: absolute;
+	visibility: hidden;
+	pointer-events: none;
+	white-space: nowrap;
+}
+
+/* Brand link: the name takes the brand colour on hover. Two ways to show the mark:
+   float — a small badge rises above the word (running text, so the line never reflows);
+   slide — the mark grows in beside the name (lists). */
+.brand-link {
+	position: relative;
+	display: inline-flex;
+	align-items: baseline;
+	vertical-align: baseline;
+	color: inherit;
+	transition: color 0.3s ease;
+	&:not([href]) {
+		cursor: default;
+	}
+	& .brand-mark {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
+		& > img,
+		& > svg {
+			height: 1em;
+			width: auto;
+			max-width: 6em;
+			flex: none;
+			object-fit: contain;
+		}
+		& > svg {
+			width: 1em;
+		}
+	}
+	@media (hover: hover) {
+		&:hover,
+		&:focus-visible {
+			color: var(--brand, var(--color-accent));
+		}
+	}
+}
+.brand-link-float .brand-mark {
+	position: absolute;
+	left: 50%;
+	bottom: calc(100% + 0.2em);
+	z-index: 1;
+	padding: 0.3em 0.4em;
+	border: 1px solid var(--color-line);
+	border-radius: 8px;
+	background: #fff;
+	box-shadow: 0 6px 18px rgba(15, 15, 16, 0.1);
+	opacity: 0;
+	transform: translate(-50%, 0.4em) scale(0.85);
+	transition:
+		opacity 0.25s ease,
+		transform 0.4s var(--ease-out-soft);
+	& > img,
+	& > svg {
+		height: 1.25em;
+	}
+	& > svg {
+		width: 1.25em;
+	}
+}
+@media (hover: hover) {
+	.brand-link-float:hover .brand-mark,
+	.brand-link-float:focus-visible .brand-mark {
+		opacity: 1;
+		transform: translate(-50%, 0) scale(1);
+	}
+}
+.brand-link-slide .brand-mark {
+	align-self: center;
+	max-width: 0;
+	height: 1.1em;
+	overflow: hidden;
+	opacity: 0;
+	transform: translateX(-0.25em);
+	transition:
+		max-width 0.4s var(--ease-out-soft),
+		margin 0.35s var(--ease-out-soft),
+		opacity 0.25s ease,
+		transform 0.35s var(--ease-out-soft);
+}
+@media (hover: hover) {
+	.brand-link-slide:hover .brand-mark,
+	.brand-link-slide:focus-visible .brand-mark {
+		max-width: 6em;
+		margin-right: 0.4em;
+		opacity: 1;
+		transform: none;
+	}
+}
+/* Without hover (phones, tablets): marks in running text sit inline before the name, still and
+   unstyled; the list marks are dropped so the columns stay plain. */
+@media (hover: none) {
+	.brand-link-float .brand-mark {
+		position: static;
+		align-self: center;
+		margin-right: 0.3em;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: none;
+		box-shadow: none;
+		opacity: 1;
+		transform: none;
+		transition: none;
+		& > img,
+		& > svg {
+			height: 1em;
+		}
+		& > svg {
+			width: 1em;
+		}
+	}
+	.brand-link-slide .brand-mark {
+		display: none;
+	}
+}
+
+/* Work cards swap to their hover image; the base keeps its gentle scale. */
+.work-media {
+	overflow: hidden;
+	border-radius: 0.25rem;
+}
+.work-hover {
+	opacity: 0;
+	transition: opacity 0.35s ease;
+}
+@media (hover: hover) {
+	.group:hover .work-hover {
+		opacity: 1;
+	}
+}
+@media (hover: none) {
+	.work-hover {
+		display: none;
+	}
+}
+
+/* Category filter chips: quiet pills, the active one filled. */
+.work-filter {
+	cursor: pointer;
+	padding: 6px 11px;
+	border: 1px solid var(--color-line);
+	border-radius: 999px;
+	color: var(--color-muted);
+	transition:
+		color 0.25s ease,
+		background-color 0.25s ease,
+		border-color 0.25s ease;
+	&:hover {
+		color: var(--color-ink);
+		border-color: var(--color-ink);
+	}
+	&[aria-pressed='true'] {
+		color: var(--color-paper);
+		background: var(--color-ink);
+		border-color: var(--color-ink);
+	}
+}
+
+/* Case studies: section headings read as small labels above each passage. */
+.case-body h2 {
+	margin-top: clamp(24px, 4vw, 48px);
+	padding-top: 14px;
+	border-top: 1px solid var(--color-line);
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 400;
+	letter-spacing: 0.08em;
+	line-height: 1.4;
+	text-transform: uppercase;
+	color: var(--color-faint);
+}
+.case-body h2:first-child {
+	margin-top: 0;
+	padding-top: 0;
+	border-top: 0;
+}
+.case-body h3 {
+	margin-top: 8px;
+	font-size: 1.1em;
+}
+.case-body figure {
+	margin-block: clamp(12px, 2vw, 24px);
+}
+.case-body p {
+	max-width: 68ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.rotate-word {
+		transition: none;
+	}
+	.animate-eq,
+	.animate-pulse-dot {
+		animation: none;
+	}
+	.js [data-split] .split-word {
+		opacity: 1;
+		transform: none;
+		filter: none;
+		transition: none;
+	}
+}
+
+/* Safety net: if a script is slow to arrive, hidden content still shows after a beat. */
+@keyframes reveal-fallback {
+	to {
+		opacity: 1;
+		filter: none;
+		transform: none;
+	}
+}
+.js [data-reveal]:not(.is-revealed),
+.js [data-reveal-stagger]:not(.is-revealed) > *,
+.js [data-split]:not(.is-split-in) .split-word,
+.js .img-frame > img[data-fade-in]:not(.is-loaded) {
+	animation: reveal-fallback 0.6s ease-out 1.2s forwards;
 }

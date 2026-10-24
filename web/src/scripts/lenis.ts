@@ -1,11 +1,14 @@
 import Lenis from "lenis";
 
-const HEADER_OFFSET = -72;
+
+let lenis: Lenis | null = null;
 
 export function startLenis() {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (lenis || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    return;
 
-  const lenis = new Lenis({ autoRaf: true, lerp: 0.1 });
+  lenis = new Lenis({ autoRaf: true, lerp: 0.1 });
+  const smooth = lenis;
 
   document.addEventListener("click", (event) => {
     const link = (event.target as Element).closest<HTMLAnchorElement>(
@@ -22,6 +25,7 @@ export function startLenis() {
     if (!target) return;
     event.preventDefault();
     history.pushState(null, "", link.hash);
-    lenis.scrollTo(target, { offset: HEADER_OFFSET });
+    const header = document.querySelector<HTMLElement>("header");
+    smooth.scrollTo(target, { offset: -((header?.offsetHeight ?? 72) + 8) });
   });
 }

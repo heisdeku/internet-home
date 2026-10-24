@@ -16,6 +16,7 @@ const stacked = section.layout === "stack";
 const monthYear = new Intl.DateTimeFormat("en", {
   month: "short",
   year: "numeric",
+  timeZone: "UTC",
 });
 const hasAside = section.heading?.text || section.link;
 ---
@@ -47,16 +48,19 @@ const hasAside = section.heading?.text || section.link;
   }
   <div class:list={["dim-siblings flex flex-col", !stacked && "col-span-2"]}>
     {
-      posts.map((post) => (
-        <a
-          href={`/writing/${post.slug}`}
-          class="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 border-b border-line py-5 row-slide transition-colors duration-300"
+      posts.map((post) => {
+        const Tag = post.comingSoon ? "div" : "a";
+        return (
+        <Tag
+          href={post.comingSoon ? undefined : `/writing/${post.slug}`}
+          class:list={["grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 border-b border-line py-5", !post.comingSoon && "row-slide transition-colors duration-300", post.comingSoon && "is-soon"]}
+          aria-disabled={post.comingSoon ? "true" : undefined}
         >
           <span class="text-[clamp(17px,1.6vw,22px)] font-medium tracking-[-.015em] text-pretty">
             {post.title}
           </span>
           <span class="font-mono text-xs text-faint">
-            {stacked
+            {post.comingSoon ? <span class="soon-badge">Coming soon</span> : stacked
               ? monthYear.format(new Date(post.publishedAt))
               : post.publishedAt.slice(0, 4)}
           </span>
@@ -65,8 +69,9 @@ const hasAside = section.heading?.text || section.link;
               {post.excerpt}
             </span>
           )}
-        </a>
-      ))
+        </Tag>
+        );
+      })
     }
   </div>
 </section>

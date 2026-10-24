@@ -1,7 +1,12 @@
 ---
 import Block from "@/components/portable-text/Block.astro";
 import Code from "@/components/portable-text/Code.astro";
+import Embed from "@/components/portable-text/Embed.astro";
 import Figure from "@/components/portable-text/Figure.astro";
+import ImageGrid from "@/components/portable-text/ImageGrid.astro";
+import List from "@/components/portable-text/List.astro";
+import ListItem from "@/components/portable-text/ListItem.astro";
+import Video from "@/components/portable-text/Video.astro";
 import Mark from "@/components/portable-text/Mark.astro";
 import { PortableText as PortableTextRenderer } from "astro-portabletext";
 import type { TypedObject } from "astro-portabletext/types";
@@ -15,8 +20,13 @@ const { value } = Astro.props;
 const components = {
   block: Block,
   mark: Mark,
+  list: List,
+  listItem: ListItem,
   type: {
     image: Figure,
+    imageGrid: ImageGrid,
+    video: Video,
+    embed: Embed,
     code: Code,
   },
 };

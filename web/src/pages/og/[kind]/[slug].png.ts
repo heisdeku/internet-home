@@ -34,7 +34,7 @@ const fonts = Promise.all([fontFile(400), fontFile(500), fontFile(600)]).then(([
 
 const truncate = (text: string, max: number) => (text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text);
 
-type Card = { eyebrow: string; title: string; description: string | null; wordmark: string; footer: string; portrait: string | null };
+type Card = { eyebrow: string; title: string; description: string | null; wordmark: string; footer: string; portrait: string | null; availability: string | null };
 
 const monthYear = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' });
 
@@ -47,7 +47,7 @@ function titleSize(title: string) {
 // satori takes React-like element objects; this keeps the layout readable without JSX.
 const el = (type: string, style: Record<string, unknown>, children?: unknown) => ({ type, props: { style, children } });
 
-function card({ eyebrow, title, description, wordmark, footer, portrait }: Card) {
+function card({ eyebrow, title, description, wordmark, footer, portrait, availability }: Card) {
 	return el(
 		'div',
 		{
@@ -85,7 +85,7 @@ function card({ eyebrow, title, description, wordmark, footer, portrait }: Card)
 					el('div', {}, footer),
 					el('div', { display: 'flex', alignItems: 'center', gap: 12 }, [
 						el('div', { width: 10, height: 10, borderRadius: 5, background: COLORS.accent }),
-						el('div', {}, 'Available for work'),
+						el('div', {}, availability ?? 'Available for work'),
 					]),
 				],
 			),
@@ -115,6 +115,7 @@ export const GET: APIRoute = async ({ params }) => {
 		wordmark,
 		footer: domain,
 		portrait,
+		availability: settings.availabilityLabel ?? null,
 	};
 	if (doc?.title) {
 		const EYEBROW: Record<string, string> = { page: name, work: 'Selected work', product: 'Product', post: 'Writing', outreach: 'Hello' };
@@ -129,6 +130,7 @@ export const GET: APIRoute = async ({ params }) => {
 			wordmark,
 			footer: `${settings.fullName} · ${settings.jobTitle}`,
 			portrait,
+			availability: settings.availabilityLabel ?? null,
 		};
 	}
 

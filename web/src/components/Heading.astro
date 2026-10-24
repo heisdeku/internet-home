@@ -28,6 +28,9 @@ const DEFAULT_SIZE: Record<string, Size> = {
   p: "M",
 };
 
+// Display sizes rise in word by word; smaller headings simply fade with their section.
+const SPLIT_SIZES = new Set<Size>(["XL", "XXL", "3XL"]);
+
 const { value, class: className, size } = Astro.props;
 const Tag = (value?.type ?? "h2") as "h1" | "h2" | "h3" | "h4" | "p";
 const resolvedSize =
@@ -39,13 +42,20 @@ const html = (value?.text ?? "")
   .replace(/>/g, "&gt;")
   .replace(/&lt;span&gt;/g, '<span class="text-highlight">')
   .replace(/&lt;\/span&gt;/g, "</span>")
-  .replace(/&lt;br\s*\/?&gt;/g, "<br />");
+  .replace(/&lt;br\s*\/?&gt;/g, "<br />")
+  // <rotate>one|two|three</rotate> cycles through its words, each rising in with a fade.
+  // Surrounding brackets travel with the word so a line never breaks between them.
+  .replace(/(\(?)&lt;rotate&gt;(.*?)&lt;\/rotate&gt;(\)?)/g, (_, open: string, words: string, close: string) => {
+    const list = words.split("|").map((word) => word.trim());
+    return `<span class="whitespace-nowrap">${open}<span class="sr-only">${list[0]}</span><span class="rotate-word" data-rotate data-words="${list.join("|")}" aria-hidden="true">${list[0]}</span>${close}</span>`;
+  });
 ---
 
 {
   value?.text && (
     <Tag
       class:list={["text-pretty", SIZE_CLASS[resolvedSize], className]}
+      data-split={SPLIT_SIZES.has(resolvedSize) ? "" : undefined}
       set:html={html}
     />
   )

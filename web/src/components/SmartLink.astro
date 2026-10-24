@@ -20,6 +20,7 @@ interface Props {
 const { link, resumeUrl, class: className, icon = 'none', 'aria-current': ariaCurrent } = Astro.props;
 const href = resolveHref(link, resumeUrl);
 const newTab = opensInNewTab(link);
+const comingSoon = link.type === 'internal' && link.internal?.comingSoon === true;
 
 const ICON_BY_TYPE = {
 	external: { component: ArrowUpRight, nudge: 'translate(3px, -3px)' },
@@ -35,7 +36,7 @@ const trailing =
 	href ? (
 		<a
 			href={href}
-			class:list={[trailing && 'group inline-flex items-center gap-1.5', className]}
+			class:list={['hit', trailing && 'group inline-flex items-center gap-1.5', className]}
 			target={newTab ? '_blank' : undefined}
 			rel={newTab ? 'noopener' : undefined}
 			aria-current={ariaCurrent}
@@ -44,9 +45,9 @@ const trailing =
 			{trailing && <trailing.component class="icon-inline" style={`--icon-nudge:${trailing.nudge}`} />}
 		</a>
 	) : (
-		<span class:list={[trailing && 'inline-flex items-center gap-1.5', className]}>
+		<span class:list={['inline-flex items-center gap-2', comingSoon && 'cursor-default text-muted', className]}>
 			<slot>{link.label}</slot>
-			{trailing && <trailing.component class="icon-inline" />}
+			{comingSoon ? <span class="soon-badge">Coming soon</span> : trailing && <trailing.component class="icon-inline" />}
 		</span>
 	)
 }

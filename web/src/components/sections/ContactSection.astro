@@ -20,7 +20,7 @@ const { section, email, resumeUrl } = Astro.props;
   <Heading value={section.heading} size="XS" class="font-normal text-mist" />
   {
     email && (
-      <CopyEmail email={email} subject={section.emailSubject} class="text-[clamp(30px,5.6vw,88px)]" />
+      <CopyEmail email={email} subject={section.emailSubject} maxSize="88px" />
     )
   }
   {

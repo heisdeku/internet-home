@@ -17,7 +17,7 @@ const { settings } = Astro.props;
 >
 	<div class="flex flex-col gap-5">
 		{settings.footerPrompt && <span class="text-[13px] text-mist">{settings.footerPrompt}</span>}
-		{settings.email && <CopyEmail email={settings.email} class="text-[clamp(28px,6.4vw,104px)]" />}
+		{settings.email && <CopyEmail email={settings.email} />}
 	</div>
 	<!-- Phones: wordmark and year on one row, the links together on the next. From md the links spread across columns. -->
 	<div

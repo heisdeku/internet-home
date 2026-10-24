@@ -10,8 +10,8 @@ import { POST_QUERY, SITE_SETTINGS_QUERY } from '@/sanity/queries';
 
 export async function getStaticPaths() {
 	const { sanityClient } = await import('sanity:client');
-	const { POSTS_QUERY } = await import('@/sanity/queries');
-	const posts = await sanityClient.fetch(POSTS_QUERY);
+	const { POST_SLUGS_QUERY } = await import('@/sanity/queries');
+	const posts = await sanityClient.fetch(POST_SLUGS_QUERY);
 	
 	return posts.map((post, i) => ({
 		params: { slug: post.slug },
@@ -39,16 +39,16 @@ const jsonLd = [
 	breadcrumbNode(origin, [{ name: 'Home', path: '/' }, { name: 'Writing', path: '/writing' }, { name: post.title ?? '', path }]),
 ];
 
-const date = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(new Date(post.publishedAt));
+const date = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(post.publishedAt));
 ---
 
 <Site meta={meta} jsonLd={jsonLd} settings={settings}>
-	<article class="px-gutter flex flex-col items-center pt-[clamp(56px,9vw,128px)] pb-[clamp(64px,8vw,120px)]">
+	<main id="main" class="px-gutter flex flex-col items-center pt-[clamp(56px,9vw,128px)] pb-[clamp(64px,8vw,120px)]">
 		<header data-reveal-stagger class="flex w-full max-w-190 flex-col gap-6 border-b border-line pb-10">
-			<div class="flex flex-wrap gap-3 text-[13px] text-muted">
-				<a href="/#writing" class="text-muted">Writing</a><span>/</span>
+			<nav aria-label="Breadcrumb" class="flex flex-wrap gap-3 text-[13px] text-muted">
+				<a href="/writing" class="hit text-muted">Writing</a><span aria-hidden="true">/</span>
 				<span class="font-mono">{date}{post.readingTime && ` · ${post.readingTime} min read`}</span>
-			</div>
+			</nav>
 			<h1 class="text-[clamp(34px,5vw,64px)] leading-[1.02] font-medium tracking-[-.035em] text-balance">{post.title}</h1>
 			<p class="text-[clamp(18px,1.6vw,21px)] leading-[1.45] text-body text-pretty">{post.excerpt}</p>
 			{
@@ -94,5 +94,5 @@ const date = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).
 				</nav>
 			)
 		}
-	</article>
+	</main>
 </Site>

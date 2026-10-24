@@ -8,8 +8,9 @@ const STAGGER_MS = 70;
 export function startReveal() {
 	const groups = document.querySelectorAll<HTMLElement>('[data-reveal-stagger]');
 	for (const group of groups) {
+		const step = Number(group.dataset.revealStep) || STAGGER_MS;
 		Array.from(group.children).forEach((child, i) => {
-			(child as HTMLElement).style.setProperty('--reveal-delay', `${i * STAGGER_MS}ms`);
+			(child as HTMLElement).style.setProperty('--reveal-delay', `${i * step}ms`);
 		});
 	}
 

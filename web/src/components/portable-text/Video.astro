@@ -1,0 +1,91 @@
+---
+import Play from "reicon-astro/icons/Play.astro";
+import { urlFor } from "@/sanity/image";
+import type { TypedObjectProps } from "astro-portabletext/types";
+
+/**
+ * A video from an upload or a direct URL. Autoplay clips run muted and
+ * looping; otherwise a poster with a play button waits for the visitor.
+ */
+type Props = TypedObjectProps & {
+  node: {
+    url: string | null;
+    poster?: { asset: { _ref: string } | null } | null;
+    aspectRatio?: string | null;
+    caption?: string;
+    autoplay?: boolean;
+  };
+};
+
+const { node } = Astro.props;
+const poster = node.poster?.asset ? urlFor(node.poster).width(1600).url() : undefined;
+const autoplay = node.autoplay !== false;
+---
+
+{
+  node.url && (
+    <figure class="my-2 flex flex-col gap-2.5">
+      <div
+        class="media-video group relative overflow-hidden rounded bg-tile"
+        style={`aspect-ratio:${node.aspectRatio ?? "16/9"}`}
+        data-video={autoplay ? undefined : ""}
+        data-autoplay={autoplay ? "" : undefined}
+      >
+        <video
+          src={node.url}
+          poster={poster}
+          class="block size-full object-cover"
+          playsinline
+          preload={autoplay ? "auto" : "metadata"}
+          muted={autoplay}
+          loop={autoplay}
+          autoplay={autoplay}
+          controls={!autoplay}
+        />
+        {!autoplay && (
+          <button
+            type="button"
+            data-video-play
+            class="absolute inset-0 flex items-center justify-center bg-ink/20 text-paper transition-opacity duration-300 hover:bg-ink/30"
+            aria-label="Play video"
+          >
+            <span class="flex size-16 items-center justify-center rounded-full bg-ink/80 backdrop-blur-sm">
+              <Play class="size-6 translate-x-0.5" aria-hidden="true" />
+            </span>
+          </button>
+        )}
+      </div>
+      {node.caption && <figcaption class="font-mono text-[11px] tracking-[.04em] text-faint uppercase">{node.caption}</figcaption>}
+    </figure>
+  )
+}
+
+<style>
+  .media-video[data-video][data-playing] [data-video-play] {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // The overlay starts playback; the native controls take over from there.
+  document.addEventListener("astro:page-load", () => {
+    // Under reduced motion a looping clip waits for the visitor instead of playing itself.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      for (const box of document.querySelectorAll<HTMLElement>(".media-video[data-autoplay]:not([data-ready])")) {
+        const video = box.querySelector("video")!;
+        video.pause();
+        video.removeAttribute("autoplay");
+        video.loop = false;
+        video.controls = true;
+      }
+    }
+    for (const box of document.querySelectorAll<HTMLElement>(".media-video[data-video]:not([data-ready])")) {
+      box.dataset.ready = "";
+      const video = box.querySelector("video")!;
+      box.querySelector("[data-video-play]")?.addEventListener("click", () => video.play());
+      video.addEventListener("play", () => (box.dataset.playing = ""));
+      video.addEventListener("pause", () => delete box.dataset.playing);
+    }
+  });
+</script>

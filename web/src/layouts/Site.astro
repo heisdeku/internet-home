@@ -16,6 +16,7 @@ const { meta, jsonLd, settings } = Astro.props;
 ---
 
 <Base meta={meta} jsonLd={jsonLd} portraitUrl={settings.portraitUrl}>
+	<a href="#main" class="skip-link">Skip to content</a>
 	<div class="flex min-h-screen flex-col">
 		<SiteHeader settings={settings} />
 		<div class="flex-1">

@@ -1,0 +1,30 @@
+---
+import SanityImage from "@/components/SanityImage.astro";
+import type { FigureImage } from "@/components/portable-text/Figure.astro";
+import type { TypedObjectProps } from "astro-portabletext/types";
+
+type Props = TypedObjectProps & {
+  node: { images: (FigureImage & { _key: string })[]; columns?: 2 | 3 | 4 | null };
+};
+
+const { node } = Astro.props;
+const COLUMNS = { 2: "md:grid-cols-2", 3: "md:grid-cols-3", 4: "md:grid-cols-4" };
+const WIDTH = 900;
+---
+
+<div class:list={["my-2 grid gap-3", COLUMNS[node.columns ?? 2]]}>
+  {
+    node.images.map((image) => (
+      <figure class="flex flex-col gap-2.5">
+        <SanityImage
+          image={image}
+          placeholder="image"
+          width={WIDTH}
+          height={Math.round(WIDTH / (image.aspectRatio ?? 4 / 3))}
+          class="w-full"
+        />
+        {image.caption && <figcaption class="font-mono text-[11px] tracking-[.04em] text-faint uppercase">{image.caption}</figcaption>}
+      </figure>
+    ))
+  }
+</div>

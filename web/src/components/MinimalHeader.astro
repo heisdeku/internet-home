@@ -12,7 +12,7 @@ const { settings } = Astro.props;
 <header
   class="px-gutter flex flex-wrap items-center justify-between gap-4 py-4.5 text-[13px] [&_a:hover]:text-highlight"
 >
-  <a href="/" class="text-sm font-semibold tracking-[.08em] uppercase"
+  <a href="/" class="hit text-sm font-semibold tracking-[.08em] uppercase"
     >{settings.displayName}</a
   >
   <div class="flex items-center gap-6">
@@ -20,7 +20,7 @@ const { settings } = Astro.props;
       {settings.timeZoneLabel}{" "}
       <time data-local-clock data-time-zone={settings.timeZone}></time>
     </span>
-    <a href="/" class="group inline-flex items-center gap-1.5">
+    <a href="/" class="hit group inline-flex items-center gap-1.5">
       Full portfolio <ArrowRight
         class="icon-inline"
         style="--icon-nudge:translateX(4px)"
@@ -31,5 +31,5 @@ const { settings } = Astro.props;
 
 <script>
   import { startClocks } from "@/scripts/clock";
-  startClocks();
+  document.addEventListener("astro:page-load", startClocks);
 </script>

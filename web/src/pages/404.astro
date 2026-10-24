@@ -10,15 +10,17 @@ const settings = await sanityClient.fetch(SITE_SETTINGS_QUERY);
 if (!settings) throw new Error('Site Settings document is missing. Create it in the Studio.');
 
 const origin = siteOrigin(settings, Astro.site, Astro.url);
-const meta = buildMeta({ settings, origin, path: '/404', title: 'Page not found', og: { kind: 'site', slug: 'default' }, noIndex: true });
+const title = settings.notFound?.title ?? 'Page not found';
+const linkLabel = settings.notFound?.linkLabel ?? 'Back to the home page';
+const meta = buildMeta({ settings, origin, path: '/404', title, og: { kind: 'site', slug: 'default' }, noIndex: true });
 ---
 
 <Site meta={meta} jsonLd={siteGraph(origin, settings)} settings={settings}>
-	<main class="px-gutter flex flex-col gap-6 pt-[clamp(56px,9vw,128px)] pb-[clamp(80px,10vw,160px)]">
+	<main id="main" class="px-gutter flex flex-col gap-6 pt-[clamp(56px,9vw,128px)] pb-[clamp(80px,10vw,160px)]">
 		<span class="font-mono text-[13px] text-muted">404</span>
-		<h1 class="text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em]">Page not found</h1>
+		<h1 class="text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em] text-balance">{title}</h1>
 		<a href="/" class="group inline-flex items-center gap-1.5 font-medium text-accent">
-			Back to the home page <ArrowRight class="icon-inline" style="--icon-nudge:translateX(4px)" />
+			{linkLabel} <ArrowRight class="icon-inline" style="--icon-nudge:translateX(4px)" />
 		</a>
 	</main>
 </Site>

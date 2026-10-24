@@ -19,6 +19,9 @@ export type RichTextSection = {
   _type: "richTextSection";
   heading?: Heading;
   body: PortableText;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type ContactSection = {
@@ -30,6 +33,9 @@ export type ContactSection = {
       _key: string;
     } & Cta
   >;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type ListColumnsSection = {
@@ -39,6 +45,9 @@ export type ListColumnsSection = {
       _key: string;
     } & ListColumn
   >;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type IntroSection = {
@@ -46,6 +55,9 @@ export type IntroSection = {
   greeting: string;
   heading: Heading;
   description?: PortableText;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type ExperienceReference = {
@@ -64,6 +76,9 @@ export type ExperienceSection = {
     } & ExperienceReference
   >;
   openFirst?: boolean;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type InfoSection = {
@@ -75,6 +90,9 @@ export type InfoSection = {
       _key: string;
     } & InfoColumn
   >;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type WritingSection = {
@@ -83,6 +101,9 @@ export type WritingSection = {
   link?: SimpleLink;
   limit?: number;
   layout?: "split" | "stack";
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type ProductReference = {
@@ -99,6 +120,9 @@ export type ProductsSection = {
       _key: string;
     } & ProductReference
   >;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type WorkReference = {
@@ -116,7 +140,13 @@ export type WorksSection = {
       _key: string;
     } & WorkReference
   >;
+  limit?: number;
+  showFilters?: boolean;
+  link?: SimpleLink;
   defaultView?: "grid" | "index";
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type PageHeading = {
@@ -124,12 +154,18 @@ export type PageHeading = {
   heading: Heading;
   description?: PortableText;
   cta?: Cta;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type HeroSection = {
   _type: "heroSection";
   meta?: Array<string>;
   heading: Heading;
+  hidden?: boolean;
+  hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 export type ListItem = {
@@ -179,11 +215,47 @@ export type Feature = {
   description: string;
 };
 
+export type Embed = {
+  _type: "embed";
+  url: string;
+  title?: string;
+  aspectRatio?: "16/9" | "4/3" | "1/1" | "9/16";
+  caption?: string;
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type Video = {
+  _type: "video";
+  source?: "file" | "url";
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  url?: string;
+  poster?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  aspectRatio?: "16/9" | "4/3" | "1/1" | "9/16";
+  caption?: string;
+  autoplay?: boolean;
 };
 
 export type Seo = {
@@ -273,7 +345,7 @@ export type PortableText = Array<
       style?: "normal" | "h2" | "h3" | "blockquote";
       listItem?: "bullet" | "number";
       markDefs?: Array<{
-        linkType?: "external" | "internal";
+        linkType?: "external" | "internal" | "company" | "tool";
         href?: string;
         internal?:
           | PageReference
@@ -281,6 +353,8 @@ export type PortableText = Array<
           | WorkReference
           | ProductReference
           | PostReference;
+        company?: ExperienceReference;
+        tool?: string;
         openInNewTab?: boolean;
         _type: "link";
         _key: string;
@@ -299,6 +373,27 @@ export type PortableText = Array<
       _type: "image";
       _key: string;
     }
+  | {
+      images: Array<{
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        _type: "image";
+        _key: string;
+      }>;
+      columns?: 2 | 3 | 4;
+      _type: "imageGrid";
+      _key: string;
+    }
+  | ({
+      _key: string;
+    } & Video)
+  | ({
+      _key: string;
+    } & Embed)
   | ({
       _key: string;
     } & Code)
@@ -309,24 +404,6 @@ export type Heading = {
   text: string;
   type: "h1" | "h2" | "h3" | "h4" | "p";
   fontSize?: "XS" | "S" | "M" | "L" | "XL" | "XXL" | "3XL";
-};
-
-export type Experience = {
-  _id: string;
-  _type: "experience";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  company: string;
-  url?: string;
-  location?: string;
-  roles: Array<
-    {
-      _key: string;
-    } & Role
-  >;
-  stack?: string;
-  order: number;
 };
 
 export type Page = {
@@ -435,14 +512,32 @@ export type Work = {
   _rev: string;
   title: string;
   slug: Slug;
+  hidden?: boolean;
+  comingSoon?: boolean;
   category: string;
   year: number;
   role: string;
   stack?: string;
   url?: string;
+  client?: string;
+  timeline?: string;
+  collaborators?: Array<string>;
+  links?: Array<
+    {
+      _key: string;
+    } & SimpleLink
+  >;
   summary: string;
   scope?: Array<string>;
   heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  hoverImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
@@ -472,6 +567,8 @@ export type Post = {
   _rev: string;
   title: string;
   slug: Slug;
+  hidden?: boolean;
+  comingSoon?: boolean;
   publishedAt: string;
   readingTime?: number;
   excerpt: string;
@@ -496,6 +593,33 @@ export type SanityImageHotspot = {
   width: number;
 };
 
+export type Experience = {
+  _id: string;
+  _type: "experience";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  company: string;
+  hidden?: boolean;
+  logo?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  brandColor?: string;
+  url?: string;
+  location?: string;
+  roles: Array<
+    {
+      _key: string;
+    } & Role
+  >;
+  stack?: string;
+  order: number;
+};
+
 export type Slug = {
   _type: "slug";
   current: string;
@@ -510,6 +634,8 @@ export type Product = {
   _rev: string;
   name: string;
   slug: Slug;
+  hidden?: boolean;
+  comingSoon?: boolean;
   status: "live" | "beta" | "inProgress" | "archived";
   version?: string;
   tagline: string;
@@ -540,13 +666,6 @@ export type Product = {
   order: number;
 };
 
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
-
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -566,6 +685,11 @@ export type SiteSettings = {
     _type: "image";
   };
   availableForWork?: boolean;
+  availabilityLabel?: string;
+  notFound?: {
+    title?: string;
+    linkLabel?: string;
+  };
   email: string;
   resume?: {
     asset?: SanityFileAssetReference;
@@ -595,6 +719,32 @@ export type Code = {
   filename?: string;
   code?: string;
   highlightedLines?: Array<number>;
+};
+
+export type MediaFolderReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "media.folder";
+};
+
+export type MediaFolder = {
+  _id: string;
+  _type: "media.folder";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  parent?: MediaFolderReference;
+};
+
+export type MediaTag = {
+  _id: string;
+  _type: "media.tag";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: Slug;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -715,7 +865,10 @@ export type AllSanitySchemaTypes =
   | Role
   | ChangelogEntry
   | Feature
+  | Embed
+  | SanityFileAssetReference
   | SanityImageAssetReference
+  | Video
   | Seo
   | PageReference
   | OutreachReference
@@ -724,18 +877,20 @@ export type AllSanitySchemaTypes =
   | SimpleLink
   | PortableText
   | Heading
-  | Experience
   | Page
   | Outreach
   | Work
   | Post
   | SanityImageCrop
   | SanityImageHotspot
+  | Experience
   | Slug
   | Product
-  | SanityFileAssetReference
   | SiteSettings
   | Code
+  | MediaFolderReference
+  | MediaFolder
+  | MediaTag
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -747,7 +902,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings"][0]{  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, email,  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,  navigation[] { ..., internal->{ _type, "slug": slug.current } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_id == "siteSettings"][0]{  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,  navigation[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type SITE_SETTINGS_QUERY_RESULT =
   | {
       displayName: null;
@@ -756,6 +911,8 @@ export type SITE_SETTINGS_QUERY_RESULT =
       timeZone: null;
       timeZoneLabel: null;
       availableForWork: null;
+      availabilityLabel: null;
+      notFound: null;
       email: null;
       resumeUrl: null;
       portraitUrl: null;
@@ -774,6 +931,8 @@ export type SITE_SETTINGS_QUERY_RESULT =
       timeZone: null;
       timeZoneLabel: null;
       availableForWork: null;
+      availabilityLabel: null;
+      notFound: null;
       email: null;
       resumeUrl: null;
       portraitUrl: null;
@@ -801,6 +960,11 @@ export type SITE_SETTINGS_QUERY_RESULT =
       timeZone: string;
       timeZoneLabel: string;
       availableForWork: boolean | null;
+      availabilityLabel: string | null;
+      notFound: {
+        title?: string;
+        linkLabel?: string;
+      } | null;
       email: string;
       resumeUrl: string | null;
       portraitUrl: string | null;
@@ -814,22 +978,27 @@ export type SITE_SETTINGS_QUERY_RESULT =
           | {
               _type: "outreach";
               slug: string;
+              comingSoon: null;
             }
           | {
               _type: "page";
               slug: string;
+              comingSoon: null;
             }
           | {
               _type: "post";
               slug: string;
+              comingSoon: boolean | null;
             }
           | {
               _type: "product";
               slug: string;
+              comingSoon: boolean | null;
             }
           | {
               _type: "work";
               slug: string;
+              comingSoon: boolean | null;
             }
           | null;
         external?: string;
@@ -848,22 +1017,27 @@ export type SITE_SETTINGS_QUERY_RESULT =
           | {
               _type: "outreach";
               slug: string;
+              comingSoon: null;
             }
           | {
               _type: "page";
               slug: string;
+              comingSoon: null;
             }
           | {
               _type: "post";
               slug: string;
+              comingSoon: boolean | null;
             }
           | {
               _type: "product";
               slug: string;
+              comingSoon: boolean | null;
             }
           | {
               _type: "work";
               slug: string;
+              comingSoon: boolean | null;
             }
           | null;
         external?: string;
@@ -898,7 +1072,7 @@ export type PAGE_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[]{  _key, _type,  _type == "heroSection" => { meta, heading { text, type, fontSize } },  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, cta { ..., internal->{ _type, "slug": slug.current } } },  _type == "worksSection" => {    heading { text, type, fontSize }, defaultView,    "works": select(      count(works) > 0 => works[]-> { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "work" && defined(slug.current)] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "productsSection" => {    "products": select(      count(products) > 0 => products[]-> { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "writingSection" => {    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current } }, limit, layout,    "posts": *[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }  },  _type == "infoSection" => {    heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current } } },    "companies": *[_type == "experience"] | order(order asc).company  },  _type == "experienceSection" => {    heading { text, type, fontSize }, openFirst,    "entries": select(      count(entries) > 0 => entries[]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },      *[_type == "experience"] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }    )  },  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } },  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current } } } } },  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current } } },  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } }}}
+// Query: *[_type == "page" && slug.current == $slug][0]{  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{  _key, _type, hideOnMobile, hideOnDesktop,  _type == "heroSection" => { meta, heading { text, type, fontSize } },  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "worksSection" => {    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },    "works": select(      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "productsSection" => {    "products": select(      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "writingSection" => {    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }  },  _type == "infoSection" => {    heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }  },  _type == "experienceSection" => {    heading { text, type, fontSize }, openFirst,    "entries": select(      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }    )  },  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} },  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} }}}
 export type PAGE_QUERY_RESULT = {
   _id: string;
   _type: "page";
@@ -921,6 +1095,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "contactSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -936,22 +1112,27 @@ export type PAGE_QUERY_RESULT = {
             | {
                 _type: "outreach";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "page";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "post";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "product";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "work";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | null;
           external?: string;
@@ -966,6 +1147,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "experienceSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -992,6 +1175,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "heroSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         meta: Array<string> | null;
         heading: {
           text: string;
@@ -1002,6 +1187,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "infoSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1018,7 +1205,7 @@ export type PAGE_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1042,6 +1229,13 @@ export type PAGE_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1060,6 +1254,15 @@ export type PAGE_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1068,6 +1271,48 @@ export type PAGE_QUERY_RESULT = {
               caption?: string;
               _type: "image";
               _key: string;
+              markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
               markDefs: null;
             }
         >;
@@ -1084,22 +1329,27 @@ export type PAGE_QUERY_RESULT = {
               | {
                   _type: "outreach";
                   slug: string;
+                  comingSoon: null;
                 }
               | {
                   _type: "page";
                   slug: string;
+                  comingSoon: null;
                 }
               | {
                   _type: "post";
                   slug: string;
+                  comingSoon: boolean | null;
                 }
               | {
                   _type: "product";
                   slug: string;
+                  comingSoon: boolean | null;
                 }
               | {
                   _type: "work";
                   slug: string;
+                  comingSoon: boolean | null;
                 }
               | null;
             external?: string;
@@ -1110,11 +1360,19 @@ export type PAGE_QUERY_RESULT = {
             params?: string;
           } | null;
         }> | null;
-        companies: Array<string>;
+        companies: Array<{
+          _id: string;
+          company: string;
+          url: string | null;
+          logo: string | null;
+          brandColor: string | null;
+        }>;
       }
     | {
         _key: string;
         _type: "introSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         greeting: string;
         heading: {
           text: string;
@@ -1132,7 +1390,7 @@ export type PAGE_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1156,6 +1414,13 @@ export type PAGE_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1174,6 +1439,15 @@ export type PAGE_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1183,12 +1457,56 @@ export type PAGE_QUERY_RESULT = {
               _type: "image";
               _key: string;
               markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
+              markDefs: null;
             }
         > | null;
       }
     | {
         _key: string;
         _type: "listColumnsSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         columns: Array<{
           _key: string;
           label: string;
@@ -1203,22 +1521,27 @@ export type PAGE_QUERY_RESULT = {
                 | {
                     _type: "outreach";
                     slug: string;
+                    comingSoon: null;
                   }
                 | {
                     _type: "page";
                     slug: string;
+                    comingSoon: null;
                   }
                 | {
                     _type: "post";
                     slug: string;
+                    comingSoon: boolean | null;
                   }
                 | {
                     _type: "product";
                     slug: string;
+                    comingSoon: boolean | null;
                   }
                 | {
                     _type: "work";
                     slug: string;
+                    comingSoon: boolean | null;
                   }
                 | null;
               external?: string;
@@ -1234,6 +1557,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "pageHeading";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1250,7 +1575,7 @@ export type PAGE_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1274,6 +1599,13 @@ export type PAGE_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1292,6 +1624,15 @@ export type PAGE_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1300,6 +1641,48 @@ export type PAGE_QUERY_RESULT = {
               caption?: string;
               _type: "image";
               _key: string;
+              markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
               markDefs: null;
             }
         > | null;
@@ -1311,22 +1694,27 @@ export type PAGE_QUERY_RESULT = {
             | {
                 _type: "outreach";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "page";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "post";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "product";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "work";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | null;
           external?: string;
@@ -1341,6 +1729,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "productsSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         products: Array<{
           _id: string;
           name: string;
@@ -1348,6 +1738,7 @@ export type PAGE_QUERY_RESULT = {
           status: "archived" | "beta" | "inProgress" | "live";
           version: string | null;
           tagline: string;
+          comingSoon: boolean | null;
           preview: {
             asset: SanityImageAssetReference | null;
             hotspot: SanityImageHotspot | null;
@@ -1360,6 +1751,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "richTextSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1376,7 +1769,7 @@ export type PAGE_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1400,6 +1793,13 @@ export type PAGE_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1418,6 +1818,15 @@ export type PAGE_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1427,18 +1836,102 @@ export type PAGE_QUERY_RESULT = {
               _type: "image";
               _key: string;
               markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
+              markDefs: null;
             }
         >;
       }
     | {
         _key: string;
         _type: "worksSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
           fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
         } | null;
         defaultView: "grid" | "index" | null;
+        limit: number | null;
+        showFilters: boolean | null;
+        link: {
+          _type: "simpleLink";
+          label: string;
+          type?: string;
+          internal:
+            | {
+                _type: "outreach";
+                slug: string;
+                comingSoon: null;
+              }
+            | {
+                _type: "page";
+                slug: string;
+                comingSoon: null;
+              }
+            | {
+                _type: "post";
+                slug: string;
+                comingSoon: boolean | null;
+              }
+            | {
+                _type: "product";
+                slug: string;
+                comingSoon: boolean | null;
+              }
+            | {
+                _type: "work";
+                slug: string;
+                comingSoon: boolean | null;
+              }
+            | null;
+          external?: string;
+          relative?: string;
+          email?: string;
+          phone?: string;
+          target?: "_blank" | "_self";
+          params?: string;
+        } | null;
         works: Array<{
           _id: string;
           title: string;
@@ -1446,7 +1939,15 @@ export type PAGE_QUERY_RESULT = {
           category: string;
           year: number;
           summary: string;
+          comingSoon: boolean | null;
           heroImage: {
+            asset: SanityImageAssetReference | null;
+            hotspot: SanityImageHotspot | null;
+            crop: SanityImageCrop | null;
+            alt: string | null;
+            lqip: string | null;
+          } | null;
+          hoverImage: {
             asset: SanityImageAssetReference | null;
             hotspot: SanityImageHotspot | null;
             crop: SanityImageCrop | null;
@@ -1458,6 +1959,8 @@ export type PAGE_QUERY_RESULT = {
     | {
         _key: string;
         _type: "writingSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1471,22 +1974,27 @@ export type PAGE_QUERY_RESULT = {
             | {
                 _type: "outreach";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "page";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "post";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "product";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "work";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | null;
           external?: string;
@@ -1506,6 +2014,7 @@ export type PAGE_QUERY_RESULT = {
           readingTime: number | null;
           excerpt: string;
           tags: Array<string> | null;
+          comingSoon: boolean | null;
         }>;
       }
   > | null;
@@ -1520,7 +2029,7 @@ export type OUTREACH_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: OUTREACH_QUERY
-// Query: *[_type == "outreach" && slug.current == $slug][0]{  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[]{  _key, _type,  _type == "heroSection" => { meta, heading { text, type, fontSize } },  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, cta { ..., internal->{ _type, "slug": slug.current } } },  _type == "worksSection" => {    heading { text, type, fontSize }, defaultView,    "works": select(      count(works) > 0 => works[]-> { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "work" && defined(slug.current)] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "productsSection" => {    "products": select(      count(products) > 0 => products[]-> { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "writingSection" => {    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current } }, limit, layout,    "posts": *[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }  },  _type == "infoSection" => {    heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current } } },    "companies": *[_type == "experience"] | order(order asc).company  },  _type == "experienceSection" => {    heading { text, type, fontSize }, openFirst,    "entries": select(      count(entries) > 0 => entries[]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },      *[_type == "experience"] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }    )  },  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } },  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current } } } } },  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current } } },  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } }}}
+// Query: *[_type == "outreach" && slug.current == $slug][0]{  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{  _key, _type, hideOnMobile, hideOnDesktop,  _type == "heroSection" => { meta, heading { text, type, fontSize } },  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "worksSection" => {    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },    "works": select(      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "productsSection" => {    "products": select(      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "writingSection" => {    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }  },  _type == "infoSection" => {    heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }  },  _type == "experienceSection" => {    heading { text, type, fontSize }, openFirst,    "entries": select(      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }    )  },  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} },  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} }}}
 export type OUTREACH_QUERY_RESULT = {
   _id: string;
   _type: "outreach";
@@ -1545,6 +2054,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "contactSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1560,22 +2071,27 @@ export type OUTREACH_QUERY_RESULT = {
             | {
                 _type: "outreach";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "page";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "post";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "product";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "work";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | null;
           external?: string;
@@ -1590,6 +2106,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "experienceSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1616,6 +2134,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "heroSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         meta: Array<string> | null;
         heading: {
           text: string;
@@ -1626,6 +2146,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "infoSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1642,7 +2164,7 @@ export type OUTREACH_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1666,6 +2188,13 @@ export type OUTREACH_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1684,6 +2213,15 @@ export type OUTREACH_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1692,6 +2230,48 @@ export type OUTREACH_QUERY_RESULT = {
               caption?: string;
               _type: "image";
               _key: string;
+              markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
               markDefs: null;
             }
         >;
@@ -1708,22 +2288,27 @@ export type OUTREACH_QUERY_RESULT = {
               | {
                   _type: "outreach";
                   slug: string;
+                  comingSoon: null;
                 }
               | {
                   _type: "page";
                   slug: string;
+                  comingSoon: null;
                 }
               | {
                   _type: "post";
                   slug: string;
+                  comingSoon: boolean | null;
                 }
               | {
                   _type: "product";
                   slug: string;
+                  comingSoon: boolean | null;
                 }
               | {
                   _type: "work";
                   slug: string;
+                  comingSoon: boolean | null;
                 }
               | null;
             external?: string;
@@ -1734,11 +2319,19 @@ export type OUTREACH_QUERY_RESULT = {
             params?: string;
           } | null;
         }> | null;
-        companies: Array<string>;
+        companies: Array<{
+          _id: string;
+          company: string;
+          url: string | null;
+          logo: string | null;
+          brandColor: string | null;
+        }>;
       }
     | {
         _key: string;
         _type: "introSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         greeting: string;
         heading: {
           text: string;
@@ -1756,7 +2349,7 @@ export type OUTREACH_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1780,6 +2373,13 @@ export type OUTREACH_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1798,6 +2398,15 @@ export type OUTREACH_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1807,12 +2416,56 @@ export type OUTREACH_QUERY_RESULT = {
               _type: "image";
               _key: string;
               markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
+              markDefs: null;
             }
         > | null;
       }
     | {
         _key: string;
         _type: "listColumnsSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         columns: Array<{
           _key: string;
           label: string;
@@ -1827,22 +2480,27 @@ export type OUTREACH_QUERY_RESULT = {
                 | {
                     _type: "outreach";
                     slug: string;
+                    comingSoon: null;
                   }
                 | {
                     _type: "page";
                     slug: string;
+                    comingSoon: null;
                   }
                 | {
                     _type: "post";
                     slug: string;
+                    comingSoon: boolean | null;
                   }
                 | {
                     _type: "product";
                     slug: string;
+                    comingSoon: boolean | null;
                   }
                 | {
                     _type: "work";
                     slug: string;
+                    comingSoon: boolean | null;
                   }
                 | null;
               external?: string;
@@ -1858,6 +2516,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "pageHeading";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -1874,7 +2534,7 @@ export type OUTREACH_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -1898,6 +2558,13 @@ export type OUTREACH_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -1916,6 +2583,15 @@ export type OUTREACH_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -1924,6 +2600,48 @@ export type OUTREACH_QUERY_RESULT = {
               caption?: string;
               _type: "image";
               _key: string;
+              markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
               markDefs: null;
             }
         > | null;
@@ -1935,22 +2653,27 @@ export type OUTREACH_QUERY_RESULT = {
             | {
                 _type: "outreach";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "page";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "post";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "product";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "work";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | null;
           external?: string;
@@ -1965,6 +2688,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "productsSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         products: Array<{
           _id: string;
           name: string;
@@ -1972,6 +2697,7 @@ export type OUTREACH_QUERY_RESULT = {
           status: "archived" | "beta" | "inProgress" | "live";
           version: string | null;
           tagline: string;
+          comingSoon: boolean | null;
           preview: {
             asset: SanityImageAssetReference | null;
             hotspot: SanityImageHotspot | null;
@@ -1984,6 +2710,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "richTextSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -2000,7 +2728,7 @@ export type OUTREACH_QUERY_RESULT = {
               style?: "blockquote" | "h2" | "h3" | "normal";
               listItem?: "bullet" | "number";
               markDefs: Array<{
-                linkType?: "external" | "internal";
+                linkType?: "company" | "external" | "internal" | "tool";
                 href?: string;
                 internal:
                   | {
@@ -2024,6 +2752,13 @@ export type OUTREACH_QUERY_RESULT = {
                       slug: string;
                     }
                   | null;
+                company: {
+                  company: string;
+                  url: string | null;
+                  logo: string | null;
+                  brandColor: string | null;
+                } | null;
+                tool?: string;
                 openInNewTab?: boolean;
                 _type: "link";
                 _key: string;
@@ -2042,6 +2777,15 @@ export type OUTREACH_QUERY_RESULT = {
               markDefs: null;
             }
           | {
+              _key: string;
+              _type: "embed";
+              url: string;
+              title?: string;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              markDefs: null;
+            }
+          | {
               asset?: SanityImageAssetReference;
               media?: unknown;
               hotspot?: SanityImageHotspot;
@@ -2051,18 +2795,102 @@ export type OUTREACH_QUERY_RESULT = {
               _type: "image";
               _key: string;
               markDefs: null;
+              lqip: string | null;
+              aspectRatio: number | null;
+            }
+          | {
+              images: Array<{
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                lqip: string | null;
+                aspectRatio: number | null;
+              }>;
+              columns?: 2 | 3 | 4;
+              _type: "imageGrid";
+              _key: string;
+              markDefs: null;
+            }
+          | {
+              _key: string;
+              _type: "video";
+              source?: "file" | "url";
+              file?: {
+                asset?: SanityFileAssetReference;
+                media?: unknown;
+                _type: "file";
+              };
+              url: string | null;
+              poster: {
+                asset: SanityImageAssetReference | null;
+                hotspot: SanityImageHotspot | null;
+                crop: SanityImageCrop | null;
+                alt: null;
+                lqip: string | null;
+              } | null;
+              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+              caption?: string;
+              autoplay?: boolean;
+              markDefs: null;
             }
         >;
       }
     | {
         _key: string;
         _type: "worksSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
           fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
         } | null;
         defaultView: "grid" | "index" | null;
+        limit: number | null;
+        showFilters: boolean | null;
+        link: {
+          _type: "simpleLink";
+          label: string;
+          type?: string;
+          internal:
+            | {
+                _type: "outreach";
+                slug: string;
+                comingSoon: null;
+              }
+            | {
+                _type: "page";
+                slug: string;
+                comingSoon: null;
+              }
+            | {
+                _type: "post";
+                slug: string;
+                comingSoon: boolean | null;
+              }
+            | {
+                _type: "product";
+                slug: string;
+                comingSoon: boolean | null;
+              }
+            | {
+                _type: "work";
+                slug: string;
+                comingSoon: boolean | null;
+              }
+            | null;
+          external?: string;
+          relative?: string;
+          email?: string;
+          phone?: string;
+          target?: "_blank" | "_self";
+          params?: string;
+        } | null;
         works: Array<{
           _id: string;
           title: string;
@@ -2070,7 +2898,15 @@ export type OUTREACH_QUERY_RESULT = {
           category: string;
           year: number;
           summary: string;
+          comingSoon: boolean | null;
           heroImage: {
+            asset: SanityImageAssetReference | null;
+            hotspot: SanityImageHotspot | null;
+            crop: SanityImageCrop | null;
+            alt: string | null;
+            lqip: string | null;
+          } | null;
+          hoverImage: {
             asset: SanityImageAssetReference | null;
             hotspot: SanityImageHotspot | null;
             crop: SanityImageCrop | null;
@@ -2082,6 +2918,8 @@ export type OUTREACH_QUERY_RESULT = {
     | {
         _key: string;
         _type: "writingSection";
+        hideOnMobile: boolean | null;
+        hideOnDesktop: boolean | null;
         heading: {
           text: string;
           type: "h1" | "h2" | "h3" | "h4" | "p";
@@ -2095,22 +2933,27 @@ export type OUTREACH_QUERY_RESULT = {
             | {
                 _type: "outreach";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "page";
                 slug: string;
+                comingSoon: null;
               }
             | {
                 _type: "post";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "product";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | {
                 _type: "work";
                 slug: string;
+                comingSoon: boolean | null;
               }
             | null;
           external?: string;
@@ -2130,6 +2973,7 @@ export type OUTREACH_QUERY_RESULT = {
           readingTime: number | null;
           excerpt: string;
           tags: Array<string> | null;
+          comingSoon: boolean | null;
         }>;
       }
   > | null;
@@ -2137,14 +2981,17 @@ export type OUTREACH_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: WORK_SLUGS_QUERY
-// Query: *[_type == "work" && defined(slug.current)] | order(order asc){  "slug": slug.current}
+// Query: *[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){  "slug": slug.current, title, category, year}
 export type WORK_SLUGS_QUERY_RESULT = Array<{
   slug: string;
+  title: string;
+  category: string;
+  year: number;
 }>;
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: WORK_QUERY
-// Query: *[_type == "work" && slug.current == $slug][0]{  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, summary, scope,  heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_type == "work" && slug.current == $slug][0]{  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,  links[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, summary, scope, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type WORK_QUERY_RESULT = {
   _id: string;
   _updatedAt: string;
@@ -2155,9 +3002,58 @@ export type WORK_QUERY_RESULT = {
   role: string;
   stack: string | null;
   url: string | null;
+  client: string | null;
+  timeline: string | null;
+  collaborators: Array<string> | null;
+  links: Array<{
+    _key: string;
+    _type: "simpleLink";
+    label: string;
+    type?: string;
+    internal:
+      | {
+          _type: "outreach";
+          slug: string;
+          comingSoon: null;
+        }
+      | {
+          _type: "page";
+          slug: string;
+          comingSoon: null;
+        }
+      | {
+          _type: "post";
+          slug: string;
+          comingSoon: boolean | null;
+        }
+      | {
+          _type: "product";
+          slug: string;
+          comingSoon: boolean | null;
+        }
+      | {
+          _type: "work";
+          slug: string;
+          comingSoon: boolean | null;
+        }
+      | null;
+    external?: string;
+    relative?: string;
+    email?: string;
+    phone?: string;
+    target?: "_blank" | "_self";
+    params?: string;
+  }> | null;
   summary: string;
   scope: Array<string> | null;
   heroImage: {
+    asset: SanityImageAssetReference | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    alt: string | null;
+    lqip: string | null;
+  } | null;
+  hoverImage: {
     asset: SanityImageAssetReference | null;
     hotspot: SanityImageHotspot | null;
     crop: SanityImageCrop | null;
@@ -2182,7 +3078,7 @@ export type WORK_QUERY_RESULT = {
         style?: "blockquote" | "h2" | "h3" | "normal";
         listItem?: "bullet" | "number";
         markDefs: Array<{
-          linkType?: "external" | "internal";
+          linkType?: "company" | "external" | "internal" | "tool";
           href?: string;
           internal:
             | {
@@ -2206,6 +3102,13 @@ export type WORK_QUERY_RESULT = {
                 slug: string;
               }
             | null;
+          company: {
+            company: string;
+            url: string | null;
+            logo: string | null;
+            brandColor: string | null;
+          } | null;
+          tool?: string;
           openInNewTab?: boolean;
           _type: "link";
           _key: string;
@@ -2224,6 +3127,15 @@ export type WORK_QUERY_RESULT = {
         markDefs: null;
       }
     | {
+        _key: string;
+        _type: "embed";
+        url: string;
+        title?: string;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        caption?: string;
+        markDefs: null;
+      }
+    | {
         asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot?: SanityImageHotspot;
@@ -2232,6 +3144,48 @@ export type WORK_QUERY_RESULT = {
         caption?: string;
         _type: "image";
         _key: string;
+        markDefs: null;
+        lqip: string | null;
+        aspectRatio: number | null;
+      }
+    | {
+        images: Array<{
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          _type: "image";
+          _key: string;
+          lqip: string | null;
+          aspectRatio: number | null;
+        }>;
+        columns?: 2 | 3 | 4;
+        _type: "imageGrid";
+        _key: string;
+        markDefs: null;
+      }
+    | {
+        _key: string;
+        _type: "video";
+        source?: "file" | "url";
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        url: string | null;
+        poster: {
+          asset: SanityImageAssetReference | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt: null;
+          lqip: string | null;
+        } | null;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        caption?: string;
+        autoplay?: boolean;
         markDefs: null;
       }
   > | null;
@@ -2249,7 +3203,7 @@ export type WORK_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PRODUCTS_QUERY
-// Query: *[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }
+// Query: *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }
 export type PRODUCTS_QUERY_RESULT = Array<{
   _id: string;
   name: string;
@@ -2257,6 +3211,7 @@ export type PRODUCTS_QUERY_RESULT = Array<{
   status: "archived" | "beta" | "inProgress" | "live";
   version: string | null;
   tagline: string;
+  comingSoon: boolean | null;
   preview: {
     asset: SanityImageAssetReference | null;
     hotspot: SanityImageHotspot | null;
@@ -2267,8 +3222,15 @@ export type PRODUCTS_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../web/src/sanity/queries.ts
+// Variable: PRODUCT_SLUGS_QUERY
+// Query: *[_type == "product" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){ "slug": slug.current }
+export type PRODUCT_SLUGS_QUERY_RESULT = Array<{
+  slug: string;
+}>;
+
+// Source: ../web/src/sanity/queries.ts
 // Variable: PRODUCT_QUERY
-// Query: *[_type == "product" && slug.current == $slug][0]{  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current } },  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },  features[]{ _key, title, description },  changelog[]{ _key, version, date, note },  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_type == "product" && slug.current == $slug][0]{  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },  features[]{ _key, title, description },  changelog[]{ _key, version, date, note },  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type PRODUCT_QUERY_RESULT = {
   _id: string;
   _updatedAt: string;
@@ -2286,22 +3248,27 @@ export type PRODUCT_QUERY_RESULT = {
       | {
           _type: "outreach";
           slug: string;
+          comingSoon: null;
         }
       | {
           _type: "page";
           slug: string;
+          comingSoon: null;
         }
       | {
           _type: "post";
           slug: string;
+          comingSoon: boolean | null;
         }
       | {
           _type: "product";
           slug: string;
+          comingSoon: boolean | null;
         }
       | {
           _type: "work";
           slug: string;
+          comingSoon: boolean | null;
         }
       | null;
     external?: string;
@@ -2344,7 +3311,7 @@ export type PRODUCT_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: POSTS_QUERY
-// Query: *[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }
+// Query: *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }
 export type POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string;
@@ -2353,11 +3320,20 @@ export type POSTS_QUERY_RESULT = Array<{
   readingTime: number | null;
   excerpt: string;
   tags: Array<string> | null;
+  comingSoon: boolean | null;
+}>;
+
+// Source: ../web/src/sanity/queries.ts
+// Variable: POST_SLUGS_QUERY
+// Query: *[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }
+export type POST_SLUGS_QUERY_RESULT = Array<{
+  slug: string;
+  title: string;
 }>;
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0]{  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_type == "post" && slug.current == $slug][0]{  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type POST_QUERY_RESULT = {
   _id: string;
   _updatedAt: string;
@@ -2378,7 +3354,7 @@ export type POST_QUERY_RESULT = {
         style?: "blockquote" | "h2" | "h3" | "normal";
         listItem?: "bullet" | "number";
         markDefs: Array<{
-          linkType?: "external" | "internal";
+          linkType?: "company" | "external" | "internal" | "tool";
           href?: string;
           internal:
             | {
@@ -2402,6 +3378,13 @@ export type POST_QUERY_RESULT = {
                 slug: string;
               }
             | null;
+          company: {
+            company: string;
+            url: string | null;
+            logo: string | null;
+            brandColor: string | null;
+          } | null;
+          tool?: string;
           openInNewTab?: boolean;
           _type: "link";
           _key: string;
@@ -2420,6 +3403,15 @@ export type POST_QUERY_RESULT = {
         markDefs: null;
       }
     | {
+        _key: string;
+        _type: "embed";
+        url: string;
+        title?: string;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        caption?: string;
+        markDefs: null;
+      }
+    | {
         asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot?: SanityImageHotspot;
@@ -2428,6 +3420,48 @@ export type POST_QUERY_RESULT = {
         caption?: string;
         _type: "image";
         _key: string;
+        markDefs: null;
+        lqip: string | null;
+        aspectRatio: number | null;
+      }
+    | {
+        images: Array<{
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          _type: "image";
+          _key: string;
+          lqip: string | null;
+          aspectRatio: number | null;
+        }>;
+        columns?: 2 | 3 | 4;
+        _type: "imageGrid";
+        _key: string;
+        markDefs: null;
+      }
+    | {
+        _key: string;
+        _type: "video";
+        source?: "file" | "url";
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        url: string | null;
+        poster: {
+          asset: SanityImageAssetReference | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt: null;
+          lqip: string | null;
+        } | null;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        caption?: string;
+        autoplay?: boolean;
         markDefs: null;
       }
   >;
@@ -2445,17 +3479,8 @@ export type POST_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: OG_DOC_QUERY
-// Query: *[_type == $type && slug.current == $slug][0]{  _type,  "title": coalesce(seo.metaTitle, title, name),  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),  "label": coalesce(category, status, string(year)),  publishedAt, recipient, company}
+// Query: *[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{  _type,  "title": coalesce(seo.metaTitle, title, name),  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),  "label": coalesce(category, status, string(year)),  publishedAt, recipient, company}
 export type OG_DOC_QUERY_RESULT =
-  | {
-      _type: "experience";
-      title: null;
-      description: null;
-      label: null;
-      publishedAt: null;
-      recipient: null;
-      company: string;
-    }
   | {
       _type: "outreach";
       title: string;
@@ -2493,33 +3518,6 @@ export type OG_DOC_QUERY_RESULT =
       company: null;
     }
   | {
-      _type: "sanity.fileAsset";
-      title: string | null;
-      description: null;
-      label: null;
-      publishedAt: null;
-      recipient: null;
-      company: null;
-    }
-  | {
-      _type: "sanity.imageAsset";
-      title: string | null;
-      description: null;
-      label: null;
-      publishedAt: null;
-      recipient: null;
-      company: null;
-    }
-  | {
-      _type: "siteSettings";
-      title: string | null;
-      description: string | null;
-      label: null;
-      publishedAt: null;
-      recipient: null;
-      company: null;
-    }
-  | {
       _type: "work";
       title: string;
       description: string;
@@ -2533,18 +3531,20 @@ export type OG_DOC_QUERY_RESULT =
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_id == "siteSettings"][0]{\n  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, email,\n  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,\n  navigation[] { ..., internal->{ _type, "slug": slug.current } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': SITE_SETTINGS_QUERY_RESULT;
+    '*[_id == "siteSettings"][0]{\n  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,\n  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,\n  navigation[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': SITE_SETTINGS_QUERY_RESULT;
     '*[_type == "page" && defined(slug.current)]{ "slug": slug.current }': PAGE_SLUGS_QUERY_RESULT;
-    '*[_type == "page" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[]{\n  _key, _type,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, cta { ..., internal->{ _type, "slug": slug.current } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView,\n    "works": select(\n      count(works) > 0 => works[]-> { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current)] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[]-> { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current } } },\n    "companies": *[_type == "experience"] | order(order asc).company\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience"] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } }\n}\n}': PAGE_QUERY_RESULT;
+    '*[_type == "page" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{\n  _key, _type, hideOnMobile, hideOnDesktop,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n    "works": select(\n      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} }\n}\n}': PAGE_QUERY_RESULT;
     '*[_type == "outreach" && defined(slug.current)]{ "slug": slug.current }': OUTREACH_SLUGS_QUERY_RESULT;
-    '*[_type == "outreach" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[]{\n  _key, _type,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, cta { ..., internal->{ _type, "slug": slug.current } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView,\n    "works": select(\n      count(works) > 0 => works[]-> { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current)] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[]-> { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current } } },\n    "companies": *[_type == "experience"] | order(order asc).company\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience"] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } } }\n}\n}': OUTREACH_QUERY_RESULT;
-    '*[_type == "work" && defined(slug.current)] | order(order asc){\n  "slug": slug.current\n}': WORK_SLUGS_QUERY_RESULT;
-    '*[_type == "work" && slug.current == $slug][0]{\n  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, summary, scope,\n  heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': WORK_QUERY_RESULT;
-    '*[_type == "product" && defined(slug.current)] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }': PRODUCTS_QUERY_RESULT;
-    '*[_type == "product" && slug.current == $slug][0]{\n  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current } },\n  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },\n  features[]{ _key, title, description },\n  changelog[]{ _key, version, date, note },\n  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': PRODUCT_QUERY_RESULT;
-    '*[_type == "post" && defined(slug.current)] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags }': POSTS_QUERY_RESULT;
-    '*[_type == "post" && slug.current == $slug][0]{\n  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{ ..., markDefs[]{ ..., internal->{ _type, "slug": slug.current } } }, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': POST_QUERY_RESULT;
-    '*[_type == $type && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(seo.metaTitle, title, name),\n  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),\n  "label": coalesce(category, status, string(year)),\n  publishedAt, recipient, company\n}': OG_DOC_QUERY_RESULT;
+    '*[_type == "outreach" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{\n  _key, _type, hideOnMobile, hideOnDesktop,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n    "works": select(\n      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, columns[]{ _key, label, source, items, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} }\n}\n}': OUTREACH_QUERY_RESULT;
+    '*[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){\n  "slug": slug.current, title, category, year\n}': WORK_SLUGS_QUERY_RESULT;
+    '*[_type == "work" && slug.current == $slug][0]{\n  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,\n  links[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, summary, scope, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': WORK_QUERY_RESULT;
+    '*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }': PRODUCTS_QUERY_RESULT;
+    '*[_type == "product" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){ "slug": slug.current }': PRODUCT_SLUGS_QUERY_RESULT;
+    '*[_type == "product" && slug.current == $slug][0]{\n  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },\n  features[]{ _key, title, description },\n  changelog[]{ _key, version, date, note },\n  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': PRODUCT_QUERY_RESULT;
+    '*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }': POSTS_QUERY_RESULT;
+    '*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }': POST_SLUGS_QUERY_RESULT;
+    '*[_type == "post" && slug.current == $slug][0]{\n  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': POST_QUERY_RESULT;
+    '*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(seo.metaTitle, title, name),\n  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),\n  "label": coalesce(category, status, string(year)),\n  publishedAt, recipient, company\n}': OG_DOC_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

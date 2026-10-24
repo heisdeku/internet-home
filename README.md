@@ -55,6 +55,14 @@ The feel borrows from pariola.work and victorwilliams.me. Everything respects `p
 - **Micro-interactions** as Tailwind utilities in `global.css`: `link-underline` (sliding underline), `dim-siblings` (hovering one row quietens the rest), `wordmark-more` (the header name grows to the full name), `img-frame` (pixelated LQIP that the real image fades over once decoded).
 - Icons come from [Reicon](https://reicon.dev) via `reicon-astro`, imported per icon (`reicon-astro/icons/ArrowRight.astro`). `SmartLink` adds the matching arrow for a link's type with `icon="auto"`, so link labels in the Studio stay plain text.
 - Pill buttons press down slightly, arrows nudge on hover, and the Experience accordion eases open in browsers that support `::details-content`.
+- **Page transitions**: Astro's `ClientRouter` swaps pages in place with a cross-fade; a work's cover image morphs from the grid card into the case-study hero (`transition:name="work-<slug>"`). Every script boots from `astro:page-load`, so new page content is wired up after each navigation.
+- **Split headings**: display-size headings (`XL` and up) and case-study titles carry `data-split` and rise in word by word.
+- **Brand links**: company names (link type "Company", referencing an Experience entry with its URL, logo and brand colour) and tool names (link type "Tool or language", looked up in `simple-icons` by name via `lib/toolIcons.ts`) take the brand colour on hover and show a mark (`BrandLink.astro`). In running text the mark floats above the word so the line never reflows (`mode="float"`); in the Information lists it slides in beside the name (`mode="slide"`). Company marks are uploaded on the Experience document.
+- **Rotating word**: inside any heading text, `<rotate>frontend|mobile|backend</rotate>` cycles its options with a slide every couple of seconds (`scripts/rotate.ts`); it sits beside the `<span>` accent markup the Studio's title input already supports.
+- **Works grid**: the home page shows the first six (`limit`) with an "All work" link; the `/work` page shows everything with category filter chips (`showFilters`). Both have the grid/index toggle and a hover image that swaps in over the cover.
+- **Media in rich text**: `image` (with caption), `imageGrid` (2–4 up), `video` (uploaded file or direct URL, poster, autoplay loop or play button) and `embed` (YouTube, Vimeo, Loom links become players; any other iframe URL works, with a chosen aspect ratio). All Sanity images are served as WebP.
+- **Case studies**: a sticky fact sheet (role, client, timeline, year, stack, team, scope, links) beside the long read, `h2` rendered as small labels, Sparkle bullets, natural-aspect figures, image grids, video and embed blocks, then a table of the other projects.
+
 
 ## SEO
 
@@ -80,3 +88,19 @@ To wire it up: create an app at developer.spotify.com, authorise it once with th
 ## Deploy
 
 The site is hosted on Brimble as a Node web service, configured by `brimble.toml` at the repo root: `bun install --frozen-lockfile` and `bun run build` from the root (the workspaces share one lockfile), then `npm start`, which runs the standalone Node server from `@astrojs/node`. That server serves the prerendered pages and runs the share-image and Spotify routes on demand. Public env vars are in `brimble.toml`; add the `SPOTIFY_*` secrets in the Brimble dashboard. The Studio is hosted by Sanity at https://oluwaferanmi.sanity.studio. It redeploys automatically through GitHub Actions (`.github/workflows/deploy-studio.yml`) on every push to `main` that touches `studio/`, or manually with `bun run --cwd studio deploy`. The workflow needs one repository secret, `SANITY_AUTH_TOKEN` (a token with Deploy Studio permission), and optionally the variables `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET` and `SANITY_STUDIO_STUDIO_HOST`, which default to `1dyyk69c`, `production` and `oluwaferanmi`.
+
+## Publishing controls
+
+- **Coming soon** (`comingSoon` on works, products and posts): the entry stays in its list with a "Coming soon" badge but is not clickable, no detail page is built, it is left out of the sitemap, and any Studio link pointing at it renders as plain text with the badge.
+- **Hide from the site** (`hidden` on works, products, posts and experience entries): the entry stays in the Studio but disappears from every list, the companies column, routes and the sitemap.
+
+## Accessibility and responsiveness
+
+- Every page has a skip link to `#main`, one `h1`, labelled landmarks (header, main, footer, the "Now playing" aside, the breadcrumb and next-project navs) and `alt` on every image.
+- Small inline links and buttons use the `hit` utility, which pads the hit area to 24px+ without moving the layout. Filter chips and the copy pill are sized to the same minimum.
+- Text tokens pass WCAG AA: `--color-faint` is 4.95:1 on paper, `--color-muted` 5.9:1, `--color-mist` 7.6:1 on ink.
+- `prefers-reduced-motion` disables the reveal, split, rotating word, equaliser, pulse dot and image fades, and turns autoplaying clips into poster-plus-controls.
+- Images render as WebP with width descriptors and a `sizes` hint; heroes carry `fetchpriority="high"` and the Sanity CDN is preconnected.
+- Dates format in UTC so builds anywhere print the same month. Scroll offsets follow the real header height (`--header-h`).
+- Filters and the grid/index view on works sections are kept in the URL (`?category=`, `?view=`).
+- Audit with Lighthouse against a production build (`bun run build && HOST=127.0.0.1 PORT=4999 node web/dist/server/entry.mjs`), and axe-core in the browser; both were clean at the last check.

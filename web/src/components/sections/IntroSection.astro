@@ -28,7 +28,9 @@ const { section } = Astro.props;
 </section>
 
 <script>
-  const to = new URLSearchParams(location.search).get("to");
-  const greeting = document.querySelector("[data-greeting]");
-  if (to && greeting) greeting.textContent = `Hi ${to} team,`;
+  document.addEventListener("astro:page-load", () => {
+    const to = new URLSearchParams(location.search).get("to");
+    const greeting = document.querySelector("[data-greeting]");
+    if (to && greeting) greeting.textContent = `Hi ${to} team,`;
+  });
 </script>

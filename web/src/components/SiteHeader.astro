@@ -10,7 +10,7 @@ interface Props {
 const { settings } = Astro.props;
 const { displayName, fullName, resumeUrl } = settings;
 
-// "OLUWAFERANMI" grows into "OLUWAFERANMI ADEDOKUN" on hover when the full name extends the display name.
+// The display name grows into the full name on hover when the full name extends it.
 const surname =
   displayName && fullName?.startsWith(displayName) ? fullName.slice(displayName.length).trim() : '';
 
@@ -23,7 +23,7 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
 <header
   class="px-gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 bg-paper/90 py-4.5 text-[13px] backdrop-blur-[10px]"
 >
-  <a href="/" class="shrink-0 text-sm font-semibold tracking-[.08em] uppercase">
+  <a href="/" class="hit shrink-0 text-sm font-semibold tracking-[.08em] uppercase">
     {displayName}
     {surname && <span class="wordmark-more" aria-hidden="true"><span>&nbsp;{surname}</span></span>}
   </a>
@@ -36,7 +36,7 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
     settings.availableForWork && (
       <div class="hidden shrink-0 items-center gap-2 text-muted lg:flex">
         <span class="size-1.75 rounded-full bg-accent animate-pulse-dot" />
-        <span>Available for work</span>
+        <span>{settings.availabilityLabel ?? 'Available for work'}</span>
       </div>
     )
   }
@@ -61,5 +61,5 @@ const activeKey = settings.navigation?.find((link) => pathOf(resolveHref(link, r
 
 <script>
   import { startClocks } from '@/scripts/clock';
-  startClocks();
+  document.addEventListener('astro:page-load', startClocks);
 </script>

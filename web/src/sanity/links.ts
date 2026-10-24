@@ -38,7 +38,7 @@ export function resolveHref(link: LinkData, resumeUrl: string | null): string | 
 		case 'resume':
 			return resumeUrl ? `${resumeUrl}?dl=` : null;
 		default: {
-			if (!link.internal) return null;
+			if (!link.internal || link.internal.comingSoon) return null;
 			const path = pathFor(link.internal);
 			return path ? `${path}${params}` : null;
 		}

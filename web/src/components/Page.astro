@@ -74,16 +74,17 @@ const jsonLd = [
       recipient={isOutreach ? page.recipient : null}
       portraitUrl={settings.portraitUrl}
     >
+      <a href="#main" class="skip-link">Skip to content</a>
       <div class="flex min-h-screen flex-col">
         <MinimalHeader settings={settings} />
-        <main class="flex flex-1 flex-col">
+        <main id="main" class="flex flex-1 flex-col">
           <PageBuilder sections={sections} settings={settings} />
         </main>
       </div>
     </Base>
   ) : (
     <Site meta={meta} jsonLd={jsonLd} settings={settings}>
-      <main>
+      <main id="main">
         <PageBuilder sections={sections} settings={settings} />
       </main>
     </Site>
