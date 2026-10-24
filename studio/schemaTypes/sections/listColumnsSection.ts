@@ -1,5 +1,6 @@
 import {UlistIcon} from '@sanity/icons/Ulist'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const listItem = defineType({
   name: 'listItem',
@@ -34,6 +35,7 @@ export const listColumnsSection = defineType({
   title: 'List columns',
   type: 'object',
   icon: UlistIcon,
+  fieldsets: [visibilityFieldset],
   fields: [
     defineField({
       name: 'columns',
@@ -41,6 +43,7 @@ export const listColumnsSection = defineType({
       of: [defineArrayMember({type: 'listColumn'})],
       validation: (rule) => rule.min(1).max(4),
     }),
+    ...visibilityFields,
   ],
   preview: {
     select: {columns: 'columns'},

@@ -21,6 +21,20 @@ export const product = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'hidden',
+      title: 'Hide from the site',
+      description: 'Keeps the entry in the Studio but removes it from every list and page',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'comingSoon',
+      title: 'Coming soon',
+      description: 'Listed with a "Coming soon" badge, not clickable, and no page is published yet',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'status',
       type: 'string',
       options: {

@@ -1,11 +1,13 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {defineField, defineType} from 'sanity'
+import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const writingSection = defineType({
   name: 'writingSection',
   title: 'Writing',
   type: 'object',
   icon: DocumentTextIcon,
+  fieldsets: [visibilityFieldset],
   fields: [
     defineField({name: 'heading', type: 'heading'}),
     defineField({name: 'link', description: 'e.g. "Visit the blog"', type: 'simpleLink'}),
@@ -27,6 +29,7 @@ export const writingSection = defineType({
       },
       initialValue: 'split',
     }),
+    ...visibilityFields,
   ],
   preview: {
     select: {title: 'heading.text', limit: 'limit'},

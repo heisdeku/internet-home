@@ -14,6 +14,8 @@ export const linkAnnotation = defineArrayMember({
         list: [
           {title: 'URL', value: 'external'},
           {title: 'Page on this site', value: 'internal'},
+          {title: 'Company (from Experience)', value: 'company'},
+          {title: 'Tool or language', value: 'tool'},
         ],
         layout: 'radio',
         direction: 'horizontal',
@@ -25,7 +27,7 @@ export const linkAnnotation = defineArrayMember({
       title: 'Link',
       description: 'A web, email, phone or relative link',
       type: 'url',
-      hidden: ({parent}) => parent?.linkType === 'internal',
+      hidden: ({parent}) => parent?.linkType !== 'external' && parent?.linkType !== 'tool',
       validation: (rule) => rule.uri({scheme: ['http', 'https', 'mailto', 'tel'], allowRelative: true}),
     }),
     defineField({
@@ -34,6 +36,21 @@ export const linkAnnotation = defineArrayMember({
       type: 'reference',
       to: [{type: 'page'}, {type: 'outreach'}, {type: 'work'}, {type: 'product'}, {type: 'post'}],
       hidden: ({parent}) => parent?.linkType !== 'internal',
+    }),
+    defineField({
+      name: 'company',
+      title: 'Company',
+      description: 'Links to the company site and shows its logo and colour on hover',
+      type: 'reference',
+      to: [{type: 'experience'}],
+      hidden: ({parent}) => parent?.linkType !== 'company',
+    }),
+    defineField({
+      name: 'tool',
+      title: 'Tool',
+      description: 'Name as the site knows it, e.g. React, React Native, Vue, Node, TypeScript. The mark and colour are looked up by name.',
+      type: 'string',
+      hidden: ({parent}) => parent?.linkType !== 'tool',
     }),
     defineField({name: 'openInNewTab', type: 'boolean', initialValue: false}),
   ],
@@ -71,6 +88,44 @@ export const portableText = defineType({
         defineField({name: 'caption', type: 'string'}),
       ],
     }),
+    defineArrayMember({
+      type: 'object',
+      name: 'imageGrid',
+      title: 'Image grid',
+      fields: [
+        defineField({
+          name: 'images',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              type: 'image',
+              options: {hotspot: true},
+              fields: [
+                defineField({name: 'alt', type: 'string', title: 'Alternative text'}),
+                defineField({name: 'caption', type: 'string'}),
+              ],
+            }),
+          ],
+          validation: (rule) => rule.required().min(2).max(4),
+        }),
+        defineField({
+          name: 'columns',
+          type: 'number',
+          options: {list: [2, 3, 4], layout: 'radio', direction: 'horizontal'},
+          initialValue: 2,
+        }),
+      ],
+      preview: {
+        select: {images: 'images', columns: 'columns'},
+        prepare: ({images, columns}) => ({
+          title: `Image grid · ${images?.length ?? 0} images`,
+          subtitle: `${columns ?? 2} columns`,
+          media: images?.[0],
+        }),
+      },
+    }),
+    defineArrayMember({type: 'video'}),
+    defineArrayMember({type: 'embed'}),
     defineArrayMember({
       type: 'code',
       options: {

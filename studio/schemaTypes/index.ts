@@ -11,6 +11,8 @@ import {heading} from './objects/heading'
 import {cta, simpleLink} from './objects/links'
 import {portableText} from './objects/portableText'
 import {seo} from './objects/seo'
+import {video} from './objects/video'
+import {embed} from './objects/embed'
 import {contactSection} from './sections/contactSection'
 import {experienceSection} from './sections/experienceSection'
 import {heroSection} from './sections/heroSection'
@@ -38,6 +40,8 @@ export const schemaTypes = [
   simpleLink,
   cta,
   seo,
+  video,
+  embed,
   feature,
   changelogEntry,
   role,

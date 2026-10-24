@@ -1,5 +1,6 @@
 import {InfoOutlineIcon} from '@sanity/icons/InfoOutline'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const infoColumn = defineType({
   name: 'infoColumn',
@@ -38,6 +39,7 @@ export const infoSection = defineType({
   title: 'Information',
   type: 'object',
   icon: InfoOutlineIcon,
+  fieldsets: [visibilityFieldset],
   fields: [
     defineField({name: 'heading', type: 'heading'}),
     defineField({name: 'body', type: 'portableText', validation: (rule) => rule.required()}),
@@ -47,6 +49,7 @@ export const infoSection = defineType({
       of: [defineArrayMember({type: 'infoColumn'})],
       validation: (rule) => rule.max(3),
     }),
+    ...visibilityFields,
   ],
   preview: {
     select: {title: 'heading.text'},

@@ -21,6 +21,20 @@ export const work = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'hidden',
+      title: 'Hide from the site',
+      description: 'Keeps the entry in the Studio but removes it from every list and page',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'comingSoon',
+      title: 'Coming soon',
+      description: 'Listed with a "Coming soon" badge, not clickable, and no page is published yet',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'category',
       description: 'e.g. Web Platform, Mobile, Portfolio',
       type: 'string',
@@ -42,6 +56,24 @@ export const work = defineType({
       type: 'string',
     }),
     defineField({name: 'url', title: 'Live URL', type: 'url'}),
+    defineField({name: 'client', type: 'string'}),
+    defineField({
+      name: 'timeline',
+      description: 'e.g. "Jan 2026 — May 2026" or "6 weeks"',
+      type: 'string',
+    }),
+    defineField({
+      name: 'collaborators',
+      description: 'People you built it with, one per entry',
+      type: 'array',
+      of: [defineArrayMember({type: 'string'})],
+    }),
+    defineField({
+      name: 'links',
+      description: 'Live site, App Store, repository… shown in the case study sidebar',
+      type: 'array',
+      of: [defineArrayMember({type: 'simpleLink'})],
+    }),
     defineField({
       name: 'summary',
       type: 'text',
@@ -56,6 +88,14 @@ export const work = defineType({
     }),
     defineField({
       name: 'heroImage',
+      type: 'image',
+      options: {hotspot: true},
+      fields: [defineField({name: 'alt', type: 'string', title: 'Alternative text'})],
+    }),
+    defineField({
+      name: 'hoverImage',
+      title: 'Hover image',
+      description: 'Swapped in when the card is hovered on the work grid. A GIF works too.',
       type: 'image',
       options: {hotspot: true},
       fields: [defineField({name: 'alt', type: 'string', title: 'Alternative text'})],

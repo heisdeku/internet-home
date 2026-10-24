@@ -2,6 +2,8 @@ import {codeInput} from '@sanity/code-input'
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
+import {media, mediaAssetSource} from 'sanity-plugin-media'
+import {UsageTagAssetInput} from './components/UsageTagAssetInput'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 
@@ -14,7 +16,13 @@ export default defineConfig({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || '1dyyk69c',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
-  plugins: [structureTool({structure}), visionTool(), codeInput()],
+  plugins: [structureTool({structure}), media(), visionTool(), codeInput()],
+
+  form: {
+    components: {input: UsageTagAssetInput},
+    image: {assetSources: () => [mediaAssetSource]},
+    file: {assetSources: () => [mediaAssetSource]},
+  },
 
   schema: {
     types: schemaTypes,

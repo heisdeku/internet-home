@@ -47,6 +47,21 @@ export const siteSettings = defineType({
     }),
     defineField({name: 'availableForWork', type: 'boolean', group: 'identity', initialValue: true}),
     defineField({
+      name: 'availabilityLabel',
+      description: 'Shown beside the green dot in the header when "Available for work" is on',
+      type: 'string',
+      initialValue: 'Available for work',
+    }),
+    defineField({
+      name: 'notFound',
+      title: '404 page',
+      type: 'object',
+      fields: [
+        defineField({name: 'title', type: 'string', initialValue: 'Page not found'}),
+        defineField({name: 'linkLabel', title: 'Link label', type: 'string', initialValue: 'Back to the home page'}),
+      ],
+    }),
+    defineField({
       name: 'email',
       description: 'Used by the footer and the contact band',
       type: 'string',

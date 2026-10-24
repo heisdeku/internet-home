@@ -57,6 +57,24 @@ export const experience = defineType({
   icon: UsersIcon,
   fields: [
     defineField({name: 'company', type: 'string', validation: (rule) => rule.required()}),
+    defineField({
+      name: 'hidden',
+      title: 'Hide from the site',
+      description: 'Keeps the entry in the Studio but removes it from every list and page',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'logo',
+      description: 'Square mark shown beside the company name on hover',
+      type: 'image',
+    }),
+    defineField({
+      name: 'brandColor',
+      description: 'Hex colour the name turns on hover, e.g. #635bff',
+      type: 'string',
+      validation: (rule) => rule.regex(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, {name: 'hex colour'}),
+    }),
     defineField({name: 'url', title: 'Company URL', type: 'url'}),
     defineField({name: 'location', description: 'e.g. Lagos, Nigeria · Remote', type: 'string'}),
     defineField({

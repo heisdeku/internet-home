@@ -1,11 +1,13 @@
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {defineField, defineType} from 'sanity'
+import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const introSection = defineType({
   name: 'introSection',
   title: 'Intro greeting',
   type: 'object',
   icon: EnvelopeIcon,
+  fieldsets: [visibilityFieldset],
   fields: [
     defineField({
       name: 'greeting',
@@ -16,6 +18,7 @@ export const introSection = defineType({
     }),
     defineField({name: 'heading', type: 'heading', validation: (rule) => rule.required()}),
     defineField({name: 'description', type: 'portableText'}),
+    ...visibilityFields,
   ],
   preview: {
     select: {title: 'heading.text', greeting: 'greeting'},

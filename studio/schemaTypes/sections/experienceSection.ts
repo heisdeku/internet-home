@@ -1,11 +1,13 @@
 import {UsersIcon} from '@sanity/icons/Users'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const experienceSection = defineType({
   name: 'experienceSection',
   title: 'Experience',
   type: 'object',
   icon: UsersIcon,
+  fieldsets: [visibilityFieldset],
   fields: [
     defineField({name: 'heading', type: 'heading'}),
     defineField({
@@ -21,6 +23,7 @@ export const experienceSection = defineType({
       type: 'boolean',
       initialValue: true,
     }),
+    ...visibilityFields,
   ],
   preview: {
     select: {title: 'heading.text', entries: 'entries'},
