@@ -277,15 +277,9 @@
 }
 
 /* Accordion panels ease open where the browser supports it. */
-details::details-content {
-	height: 0;
+/* Accordion panels are animated by height in scripts/accordion.ts, which works in every browser. */
+details[data-accordion] > summary + * {
 	overflow: clip;
-	transition:
-		height 0.45s var(--ease-out-soft),
-		content-visibility 0.45s allow-discrete;
-}
-details[open]::details-content {
-	height: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -299,9 +293,6 @@ details[open]::details-content {
 	.js .img-frame > img[data-fade-in] {
 		opacity: 1;
 		transform: none;
-		transition: none;
-	}
-	details::details-content {
 		transition: none;
 	}
 }

@@ -62,6 +62,7 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
       const latest = roles[0];
       return (
         <details
+          data-accordion
           name="experience"
           open={section.openFirst !== false && i === 0}
           data-reveal

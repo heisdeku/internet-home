@@ -111,6 +111,7 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 	>
 		<slot />
 		<script>
+			import { startAccordions } from '@/scripts/accordion';
 			import { trackPageViews } from '@/scripts/analytics';
 			import { startGreeting } from '@/scripts/greeting';
 			import { startImageFades } from '@/scripts/images';
@@ -125,6 +126,7 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 				startReveal();
 				startSplit();
 				startRotate();
+				startAccordions();
 				startImageFades();
 				startGreeting();
 			});
