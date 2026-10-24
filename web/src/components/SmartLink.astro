@@ -45,7 +45,7 @@ const trailing =
 			{trailing && <trailing.component class="icon-inline" style={`--icon-nudge:${trailing.nudge}`} />}
 		</a>
 	) : (
-		<span class:list={['inline-flex items-center gap-2', comingSoon && 'cursor-default text-muted', className]}>
+		<span class:list={['inline-flex items-center gap-2', comingSoon && 'cursor-default text-(--tone-muted)', className]}>
 			<slot>{link.label}</slot>
 			{comingSoon ? <span class="soon-badge">Coming soon</span> : trailing && <trailing.component class="icon-inline" />}
 		</span>

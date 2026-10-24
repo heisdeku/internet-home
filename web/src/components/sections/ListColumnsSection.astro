@@ -31,10 +31,10 @@ const row = "border-b border-(--tone-line) pb-3.5 text-[17px]";
               ]}
             >
               <span>{item.text}</span>
-              <ArrowRight
-                class="icon-inline"
-                style="--icon-nudge:translateX(4px)"
-              />
+              {/* A coming-soon target shows its badge instead of the arrow. */}
+              {!(item.link.type === "internal" && item.link.internal?.comingSoon) && (
+                <ArrowRight class="icon-inline" style="--icon-nudge:translateX(4px)" />
+              )}
             </SmartLink>
           ) : (
             <span class={row}>{item.text}</span>

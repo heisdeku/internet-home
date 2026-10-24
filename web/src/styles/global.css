@@ -322,14 +322,14 @@ details[data-accordion] > summary + * {
 	display: inline-flex;
 	align-items: center;
 	padding: 3px 8px;
-	border: 1px solid var(--color-line);
+	border: 1px solid var(--tone-line, var(--color-line));
 	border-radius: 999px;
-	background: color-mix(in srgb, var(--color-paper) 85%, transparent);
+	background: color-mix(in srgb, currentColor 8%, transparent);
 	font-family: var(--font-mono);
 	font-size: 10.5px;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	color: var(--color-muted);
+	color: var(--tone-muted, var(--color-muted));
 	white-space: nowrap;
 }
 .is-soon {
