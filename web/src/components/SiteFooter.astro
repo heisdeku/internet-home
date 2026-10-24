@@ -26,23 +26,23 @@ const { settings } = Astro.props;
 		class="flex flex-wrap items-center gap-x-6 gap-y-5 text-[13px] text-mist md:grid md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:gap-y-4"
 	>
 		<span class="font-semibold tracking-[.08em] uppercase text-paper">{settings.displayName}</span>
-		<div class="flex flex-wrap items-center gap-x-4 gap-y-2 max-md:order-last max-md:basis-full">
+		<div class="flex flex-wrap items-center gap-x-6 gap-y-2 max-md:order-last max-md:basis-full">
 			{
 				settings.footerLinks?.map((link) => {
 					const href = resolveHref(link, settings.resumeUrl);
 					const icon = link.type === 'external' && href ? socialIcon(href) : null;
-					// Known networks show their mark with the label for assistive tech; other links keep their text.
+					// Known networks show their mark before the label; other links keep the arrow.
 					return icon && href ? (
 						<a
 							href={href}
 							target={opensInNewTab(link) ? '_blank' : undefined}
 							rel={opensInNewTab(link) ? 'noopener' : undefined}
-							aria-label={link.label ?? icon.title}
-							class="hit inline-flex size-6 items-center justify-center text-paper transition-colors hover:text-accent-light"
+							class="hit inline-flex items-center gap-2 text-paper transition-colors hover:text-accent-light"
 						>
-							<svg viewBox="0 0 24 24" fill="currentColor" class="size-[18px]" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="currentColor" class="size-4 shrink-0" aria-hidden="true">
 								<path d={icon.path} />
 							</svg>
+							{link.label ?? icon.title}
 						</a>
 					) : (
 						<SmartLink link={link} resumeUrl={settings.resumeUrl} icon="auto" class="text-paper hover:text-accent-light" />
