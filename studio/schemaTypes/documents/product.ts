@@ -65,6 +65,11 @@ export const product = defineType({
       of: [defineArrayMember({type: 'feature'})],
     }),
     defineField({
+      name: 'body',
+      description: 'Optional longer write-up below the features',
+      type: 'portableText',
+    }),
+    defineField({
       name: 'changelog',
       type: 'array',
       of: [defineArrayMember({type: 'changelogEntry'})],

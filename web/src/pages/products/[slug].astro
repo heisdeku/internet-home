@@ -1,5 +1,6 @@
 ---
 import Cta from "@/components/Cta.astro";
+import PortableText from "@/components/portable-text/PortableText.astro";
 import SanityImage from "@/components/SanityImage.astro";
 import Site from "@/layouts/Site.astro";
 import { serial } from "@/lib/format";
@@ -134,6 +135,15 @@ const jsonLd = [
           </div>
         ))}
       </section>
+    )}
+
+    {product.body && product.body.length > 0 && (
+      <article
+        data-reveal
+        class="case-body mx-auto flex max-w-[860px] min-w-0 flex-col gap-5 pb-[clamp(64px,8vw,120px)] text-[17px] leading-[1.6] text-ink-soft"
+      >
+        <PortableText value={product.body} />
+      </article>
     )}
 
     {product.changelog && product.changelog.length > 0 && (

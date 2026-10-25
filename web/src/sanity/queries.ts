@@ -114,6 +114,7 @@ export const PRODUCT_QUERY =
   _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] ${LINK},
   preview ${IMAGE},
   features[]{ _key, title, description },
+  ${BODY},
   changelog[]{ _key, version, date, note },
   seo ${SEO}
 }`);

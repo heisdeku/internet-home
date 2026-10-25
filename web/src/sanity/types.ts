@@ -569,6 +569,47 @@ export type Work = {
   order: number;
 };
 
+export type Product = {
+  _id: string;
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  slug: Slug;
+  hidden?: boolean;
+  comingSoon?: boolean;
+  status: "live" | "beta" | "inProgress" | "archived";
+  version?: string;
+  tagline: string;
+  ctas?: Array<
+    {
+      _key: string;
+    } & Cta
+  >;
+  preview?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  features?: Array<
+    {
+      _key: string;
+    } & Feature
+  >;
+  body?: PortableText;
+  changelog?: Array<
+    {
+      _key: string;
+    } & ChangelogEntry
+  >;
+  seo?: Seo;
+  order: number;
+};
+
 export type Post = {
   _id: string;
   _type: "post";
@@ -649,46 +690,6 @@ export type Slug = {
   _type: "slug";
   current: string;
   source?: string;
-};
-
-export type Product = {
-  _id: string;
-  _type: "product";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  slug: Slug;
-  hidden?: boolean;
-  comingSoon?: boolean;
-  status: "live" | "beta" | "inProgress" | "archived";
-  version?: string;
-  tagline: string;
-  ctas?: Array<
-    {
-      _key: string;
-    } & Cta
-  >;
-  preview?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
-  features?: Array<
-    {
-      _key: string;
-    } & Feature
-  >;
-  changelog?: Array<
-    {
-      _key: string;
-    } & ChangelogEntry
-  >;
-  seo?: Seo;
-  order: number;
 };
 
 export type SiteSettings = {
@@ -906,13 +907,13 @@ export type AllSanitySchemaTypes =
   | Page
   | Outreach
   | Work
+  | Product
   | Post
   | SanityImageCrop
   | SanityImageHotspot
   | Tool
   | Experience
   | Slug
-  | Product
   | SiteSettings
   | Code
   | MediaFolderReference
@@ -3302,7 +3303,7 @@ export type PRODUCT_SLUGS_QUERY_RESULT = Array<{
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PRODUCT_QUERY
-// Query: *[_type == "product" && slug.current == $slug][0]{  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },  features[]{ _key, title, description },  changelog[]{ _key, version, date, note },  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_type == "product" && slug.current == $slug][0]{  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },  features[]{ _key, title, description },  body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }},  changelog[]{ _key, version, date, note },  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type PRODUCT_QUERY_RESULT = {
   _id: string;
   _updatedAt: string;
@@ -3363,6 +3364,132 @@ export type PRODUCT_QUERY_RESULT = {
     title: string;
     description: string;
   }> | null;
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h2" | "h3" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          linkType?: "company" | "external" | "internal" | "tool";
+          href?: string;
+          internal:
+            | {
+                _type: "outreach";
+                slug: string;
+              }
+            | {
+                _type: "page";
+                slug: string;
+              }
+            | {
+                _type: "post";
+                slug: string;
+              }
+            | {
+                _type: "product";
+                slug: string;
+              }
+            | {
+                _type: "work";
+                slug: string;
+              }
+            | null;
+          company: {
+            company: string;
+            url: string | null;
+            logo: string | null;
+            brandColor: string | null;
+          } | null;
+          tool: {
+            name: string;
+            url: string | null;
+            icon: string | null;
+          } | null;
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        _key: string;
+        _type: "code";
+        language?: string;
+        filename?: string;
+        code?: string;
+        highlightedLines?: Array<number>;
+        markDefs: null;
+      }
+    | {
+        _key: string;
+        _type: "embed";
+        url: string;
+        title?: string;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        caption?: string;
+        markDefs: null;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        caption?: string;
+        _type: "image";
+        _key: string;
+        markDefs: null;
+        lqip: string | null;
+        aspectRatio: number | null;
+      }
+    | {
+        images: Array<{
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          _type: "image";
+          _key: string;
+          lqip: string | null;
+          aspectRatio: number | null;
+        }>;
+        columns?: 2 | 3 | 4;
+        _type: "imageGrid";
+        _key: string;
+        markDefs: null;
+      }
+    | {
+        _key: string;
+        _type: "video";
+        source?: "file" | "url";
+        file?: {
+          asset?: SanityFileAssetReference;
+          media?: unknown;
+          _type: "file";
+        };
+        url: string | null;
+        poster: {
+          asset: SanityImageAssetReference | null;
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt: null;
+          lqip: string | null;
+        } | null;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        caption?: string;
+        autoplay?: boolean;
+        markDefs: null;
+      }
+  > | null;
   changelog: Array<{
     _key: string;
     version: string;
@@ -3616,7 +3743,7 @@ declare global {
     '*[_type == "work" && slug.current == $slug][0]{\n  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,\n  links[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': WORK_QUERY_RESULT;
     '*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }': PRODUCTS_QUERY_RESULT;
     '*[_type == "product" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){ "slug": slug.current }': PRODUCT_SLUGS_QUERY_RESULT;
-    '*[_type == "product" && slug.current == $slug][0]{\n  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },\n  features[]{ _key, title, description },\n  changelog[]{ _key, version, date, note },\n  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': PRODUCT_QUERY_RESULT;
+    '*[_type == "product" && slug.current == $slug][0]{\n  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },\n  features[]{ _key, title, description },\n  body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n},\n  changelog[]{ _key, version, date, note },\n  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': PRODUCT_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }': POSTS_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }': POST_SLUGS_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug][0]{\n  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': POST_QUERY_RESULT;
