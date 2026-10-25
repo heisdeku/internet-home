@@ -2,7 +2,7 @@ import {CogIcon} from '@sanity/icons/Cog'
 import type {StructureResolver} from 'sanity/structure'
 
 const SINGLETONS = ['siteSettings']
-const LISTED = ['page', 'outreach', 'work', 'product', 'experience', 'post']
+const LISTED = ['page', 'outreach', 'work', 'product', 'experience', 'tool', 'post']
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -19,6 +19,7 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('work').title('Works'),
       S.documentTypeListItem('product').title('Products'),
       S.documentTypeListItem('experience').title('Experience'),
+      S.documentTypeListItem('tool').title('Tools'),
       S.documentTypeListItem('post').title('Writing'),
       S.divider(),
       ...S.documentTypeListItems().filter(

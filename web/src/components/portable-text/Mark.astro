@@ -1,7 +1,6 @@
 ---
 import type { MarkProps } from "astro-portabletext/types";
 import BrandLink from "@/components/BrandLink.astro";
-import { toolIcon } from "@/lib/toolIcons";
 import { pathFor } from "@/sanity/links";
 
 type LinkDef = {
@@ -14,7 +13,7 @@ type LinkDef = {
     logo: string | null;
     brandColor: string | null;
   } | null;
-  tool?: string | null;
+  tool?: { name: string; url: string | null; icon: string | null } | null;
   openInNewTab?: boolean;
 };
 type Props = MarkProps<LinkDef>;
@@ -29,10 +28,9 @@ const company =
     : null;
 const tool =
   node.markType === "link" && node.markDef.linkType === "tool"
-    ? toolIcon(node.markDef.tool ?? "")
+    ? node.markDef.tool
     : null;
-const isTool = node.markType === "link" && node.markDef.linkType === "tool";
-if (node.markType === "link" && !company && !isTool) {
+if (node.markType === "link" && !company && !tool) {
   const def = node.markDef;
   href =
     def.linkType === "internal"
@@ -55,11 +53,11 @@ if (node.markType === "link" && !company && !isTool) {
     >
       <slot />
     </BrandLink>
-  ) : isTool ? (
+  ) : tool ? (
     <BrandLink
       label=""
-      href={node.markDef.href}
-      path={tool?.path}
+      href={tool.url}
+      path={tool.icon}
       class="font-medium"
     >
       <slot />

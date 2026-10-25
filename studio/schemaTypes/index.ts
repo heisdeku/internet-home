@@ -4,6 +4,7 @@ import {page} from './documents/page'
 import {post} from './documents/post'
 import {product} from './documents/product'
 import {siteSettings} from './documents/siteSettings'
+import {tool} from './documents/tool'
 import {work} from './documents/work'
 import {changelogEntry} from './objects/changelogEntry'
 import {feature} from './objects/feature'
@@ -33,6 +34,7 @@ export const schemaTypes = [
   work,
   product,
   experience,
+  tool,
   post,
   // Objects
   heading,

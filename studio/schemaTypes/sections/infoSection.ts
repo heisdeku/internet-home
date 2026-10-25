@@ -13,7 +13,7 @@ export const infoColumn = defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Items below', value: 'manual'},
+          {title: 'Tools below', value: 'manual'},
           {title: 'Companies from Experience', value: 'experience'},
         ],
         layout: 'radio',
@@ -21,16 +21,16 @@ export const infoColumn = defineType({
       initialValue: 'manual',
     }),
     defineField({
-      name: 'items',
+      name: 'tools',
       type: 'array',
-      of: [defineArrayMember({type: 'string'})],
+      of: [defineArrayMember({type: 'reference', to: [{type: 'tool'}]})],
       hidden: ({parent}) => parent?.source === 'experience',
     }),
     defineField({name: 'link', description: 'Optional link under the list', type: 'simpleLink'}),
   ],
   preview: {
     select: {title: 'label', source: 'source'},
-    prepare: ({title, source}) => ({title, subtitle: source === 'experience' ? 'From Experience' : 'Manual list'}),
+    prepare: ({title, source}) => ({title, subtitle: source === 'experience' ? 'From Experience' : 'Tools'}),
   },
 })
 

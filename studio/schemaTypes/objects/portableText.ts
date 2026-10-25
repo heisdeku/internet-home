@@ -27,7 +27,7 @@ export const linkAnnotation = defineArrayMember({
       title: 'Link',
       description: 'A web, email, phone or relative link',
       type: 'url',
-      hidden: ({parent}) => parent?.linkType !== 'external' && parent?.linkType !== 'tool',
+      hidden: ({parent}) => parent?.linkType !== 'external',
       validation: (rule) => rule.uri({scheme: ['http', 'https', 'mailto', 'tel'], allowRelative: true}),
     }),
     defineField({
@@ -48,8 +48,9 @@ export const linkAnnotation = defineArrayMember({
     defineField({
       name: 'tool',
       title: 'Tool',
-      description: 'Name as the site knows it, e.g. React, React Native, Vue, Node, TypeScript. The mark and colour are looked up by name.',
-      type: 'string',
+      description: 'Links to the tool URL and shows its mark on hover',
+      type: 'reference',
+      to: [{type: 'tool'}],
       hidden: ({parent}) => parent?.linkType !== 'tool',
     }),
     defineField({name: 'openInNewTab', type: 'boolean', initialValue: false}),

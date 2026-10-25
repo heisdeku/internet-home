@@ -4,7 +4,6 @@ import Heading from "@/components/Heading.astro";
 import type { Section } from "@/components/PageBuilder.astro";
 import PortableText from "@/components/portable-text/PortableText.astro";
 import SmartLink from "@/components/SmartLink.astro";
-import { toolIcon } from "@/lib/toolIcons";
 
 interface Props {
   section: Extract<Section, { _type: "infoSection" }>;
@@ -48,17 +47,15 @@ const { section, resumeUrl } = Astro.props;
                       class="border-b border-line-soft pb-3"
                     />
                   ))
-                : (column.items ?? []).map((item) => {
-                    const icon = toolIcon(item);
-                    return (
-                      <BrandLink
-                        label={item}
-                        path={icon?.path}
-                        mode="slide"
-                        class="border-b border-line-soft pb-3"
-                      />
-                    );
-                  })}
+                : (column.tools ?? []).map((tool) => (
+                    <BrandLink
+                      label={tool.name}
+                      href={tool.url}
+                      path={tool.icon}
+                      mode="slide"
+                      class="border-b border-line-soft pb-3"
+                    />
+                  ))}
               {column.link && (
                 <SmartLink
                   link={column.link}

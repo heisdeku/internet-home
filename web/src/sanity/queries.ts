@@ -1,13 +1,13 @@
-import { defineQuery } from 'groq';
+import { defineQuery } from "groq";
 
 const IMAGE = `{ asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }`;
 const LINK = `{ ..., internal->{ _type, "slug": slug.current, comingSoon } }`;
 const HEADING = `{ text, type, fontSize }`;
 const SEO = `{ metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }`;
-/** Portable Text with internal link annotations resolved to a type and slug. */
+
 const RICH_TEXT = `[]{
   ...,
-  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor } },
+  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },
   _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },
   _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },
   _type == "video" => { "url": coalesce(file.asset->url, url), poster ${IMAGE} }
@@ -43,7 +43,7 @@ const PAGE_BUILDER = `pageBuilder[hidden != true]{
     "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) ${POST_CARD}
   },
   _type == "infoSection" => {
-    heading ${HEADING}, ${BODY}, columns[]{ _key, label, source, items, link ${LINK} },
+    heading ${HEADING}, ${BODY}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link ${LINK} },
     "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }
   },
   _type == "experienceSection" => {
@@ -65,33 +65,46 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   navigation[] ${LINK}, footerLinks[] ${LINK}, footerPrompt, siteUrl, siteTitle, seo ${SEO}
 }`);
 
-export const PAGE_SLUGS_QUERY = defineQuery(`*[_type == "page" && defined(slug.current)]{ "slug": slug.current }`);
+export const PAGE_SLUGS_QUERY = defineQuery(
+  `*[_type == "page" && defined(slug.current)]{ "slug": slug.current }`,
+);
 
-export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug][0]{
+export const PAGE_QUERY =
+  defineQuery(`*[_type == "page" && slug.current == $slug][0]{
   _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo ${SEO}, ${PAGE_BUILDER}
 }`);
 
-export const OUTREACH_SLUGS_QUERY = defineQuery(`*[_type == "outreach" && defined(slug.current)]{ "slug": slug.current }`);
+export const OUTREACH_SLUGS_QUERY = defineQuery(
+  `*[_type == "outreach" && defined(slug.current)]{ "slug": slug.current }`,
+);
 
-export const OUTREACH_QUERY = defineQuery(`*[_type == "outreach" && slug.current == $slug][0]{
+export const OUTREACH_QUERY =
+  defineQuery(`*[_type == "outreach" && slug.current == $slug][0]{
   _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo ${SEO}, ${PAGE_BUILDER}
 }`);
 
 /** Published works only: coming-soon entries have no page. */
-export const WORK_SLUGS_QUERY = defineQuery(`*[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){
+export const WORK_SLUGS_QUERY =
+  defineQuery(`*[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){
   "slug": slug.current, title, category, year
 }`);
 
-export const WORK_QUERY = defineQuery(`*[_type == "work" && slug.current == $slug][0]{
+export const WORK_QUERY =
+  defineQuery(`*[_type == "work" && slug.current == $slug][0]{
   _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,
   links[] ${LINK}, summary, scope, heroImage ${IMAGE}, hoverImage ${IMAGE}, gallery[] ${IMAGE}, ${BODY}, seo ${SEO}
 }`);
 
-export const PRODUCTS_QUERY = defineQuery(`*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) ${PRODUCT_CARD}`);
+export const PRODUCTS_QUERY = defineQuery(
+  `*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) ${PRODUCT_CARD}`,
+);
 
-export const PRODUCT_SLUGS_QUERY = defineQuery(`*[_type == "product" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){ "slug": slug.current }`);
+export const PRODUCT_SLUGS_QUERY = defineQuery(
+  `*[_type == "product" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){ "slug": slug.current }`,
+);
 
-export const PRODUCT_QUERY = defineQuery(`*[_type == "product" && slug.current == $slug][0]{
+export const PRODUCT_QUERY =
+  defineQuery(`*[_type == "product" && slug.current == $slug][0]{
   _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] ${LINK},
   preview ${IMAGE},
   features[]{ _key, title, description },
@@ -99,16 +112,22 @@ export const PRODUCT_QUERY = defineQuery(`*[_type == "product" && slug.current =
   seo ${SEO}
 }`);
 
-export const POSTS_QUERY = defineQuery(`*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) ${POST_CARD}`);
+export const POSTS_QUERY = defineQuery(
+  `*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) ${POST_CARD}`,
+);
 
-export const POST_SLUGS_QUERY = defineQuery(`*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }`);
+export const POST_SLUGS_QUERY = defineQuery(
+  `*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }`,
+);
 
-export const POST_QUERY = defineQuery(`*[_type == "post" && slug.current == $slug][0]{
+export const POST_QUERY =
+  defineQuery(`*[_type == "post" && slug.current == $slug][0]{
   _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, ${BODY}, seo ${SEO}
 }`);
 
 /** The few fields the generated share image needs, for any document type with a slug. */
-export const OG_DOC_QUERY = defineQuery(`*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{
+export const OG_DOC_QUERY =
+  defineQuery(`*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{
   _type,
   "title": coalesce(seo.metaTitle, title, name),
   "description": coalesce(seo.metaDescription, excerpt, summary, tagline),
