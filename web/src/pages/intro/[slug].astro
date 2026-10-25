@@ -3,16 +3,13 @@ import { sanityClient } from "sanity:client";
 import Page from "@/components/Page.astro";
 import { OUTREACH_QUERY } from "@/sanity/queries";
 
-export async function getStaticPaths() {
-  const { sanityClient } = await import("sanity:client");
-  const { OUTREACH_SLUGS_QUERY } = await import("@/sanity/queries");
-  const pages = await sanityClient.fetch(OUTREACH_SLUGS_QUERY);
-  return pages.map(({ slug }) => ({ params: { slug } }));
-}
+// Intro pages are created in the Studio between deploys, so render them on request.
+export const prerender = false;
 
 const { slug } = Astro.params;
 const page = await sanityClient.fetch(OUTREACH_QUERY, { slug });
-if (!page) return Astro.rewrite("/404");
+// An on-demand route cannot rewrite to the prerendered 404 page; a 404 response serves it instead.
+if (!page) return new Response(null, { status: 404 });
 ---
 
 <Page page={page} />
