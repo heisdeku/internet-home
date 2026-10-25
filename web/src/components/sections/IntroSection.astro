@@ -14,17 +14,15 @@ const { section } = Astro.props;
   data-reveal-stagger
   class="px-gutter flex max-w-275 flex-col gap-7 pt-[clamp(56px,9vw,128px)] pb-[clamp(48px,7vw,96px)]"
 >
-  <span data-greeting class="font-mono text-[13px] text-(--tone-muted)"
-    >{section.greeting}</span
-  >
+  <span data-greeting class="font-mono text-[13px] text-(--tone-muted)">
+    {section.greeting}
+  </span>
   <Heading value={section.heading} size="XXL" />
-  {
-    section.description && section.description.length > 0 && (
-      <div class="max-w-[60ch] text-[clamp(17px,1.5vw,21px)] leading-normal text-(--tone-muted)">
-        <PortableText value={section.description} />
-      </div>
-    )
-  }
+  {section.description && section.description.length > 0 && (
+    <div class="max-w-[60ch] text-[clamp(17px,1.5vw,21px)] leading-normal text-(--tone-muted)">
+      <PortableText value={section.description} />
+    </div>
+  )}
 </section>
 
 <script>

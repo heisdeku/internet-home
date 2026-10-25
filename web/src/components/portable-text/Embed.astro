@@ -5,27 +5,39 @@ import type { TypedObjectProps } from "astro-portabletext/types";
 export function embedUrl(raw: string) {
   const url = new URL(raw.trim());
   const host = url.hostname.replace(/^www\./, "");
-  if (host === "youtu.be") return `https://www.youtube.com/embed/${url.pathname.slice(1)}`;
+  if (host === "youtu.be")
+    return `https://www.youtube.com/embed/${url.pathname.slice(1)}`;
   if (host === "youtube.com" || host === "m.youtube.com") {
     if (url.pathname.startsWith("/embed/")) return raw;
-    if (url.pathname.startsWith("/shorts/")) return `https://www.youtube.com/embed/${url.pathname.split("/")[2]}`;
+    if (url.pathname.startsWith("/shorts/"))
+      return `https://www.youtube.com/embed/${url.pathname.split("/")[2]}`;
     const id = url.searchParams.get("v");
     if (id) return `https://www.youtube.com/embed/${id}`;
   }
-  if (host === "vimeo.com") return `https://player.vimeo.com/video/${url.pathname.split("/").filter(Boolean)[0]}`;
-  if (host === "loom.com" && url.pathname.startsWith("/share/")) return `https://www.loom.com/embed/${url.pathname.split("/")[2]}`;
+  if (host === "vimeo.com")
+    return `https://player.vimeo.com/video/${url.pathname.split("/").filter(Boolean)[0]}`;
+  if (host === "loom.com" && url.pathname.startsWith("/share/"))
+    return `https://www.loom.com/embed/${url.pathname.split("/")[2]}`;
   return raw;
 }
 
 type Props = TypedObjectProps & {
-  node: { url: string; title?: string; aspectRatio?: string | null; caption?: string };
+  node: {
+    url: string;
+    title?: string;
+    aspectRatio?: string | null;
+    caption?: string;
+  };
 };
 
 const { node } = Astro.props;
 ---
 
 <figure class="my-2 flex flex-col gap-2.5">
-  <div class="overflow-hidden rounded bg-tile" style={`aspect-ratio:${node.aspectRatio ?? "16/9"}`}>
+  <div
+    class="overflow-hidden rounded bg-tile"
+    style={`aspect-ratio:${node.aspectRatio ?? "16/9"}`}
+  >
     <iframe
       src={embedUrl(node.url)}
       title={node.title ?? "Embedded content"}
@@ -36,5 +48,5 @@ const { node } = Astro.props;
       referrerpolicy="strict-origin-when-cross-origin"
     />
   </div>
-  {node.caption && <figcaption class="font-mono text-[11px] tracking-[.04em] text-faint uppercase">{node.caption}</figcaption>}
+  {node.caption && <figcaption class="caption">{node.caption}</figcaption>}
 </figure>

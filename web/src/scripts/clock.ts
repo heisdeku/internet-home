@@ -1,8 +1,8 @@
 export function startClocks() {
   for (const clock of document.querySelectorAll<HTMLElement>(
-    "[data-local-clock]:not([data-ticking])",
+    "[data-local-clock]:not([data-ready])",
   )) {
-    clock.dataset.ticking = "";
+    clock.dataset.ready = "";
     const timeZone = clock.dataset.timeZone;
     const tick = () => {
       clock.textContent = new Date().toLocaleTimeString("en-GB", {
@@ -12,6 +12,12 @@ export function startClocks() {
       });
     };
     tick();
-    setInterval(tick, 15_000);
+
+    const timer = window.setInterval(tick, 15_000);
+    document.addEventListener(
+      "astro:before-swap",
+      () => window.clearInterval(timer),
+      { once: true },
+    );
   }
 }

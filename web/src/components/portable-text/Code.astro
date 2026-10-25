@@ -6,6 +6,9 @@ type Props = TypedObjectProps & { node: { code: string; language?: string } };
 const { node } = Astro.props;
 ---
 
-<pre tabindex="0" translate="no"
+<pre
+  tabindex="0"
+  translate="no"
   class="my-2 overflow-x-auto rounded-md bg-ink px-6 py-5 font-mono text-sm leading-[1.6] text-[#e6e6e3]"
-  data-language={node.language}><code>{node.code}</code></pre>
+  data-language={node.language}
+><code>{node.code}</code></pre>

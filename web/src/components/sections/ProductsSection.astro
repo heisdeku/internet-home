@@ -2,6 +2,7 @@
 import type { Section } from "@/components/PageBuilder.astro";
 import SanityImage from "@/components/SanityImage.astro";
 import { STATUS_LABEL } from "@/lib/productStatus";
+import { pathFor } from "@/sanity/links";
 
 interface Props {
   section: Extract<Section, { _type: "productsSection" }>;
@@ -16,51 +17,49 @@ const products = section.products ?? [];
     data-reveal-stagger
     class="dim-siblings grid grid-cols-[repeat(auto-fill,minmax(min(100%,420px),1fr))] gap-x-[clamp(16px,2vw,24px)] gap-y-[clamp(16px,2vw,28px)]"
   >
-    {
-      products.map((product, i) => {
-        const Tag = product.comingSoon ? "div" : "a";
-        return (
-          <Tag
-            href={product.comingSoon ? undefined : `/products/${product.slug}`}
-            class:list={[
-              "group flex flex-col gap-3",
-              product.comingSoon && "is-soon",
-            ]}
-            aria-disabled={product.comingSoon ? "true" : undefined}
-          >
-            <span class="relative block">
-              <SanityImage
-                image={product.preview}
-                placeholder={`${product.slug} — preview`}
-                width={1120}
-                height={840}
-                sizes="(min-width: 900px) 50vw, 100vw"
-                priority={i === 0}
-                class:list={[
-                  "aspect-4/3 w-full transition-transform duration-500 ease-out-soft",
-                  !product.comingSoon && "group-hover:scale-[.985]",
-                ]}
-              />
-              {product.comingSoon && (
-                <span class="soon-badge absolute top-3 left-3">
-                  Coming soon
-                </span>
-              )}
+    {products.map((product, i) => {
+      const Tag = product.comingSoon ? "div" : "a";
+      return (
+        <Tag
+          href={
+            product.comingSoon ? undefined : pathFor("product", product.slug)
+          }
+          class:list={[
+            "group flex flex-col gap-3",
+            product.comingSoon && "is-soon",
+          ]}
+          aria-disabled={product.comingSoon ? "true" : undefined}
+        >
+          <span class="relative block">
+            <SanityImage
+              image={product.preview}
+              placeholder={`${product.slug} — preview`}
+              width={1120}
+              height={840}
+              sizes="(min-width: 900px) 50vw, 100vw"
+              priority={i === 0}
+              class:list={[
+                "aspect-4/3 w-full transition-transform duration-500 ease-out-soft",
+                !product.comingSoon && "group-hover:scale-[.985]",
+              ]}
+            />
+            {product.comingSoon && (
+              <span class="soon-badge absolute top-3 left-3">Coming soon</span>
+            )}
+          </span>
+          <div class="grid grid-cols-[1fr_auto] items-baseline gap-4 text-[13px]">
+            <span class="font-medium">{product.name}</span>
+            <span class="font-mono text-faint">
+              {product.comingSoon
+                ? "Coming soon"
+                : STATUS_LABEL[product.status]}
             </span>
-            <div class="grid grid-cols-[1fr_auto] items-baseline gap-4 text-[13px]">
-              <span class="font-medium">{product.name}</span>
-              <span class="font-mono text-faint">
-                {product.comingSoon
-                  ? "Coming soon"
-                  : STATUS_LABEL[product.status]}
-              </span>
-            </div>
-            <span class="max-w-[48ch] text-sm leading-normal text-muted text-pretty">
-              {product.tagline}
-            </span>
-          </Tag>
-        );
-      })
-    }
+          </div>
+          <span class="max-w-[48ch] text-sm leading-normal text-muted text-pretty">
+            {product.tagline}
+          </span>
+        </Tag>
+      );
+    })}
   </div>
 </section>

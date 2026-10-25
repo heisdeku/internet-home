@@ -1,165 +1,228 @@
 ---
-import PortableText from '@/components/portable-text/PortableText.astro';
-import SanityImage from '@/components/SanityImage.astro';
-import SmartLink from '@/components/SmartLink.astro';
-import Site from '@/layouts/Site.astro';
-import { buildMeta, siteOrigin } from '@/lib/seo';
-import { breadcrumbNode, creativeWorkNode, siteGraph, webPageNode } from '@/lib/structuredData';
-import { SITE_SETTINGS_QUERY, WORK_QUERY } from '@/sanity/queries';
-import type { WORK_SLUGS_QUERY_RESULT } from '@/sanity/types';
-import ArrowRight from 'reicon-astro/icons/ArrowRight.astro';
-import { sanityClient } from 'sanity:client';
+import PortableText from "@/components/portable-text/PortableText.astro";
+import SanityImage from "@/components/SanityImage.astro";
+import SmartLink from "@/components/SmartLink.astro";
+import Site from "@/layouts/Site.astro";
+import { serial } from "@/lib/format";
+import { buildMeta, siteOrigin } from "@/lib/seo";
+import {
+  breadcrumbNode,
+  creativeWorkNode,
+  siteGraph,
+  webPageNode,
+} from "@/lib/structuredData";
+import { pathFor } from "@/sanity/links";
+import { SITE_SETTINGS_QUERY, WORK_QUERY } from "@/sanity/queries";
+import type { WORK_SLUGS_QUERY_RESULT } from "@/sanity/types";
+import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
+import { sanityClient } from "sanity:client";
 
 export async function getStaticPaths() {
-	const { sanityClient } = await import('sanity:client');
-	const { WORK_SLUGS_QUERY } = await import('@/sanity/queries');
-	const all = await sanityClient.fetch(WORK_SLUGS_QUERY);
-	return all.map((work, i) => ({
-		params: { slug: work.slug },
-		props: { index: i, all },
-	}));
+  const { sanityClient } = await import("sanity:client");
+  const { WORK_SLUGS_QUERY } = await import("@/sanity/queries");
+  const all = await sanityClient.fetch(WORK_SLUGS_QUERY);
+  return all.map((work, i) => ({
+    params: { slug: work.slug },
+    props: { index: i, all },
+  }));
 }
 
 interface Props {
-	index: number;
-	all: WORK_SLUGS_QUERY_RESULT;
+  index: number;
+  all: WORK_SLUGS_QUERY_RESULT;
 }
 
 const { index, all } = Astro.props;
 const { slug } = Astro.params;
-const number = (i: number) => String(i + 1).padStart(2, '0');
 const next = all[(index + 1) % all.length];
 
-const [work, settings] = await Promise.all([sanityClient.fetch(WORK_QUERY, { slug }), sanityClient.fetch(SITE_SETTINGS_QUERY)]);
-if (!work || !settings) return Astro.rewrite('/404');
+const [work, settings] = await Promise.all([
+  sanityClient.fetch(WORK_QUERY, { slug }),
+  sanityClient.fetch(SITE_SETTINGS_QUERY),
+]);
+if (!settings)
+  throw new Error(
+    "Site Settings document is missing. Create it in the Studio.",
+  );
+if (!work) return Astro.rewrite("/404");
 
-const path = `/work/${work.slug}`;
+const path = pathFor("work", work.slug);
 const origin = siteOrigin(settings, Astro.site, Astro.url);
-const meta = buildMeta({ settings, origin, path, seo: work.seo, title: work.title, description: work.summary, og: { kind: 'work', slug: work.slug ?? '' } });
+const meta = buildMeta({
+  settings,
+  origin,
+  path,
+  seo: work.seo,
+  title: work.title,
+  description: work.summary,
+  og: { kind: "work", slug: work.slug },
+});
 const jsonLd = [
-	...siteGraph(origin, settings),
-	webPageNode({ origin, path, name: meta.title, description: meta.description, updatedAt: work._updatedAt }),
-	creativeWorkNode({ origin, path, type: 'CreativeWork', name: work.title ?? '', description: work.summary, url: work.url, updatedAt: work._updatedAt }),
-	breadcrumbNode(origin, [{ name: 'Home', path: '/' }, { name: 'Work', path: '/work' }, { name: work.title ?? '', path }]),
+  ...siteGraph(origin, settings),
+  webPageNode({
+    origin,
+    path,
+    name: meta.title,
+    description: meta.description,
+    updatedAt: work._updatedAt,
+  }),
+  creativeWorkNode({
+    origin,
+    path,
+    type: "CreativeWork",
+    name: work.title,
+    description: work.summary,
+    url: work.url,
+    updatedAt: work._updatedAt,
+  }),
+  breadcrumbNode(origin, [
+    { name: "Home", path: "/" },
+    { name: "Work", path: "/work" },
+    { name: work.title, path },
+  ]),
 ];
 
 const hasBody = (work.body?.length ?? 0) > 0;
 const gallery = work.gallery ?? [];
 const facts: [string, string | null | undefined][] = [
-	['Role', work.role],
-	['Client', work.client],
-	['Timeline', work.timeline],
-	['Year', String(work.year)],
-	['Stack', work.stack],
+  ["Role", work.role],
+  ["Client", work.client],
+  ["Timeline", work.timeline],
+  ["Year", String(work.year)],
+  ["Stack", work.stack],
 ];
 ---
 
 <Site meta={meta} jsonLd={jsonLd} settings={settings}>
-	<main id="main" class="px-gutter">
-		<header data-reveal-stagger class="flex flex-col gap-7 pt-[clamp(56px,9vw,128px)] pb-[clamp(32px,4vw,56px)]">
-			<nav aria-label="Breadcrumb" class="flex flex-wrap gap-3 text-[13px] text-muted">
-				<a href="/work" class="hit link-underline text-muted">Work</a>
-				<span aria-hidden="true">/</span>
-				<span class="font-mono">N°{number(index)}</span>
-				<span aria-hidden="true">/</span>
-				<span>{work.category}</span>
-			</nav>
-			<h1 aria-label={work.title} class="text-[clamp(44px,8vw,128px)] leading-[.95] font-medium tracking-[-.045em] text-balance">
-				{work.title?.split(" ").map((word, i) => <>{i > 0 && " "}<span class="split-word" style={`--i:${i}`}>{word}</span></>)}
-			</h1>
-			<p class="max-w-[52ch] text-[clamp(18px,1.7vw,24px)] leading-[1.4] tracking-[-.01em] text-body text-pretty">{work.summary}</p>
-		</header>
+  <main id="main" class="px-gutter">
+    <header
+      data-reveal-stagger
+      class="flex flex-col gap-7 pt-[clamp(56px,9vw,128px)] pb-[clamp(32px,4vw,56px)]"
+    >
+      <nav
+        aria-label="Breadcrumb"
+        class="flex flex-wrap gap-3 text-[13px] text-muted"
+      >
+        <a href="/work" class="hit link-underline text-muted">
+          Work
+        </a>
+        <span aria-hidden="true">/</span>
+        <span class="font-mono">N°{serial(index)}</span>
+        <span aria-hidden="true">/</span>
+        <span>{work.category}</span>
+      </nav>
+      <h1
+        aria-label={work.title}
+        class="text-[clamp(44px,8vw,128px)] leading-[.95] font-medium tracking-[-.045em] text-balance"
+      >
+        {work.title?.split(" ").map((word, i) => (
+          <>
+            {i > 0 && " "}
+            <span class="split-word" style={`--i:${i}`}>
+              {word}
+            </span>
+          </>
+        ))}
+      </h1>
+      <p class="max-w-[52ch] text-[clamp(18px,1.7vw,24px)] leading-[1.4] tracking-[-.01em] text-body text-pretty">
+        {work.summary}
+      </p>
+    </header>
 
-		<div transition:name={`work-${work.slug}`} class="work-media relative">
-			<SanityImage
-				image={work.heroImage}
-				placeholder={`${work.slug} — hero image / video`}
-				width={1600}
-				height={900}
-				priority
-				sizes="100vw"
-				class="aspect-video w-full"
-			/>
-		</div>
+    <div transition:name={`work-${work.slug}`} class="work-media relative">
+      <SanityImage
+        image={work.heroImage}
+        placeholder={`${work.slug} — hero image / video`}
+        width={1600}
+        height={900}
+        priority
+        sizes="100vw"
+        class="aspect-video w-full"
+      />
+    </div>
 
-		<div class="grid gap-x-[clamp(32px,5vw,96px)] gap-y-12 pt-[clamp(48px,6vw,96px)] pb-[clamp(64px,8vw,120px)] md:grid-cols-[minmax(0,1fr)_minmax(240px,300px)]">
-			<!-- The fact sheet stays in view beside the long read, as in a printed case study. -->
-			<aside data-reveal-stagger class="flex flex-col gap-6 text-sm md:sticky md:top-24 md:order-last md:max-h-[calc(100vh-7rem)] md:self-start md:overflow-y-auto">
-				{
-					facts.map(([label, value]) => value && (
-						<div class="flex flex-col gap-1.5 border-t border-line pt-3">
-							<span class="label">{label}</span>
-							<span class="text-pretty">{value}</span>
-						</div>
-					))
-				}
-				{
-					work.collaborators && work.collaborators.length > 0 && (
-						<div class="flex flex-col gap-1.5 border-t border-line pt-3">
-							<span class="label">Team</span>
-							<ul class="flex flex-col gap-0.5">
-								<li>{settings.fullName}</li>
-								{work.collaborators.map((name) => <li>{name}</li>)}
-							</ul>
-						</div>
-					)
-				}
-				{
-					work.scope && work.scope.length > 0 && (
-						<div class="flex flex-col gap-1.5 border-t border-line pt-3">
-							<span class="label">Scope</span>
-							<ul class="flex flex-col gap-1">
-								{work.scope.map((item, i) => (
-									<li class="grid grid-cols-[28px_1fr] gap-1">
-										<span class="pt-0.75 font-mono text-[11px] text-accent">{number(i)}</span>
-										<span>{item}</span>
-									</li>
-								))}
-							</ul>
-						</div>
-					)
-				}
-				{
-					work.links && work.links.length > 0 && (
-						<div class="flex flex-col gap-1.5 border-t border-line pt-3">
-							<span class="label">Links</span>
-							<ul class="flex flex-col gap-1">
-								{work.links.map((link) => (
-									<li>
-										<SmartLink link={link} resumeUrl={settings.resumeUrl} icon="auto" class="group inline-flex items-center gap-1.5 font-medium text-accent" />
-									</li>
-								))}
-							</ul>
-						</div>
-					)
-				}
-			</aside>
+    <div class="grid gap-x-[clamp(32px,5vw,96px)] gap-y-12 pt-[clamp(48px,6vw,96px)] pb-[clamp(64px,8vw,120px)] md:grid-cols-[minmax(0,1fr)_minmax(240px,300px)]">
+      <!-- The fact sheet stays in view beside the long read, as in a printed case study. -->
+      <aside
+        data-reveal-stagger
+        class="flex flex-col gap-6 text-sm md:sticky md:top-24 md:order-last md:self-start"
+      >
+        {facts.map(
+          ([label, value]) =>
+            value && (
+              <div class="flex flex-col gap-1.5 border-t border-line pt-3">
+                <span class="label">{label}</span>
+                <span class="text-pretty">{value}</span>
+              </div>
+            ),
+        )}
+        {work.collaborators && work.collaborators.length > 0 && (
+          <div class="flex flex-col gap-1.5 border-t border-line pt-3">
+            <span class="label">Team</span>
+            <ul class="flex flex-col gap-0.5">
+              <li>{settings.fullName}</li>
+              {work.collaborators.map((name) => (
+                <li>{name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {work.links && work.links.length > 0 && (
+          <div class="flex flex-col gap-1.5 border-t border-line pt-3">
+            <span class="label">Links</span>
+            <ul class="flex flex-col gap-1">
+              {work.links.map((link) => (
+                <li>
+                  <SmartLink
+                    link={link}
+                    resumeUrl={settings.resumeUrl}
+                    icon="auto"
+                    class="group inline-flex items-center gap-1.5 font-medium text-accent"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </aside>
 
-			<article data-reveal class="case-body flex min-w-0 flex-col gap-5 text-[17px] leading-[1.6] text-ink-soft">
-				{hasBody ? <PortableText value={work.body!} /> : null}
-				{
-					gallery.length > 0 && (
-						<div class="grid gap-[clamp(16px,2vw,24px)] pt-6 md:grid-cols-2">
-							{gallery.map((image, i) => (
-								<SanityImage image={image} placeholder={`gallery ${number(i)}`} width={960} height={1200} class="aspect-4/5 w-full" />
-							))}
-						</div>
-					)
-				}
-			</article>
-		</div>
+      <article
+        data-reveal
+        class="case-body flex min-w-0 flex-col gap-5 text-[17px] leading-[1.6] text-ink-soft"
+      >
+        {hasBody ? <PortableText value={work.body!} /> : null}
+        {gallery.length > 0 && (
+          <div class="grid gap-[clamp(16px,2vw,24px)] pt-6 md:grid-cols-2">
+            {gallery.map((image, i) => (
+              <SanityImage
+                image={image}
+                placeholder={`gallery ${serial(i)}`}
+                width={960}
+                height={1200}
+                class="aspect-4/5 w-full"
+              />
+            ))}
+          </div>
+        )}
+      </article>
+    </div>
+  </main>
 
-	</main>
-
-	<nav aria-label="Next project">
-	<a
-		href={`/work/${next.slug}`}
-		class="group px-gutter flex flex-col gap-3 bg-accent py-[clamp(56px,8vw,112px)] text-white transition-colors hover:bg-accent-dark hover:text-white"
-	>
-		<span class="text-[13px] text-accent-pale">Next project — N°{number((index + 1) % all.length)}</span>
-		<span class="inline-flex items-center gap-[.2em] text-[clamp(36px,6vw,96px)] leading-none font-medium tracking-[-.04em]">
-			{next.title} <ArrowRight class="icon-inline size-[.8em]" style="--icon-nudge:translateX(.15em)" />
-		</span>
-	</a>
-	</nav>
+  <nav aria-label="Next project">
+    <a
+      href={pathFor("work", next.slug)}
+      class="group px-gutter flex flex-col gap-3 bg-accent py-[clamp(56px,8vw,112px)] text-white transition-colors hover:bg-accent-dark hover:text-white"
+    >
+      <span class="text-[13px] text-accent-pale">
+        Next project — N°{serial((index + 1) % all.length)}
+      </span>
+      <span class="inline-flex items-center gap-[.2em] text-[clamp(36px,6vw,96px)] leading-none font-medium tracking-[-.04em]">
+        {next.title}{" "}
+        <ArrowRight
+          class="icon-inline size-[.8em]"
+          style="--icon-nudge:translateX(.15em)"
+        />
+      </span>
+    </a>
+  </nav>
 </Site>

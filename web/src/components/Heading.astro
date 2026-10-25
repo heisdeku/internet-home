@@ -30,9 +30,6 @@ const DEFAULT_SIZE: Record<string, Size> = {
 
 const SPLIT_SIZES = new Set<Size>(["XL", "XXL", "3XL"]);
 
-// Wraps each word in a span whose index staggers its rise (see .split-word in global.css).
-// Done here rather than in the browser so the first paint already carries the animation.
-// A rotating word, and its screen-reader copy, keep their own markup.
 function splitWords(markup: string) {
   let index = 0;
   let inWhole = false;
@@ -76,6 +73,7 @@ const escaped = (value?.text ?? "")
       return `<span class="whitespace-nowrap">${open}<span class="sr-only">${list[0]}</span><span class="rotate-word" data-rotate data-words="${list.join("|")}" aria-hidden="true">${list[0]}</span>${close}</span>`;
     },
   );
+  
 const split = SPLIT_SIZES.has(resolvedSize);
 const html = split ? splitWords(escaped) : escaped;
 const label = split
@@ -90,12 +88,10 @@ const label = split
   : undefined;
 ---
 
-{
-  value?.text && (
-    <Tag
-      class:list={["text-pretty", SIZE_CLASS[resolvedSize], className]}
-      aria-label={label}
-      set:html={html}
-    />
-  )
-}
+{value?.text && (
+  <Tag
+    class:list={["text-pretty", SIZE_CLASS[resolvedSize], className]}
+    aria-label={label}
+    set:html={html}
+  />
+)}

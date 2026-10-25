@@ -5,6 +5,7 @@ import Base from "@/layouts/Base.astro";
 import Site from "@/layouts/Site.astro";
 import { buildMeta, siteName, siteOrigin } from "@/lib/seo";
 import { breadcrumbNode, siteGraph, webPageNode } from "@/lib/structuredData";
+import { pathFor } from "@/sanity/links";
 import { SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import type { OUTREACH_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity/types";
 import { sanityClient } from "sanity:client";
@@ -24,11 +25,7 @@ if (!settings)
 
 const isOutreach = page._type === "outreach";
 const isHome = !isOutreach && page.slug === "home";
-const path = isOutreach
-  ? `/intro/${page.slug}`
-  : isHome
-    ? "/"
-    : `/${page.slug}`;
+const path = pathFor(page._type, page.slug);
 const origin = siteOrigin(settings, Astro.site, Astro.url);
 
 let title = page.title;
@@ -41,7 +38,7 @@ const meta = buildMeta({
   path,
   seo: page.seo,
   title,
-  og: { kind: isOutreach ? "outreach" : "page", slug: page.slug ?? "home" },
+  og: { kind: page._type, slug: page.slug },
   noIndex: isOutreach,
 });
 
@@ -59,34 +56,34 @@ const jsonLd = [
     : [
         breadcrumbNode(origin, [
           { name: "Home", path: "/" },
-          { name: page.title ?? "", path },
+          { name: page.title, path },
         ]),
       ]),
 ];
 ---
 
-{
-  page.chrome === "minimal" ? (
-    <Base
-      meta={meta}
-      jsonLd={jsonLd}
-      theme={page.theme ?? "paper"}
-      recipient={isOutreach ? page.recipient : null}
-      portraitUrl={settings.portraitUrl}
-    >
-      <a href="#main" class="skip-link">Skip to content</a>
-      <div class="flex min-h-screen flex-col">
-        <MinimalHeader settings={settings} />
-        <main id="main" class="flex flex-1 flex-col">
-          <PageBuilder sections={sections} settings={settings} />
-        </main>
-      </div>
-    </Base>
-  ) : (
-    <Site meta={meta} jsonLd={jsonLd} settings={settings}>
-      <main id="main">
+{page.chrome === "minimal" ? (
+  <Base
+    meta={meta}
+    jsonLd={jsonLd}
+    theme={page.theme ?? "paper"}
+    recipient={isOutreach ? page.recipient : null}
+    portraitUrl={settings.portraitUrl}
+  >
+    <a href="#main" class="skip-link">
+      Skip to content
+    </a>
+    <div class="flex min-h-screen flex-col">
+      <MinimalHeader settings={settings} />
+      <main id="main" class="flex flex-1 flex-col">
         <PageBuilder sections={sections} settings={settings} />
       </main>
-    </Site>
-  )
-}
+    </div>
+  </Base>
+) : (
+  <Site meta={meta} jsonLd={jsonLd} settings={settings}>
+    <main id="main">
+      <PageBuilder sections={sections} settings={settings} />
+    </main>
+  </Site>
+)}

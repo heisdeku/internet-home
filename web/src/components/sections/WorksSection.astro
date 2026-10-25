@@ -3,6 +3,8 @@ import Heading from "@/components/Heading.astro";
 import type { Section } from "@/components/PageBuilder.astro";
 import SanityImage from "@/components/SanityImage.astro";
 import SmartLink from "@/components/SmartLink.astro";
+import { serial } from "@/lib/format";
+import { pathFor } from "@/sanity/links";
 import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
 
 interface Props {
@@ -14,7 +16,6 @@ const { section, resumeUrl } = Astro.props;
 const all = section.works ?? [];
 // The home page shows a handful; the Work page shows everything with filters.
 const works = section.limit ? all.slice(0, section.limit) : all;
-const number = (i: number) => String(i + 1).padStart(2, "0");
 
 const categories = section.showFilters
   ? [...new Set(works.map((work) => work.category).filter(Boolean))]
@@ -28,69 +29,67 @@ const categories = section.showFilters
   data-works
   data-view={section.defaultView ?? "grid"}
 >
-  <div
-    class="mb-6 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 border-b border-line pb-4 text-[13px]"
-  >
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 border-b border-line pb-4 text-[13px]">
     <div class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
       <span class="flex items-baseline gap-2">
         <Heading value={section.heading} size="XS" />
-        <span class="font-mono text-[13px] text-faint"
-          >(<span data-works-count>{String(works.length).padStart(2, "0")}</span
-          >)</span
-        >
+        <span class="font-mono text-[13px] text-faint">
+          (<span data-works-count>{String(works.length).padStart(2, "0")}</span>
+          )
+        </span>
       </span>
-      {
-        section.link && (
-          <SmartLink
-            link={section.link}
-            resumeUrl={resumeUrl}
-            icon="auto"
-            class="group inline-flex items-center gap-1 text-[13px] text-muted hover:text-accent"
-          />
-        )
-      }
+      {section.link && (
+        <SmartLink
+          link={section.link}
+          resumeUrl={resumeUrl}
+          icon="auto"
+          class="group inline-flex items-center gap-1 text-[13px] text-muted hover:text-accent"
+        />
+      )}
     </div>
-    {
-      categories.length > 1 && (
-        <div
-          class="flex flex-wrap items-center gap-1.5 text-xs"
-          role="group"
-          aria-label="Filter by category"
+    {categories.length > 1 && (
+      <div
+        class="flex flex-wrap items-center gap-1.5 text-xs"
+        role="group"
+        aria-label="Filter by category"
+      >
+        <button
+          type="button"
+          data-filter="all"
+          class="work-filter"
+          aria-pressed="true"
         >
+          All
+        </button>
+        {categories.map((category) => (
           <button
             type="button"
-            data-filter="all"
+            data-filter={category}
             class="work-filter"
-            aria-pressed="true"
+            aria-pressed="false"
           >
-            All
+            {category}
           </button>
-          {categories.map((category) => (
-            <button
-              type="button"
-              data-filter={category}
-              class="work-filter"
-              aria-pressed="false"
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      )
-    }
+        ))}
+      </div>
+    )}
     <div class="flex gap-4" role="group" aria-label="Layout">
       <button
         type="button"
         data-set-view="grid"
         class="hit cursor-pointer text-muted transition-colors hover:text-ink aria-pressed:text-ink"
-        aria-pressed={(section.defaultView ?? "grid") === "grid"}>Grid</button
+        aria-pressed={(section.defaultView ?? "grid") === "grid"}
       >
+        Grid
+      </button>
       <button
         type="button"
         data-set-view="index"
         class="hit cursor-pointer text-muted transition-colors hover:text-ink aria-pressed:text-ink"
-        aria-pressed={section.defaultView === "index"}>Index</button
+        aria-pressed={section.defaultView === "index"}
       >
+        Index
+      </button>
     </div>
   </div>
 
@@ -98,109 +97,101 @@ const categories = section.showFilters
     data-view-panel="grid"
     class="dim-siblings grid grid-cols-[repeat(auto-fill,minmax(min(100%,420px),1fr))] gap-x-[clamp(16px,2vw,24px)] gap-y-[clamp(16px,2vw,28px)]"
   >
-    {
-      works.map((work, i) => {
-        const Tag = work.comingSoon ? "div" : "a";
-        return (
-          <Tag
-            href={work.comingSoon ? undefined : `/work/${work.slug}`}
-            class:list={[
-              "group flex flex-col gap-3",
-              work.comingSoon && "is-soon",
-            ]}
-            data-work-item
-            data-category={work.category}
-            aria-disabled={work.comingSoon ? "true" : undefined}
+    {works.map((work, i) => {
+      const Tag = work.comingSoon ? "div" : "a";
+      return (
+        <Tag
+          href={work.comingSoon ? undefined : pathFor("work", work.slug)}
+          class:list={[
+            "group flex flex-col gap-3",
+            work.comingSoon && "is-soon",
+          ]}
+          data-work-item
+          data-category={work.category}
+          aria-disabled={work.comingSoon ? "true" : undefined}
+        >
+          <span
+            class="work-media relative block"
+            transition:name={work.comingSoon ? undefined : `work-${work.slug}`}
           >
-            <span
-              class="work-media relative block"
-              transition:name={
-                work.comingSoon ? undefined : `work-${work.slug}`
-              }
-            >
+            <SanityImage
+              image={work.heroImage}
+              placeholder={`${work.slug} — screenshot / video`}
+              width={1120}
+              height={840}
+              sizes="(min-width: 900px) 50vw, 100vw"
+              priority={i === 0}
+              class:list={[
+                "aspect-4/3 w-full transition-transform duration-500 ease-out-soft",
+                !work.comingSoon && "group-hover:scale-[.985]",
+              ]}
+            />
+            {work.comingSoon && (
+              <span class="soon-badge absolute top-3 left-3">Coming soon</span>
+            )}
+            {!work.comingSoon && work.hoverImage && (
               <SanityImage
-                image={work.heroImage}
-                placeholder={`${work.slug} — screenshot / video`}
+                image={work.hoverImage}
+                placeholder=""
                 width={1120}
                 height={840}
                 sizes="(min-width: 900px) 50vw, 100vw"
-                priority={i === 0}
-                class:list={[
-                  "aspect-4/3 w-full transition-transform duration-500 ease-out-soft",
-                  !work.comingSoon && "group-hover:scale-[.985]",
-                ]}
+                class="work-hover absolute inset-0 aspect-4/3 w-full"
               />
-              {work.comingSoon && (
-                <span class="soon-badge absolute top-3 left-3">
-                  Coming soon
-                </span>
-              )}
-              {!work.comingSoon && work.hoverImage && (
-                <SanityImage
-                  image={work.hoverImage}
-                  placeholder=""
-                  width={1120}
-                  height={840}
-                  sizes="(min-width: 900px) 50vw, 100vw"
-                  class="work-hover absolute inset-0 aspect-4/3 w-full"
-                />
-              )}
-            </span>
-            <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-4 text-[13px]">
-              <span class="font-medium">{work.title}</span>
-              <span class="text-muted">{work.category}</span>
-              <span class="font-mono text-faint">N°{number(i)}</span>
-            </div>
-          </Tag>
-        );
-      })
-    }
+            )}
+          </span>
+          <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-4 text-[13px]">
+            <span class="font-medium">{work.title}</span>
+            <span class="text-muted">{work.category}</span>
+            <span class="font-mono text-faint">N°{serial(i)}</span>
+          </div>
+        </Tag>
+      );
+    })}
   </div>
 
   <div data-view-panel="index" class="dim-siblings flex flex-col max-md:gap-4">
-    {
-      works.map((work, i) => {
-        // Coming-soon works are listed but not linked.
-        const Tag = work.comingSoon ? "div" : "a";
-        return (
-          <Tag
-            href={work.comingSoon ? undefined : `/work/${work.slug}`}
-            class:list={[
-              "group grid gap-x-6 gap-y-2 text-sm max-md:py-4 md:border-b md:border-line md:py-5.5 md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]",
-              !work.comingSoon &&
-                "md:row-slide md:transition-colors md:duration-300",
-              work.comingSoon && "is-soon",
-            ]}
-            data-work-item
-            data-category={work.category}
-            aria-disabled={work.comingSoon ? "true" : undefined}
-          >
-            <span class="font-mono text-xs text-faint max-md:hidden">
-              N°{number(i)} — {work.year}
-            </span>
-            <span class="text-lg font-medium tracking-[-.01em] max-md:w-fit max-md:text-[17px] max-md:underline max-md:decoration-line max-md:decoration-dotted max-md:underline-offset-6">
-              {work.title}
-            </span>
-            <span class="max-w-[60ch] leading-normal text-muted text-pretty md:col-span-2">
-              {work.summary}
-            </span>
-            <span class="inline-flex items-center gap-1.5 text-[13px] max-md:hidden md:justify-self-end">
-              {work.comingSoon ? (
-                <span class="soon-badge">Coming soon</span>
-              ) : (
-                <>
-                  Case study{" "}
-                  <ArrowRight
-                    class="icon-inline"
-                    style="--icon-nudge:translateX(4px)"
-                  />
-                </>
-              )}
-            </span>
-          </Tag>
-        );
-      })
-    }
+    {works.map((work, i) => {
+      // Coming-soon works are listed but not linked.
+      const Tag = work.comingSoon ? "div" : "a";
+      return (
+        <Tag
+          href={work.comingSoon ? undefined : pathFor("work", work.slug)}
+          class:list={[
+            "group grid gap-x-6 gap-y-2 text-sm max-md:py-4 md:border-b md:border-line md:py-5.5 md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]",
+            !work.comingSoon &&
+              "md:row-slide md:transition-colors md:duration-300",
+            work.comingSoon && "is-soon",
+          ]}
+          data-work-item
+          data-category={work.category}
+          aria-disabled={work.comingSoon ? "true" : undefined}
+        >
+          <span class="font-mono text-xs text-faint max-md:hidden">
+            N°{serial(i)} — {work.year}
+          </span>
+          <span class="text-lg font-medium tracking-[-.01em] max-md:w-fit max-md:text-[17px] max-md:underline max-md:decoration-line max-md:decoration-dotted max-md:underline-offset-6">
+            {work.title}
+          </span>
+          <span class="max-w-[60ch] leading-normal text-muted text-pretty md:col-span-2">
+            {work.summary}
+          </span>
+          <span class="inline-flex items-center gap-1.5 text-[13px] max-md:hidden md:justify-self-end">
+            {work.comingSoon ? (
+              <span class="soon-badge">Coming soon</span>
+            ) : (
+              <>
+                Case study{" "}
+                <ArrowRight
+                  class="icon-inline"
+                  style="--icon-nudge:translateX(4px)"
+                />
+              </>
+            )}
+          </span>
+        </Tag>
+      );
+    })}
   </div>
 </section>
 

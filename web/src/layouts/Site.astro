@@ -1,27 +1,29 @@
 ---
-import SiteFooter from '@/components/SiteFooter.astro';
-import SiteHeader from '@/components/SiteHeader.astro';
-import Base from '@/layouts/Base.astro';
-import type { PageMeta, Settings } from '@/lib/seo';
-import type { JsonLdNode } from '@/lib/structuredData';
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import Base from "@/layouts/Base.astro";
+import type { PageMeta, Settings } from "@/lib/seo";
+import type { JsonLdNode } from "@/lib/structuredData";
 
 /** Full site chrome around a page. */
 interface Props {
-	meta: PageMeta;
-	jsonLd: JsonLdNode[];
-	settings: Settings;
+  meta: PageMeta;
+  jsonLd: JsonLdNode[];
+  settings: Settings;
 }
 
 const { meta, jsonLd, settings } = Astro.props;
 ---
 
 <Base meta={meta} jsonLd={jsonLd} portraitUrl={settings.portraitUrl}>
-	<a href="#main" class="skip-link">Skip to content</a>
-	<div class="flex min-h-screen flex-col">
-		<SiteHeader settings={settings} />
-		<div class="flex-1">
-			<slot />
-		</div>
-		<SiteFooter settings={settings} />
-	</div>
+  <a href="#main" class="skip-link">
+    Skip to content
+  </a>
+  <div class="flex min-h-screen flex-col">
+    <SiteHeader settings={settings} />
+    <div class="flex-1">
+      <slot />
+    </div>
+    <SiteFooter settings={settings} />
+  </div>
 </Base>

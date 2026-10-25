@@ -21,53 +21,49 @@ const { section, resumeUrl } = Astro.props;
 >
   <Heading value={section.heading} size="XS" />
   <div class="col-span-2 flex flex-col gap-14">
-    <div
-      class="flex max-w-[62ch] flex-col gap-4 text-[13px] leading-[1.6] text-ink-soft md:text-[15px]"
-    >
+    <div class="flex max-w-[62ch] flex-col gap-4 text-[13px] leading-[1.6] text-ink-soft md:text-[15px]">
       <PortableText value={section.body} />
     </div>
-    {
-      section.columns && section.columns.length > 0 && (
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-10 text-sm">
-          {section.columns.map((column) => (
-            <div
-              class="flex flex-col gap-3.5"
-              data-reveal-stagger
-              style="--reveal-step:60ms"
-            >
-              <span class="label">{column.label}</span>
-              {column.source === "experience"
-                ? section.companies.map((item) => (
-                    <BrandLink
-                      label={item.company ?? ""}
-                      href={item.url}
-                      logoUrl={item.logo}
-                      color={item.brandColor}
-                      mode="slide"
-                      class="border-b border-line-soft pb-3"
-                    />
-                  ))
-                : (column.tools ?? []).map((tool) => (
-                    <BrandLink
-                      label={tool.name}
-                      href={tool.url}
-                      path={tool.icon}
-                      mode="slide"
-                      class="border-b border-line-soft pb-3"
-                    />
-                  ))}
-              {column.link && (
-                <SmartLink
-                  link={column.link}
-                  resumeUrl={resumeUrl}
-                  icon="auto"
-                  class="font-medium text-accent"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      )
-    }
+    {section.columns && section.columns.length > 0 && (
+      <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-10 text-sm">
+        {section.columns.map((column) => (
+          <div
+            class="flex flex-col gap-3.5"
+            data-reveal-stagger
+            style="--reveal-step:60ms"
+          >
+            <span class="label">{column.label}</span>
+            {column.source === "experience"
+              ? section.companies.map((item) => (
+                  <BrandLink
+                    label={item.company ?? ""}
+                    href={item.url}
+                    logoUrl={item.logo}
+                    color={item.brandColor}
+                    mode="slide"
+                    class="border-b border-line-soft pb-3"
+                  />
+                ))
+              : (column.tools ?? []).map((tool) => (
+                  <BrandLink
+                    label={tool.name}
+                    href={tool.url}
+                    path={tool.icon}
+                    mode="slide"
+                    class="border-b border-line-soft pb-3"
+                  />
+                ))}
+            {column.link && (
+              <SmartLink
+                link={column.link}
+                resumeUrl={resumeUrl}
+                icon="auto"
+                class="font-medium text-accent"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    )}
   </div>
 </section>

@@ -6,33 +6,31 @@ type Props = BlockProps;
 const { node } = Astro.props;
 ---
 
-{
-  (() => {
-    switch (node.style) {
-      case "h2":
-        return (
-          <h2 class="mt-6 text-[26px] leading-[1.2] font-medium tracking-[-.02em]">
-            <slot />
-          </h2>
-        );
-      case "h3":
-        return (
-          <h3 class="mt-4 text-[21px] leading-tight font-medium tracking-[-.015em]">
-            <slot />
-          </h3>
-        );
-      case "blockquote":
-        return (
-          <blockquote class="my-2 border-l-2 border-current/40 pl-5 text-[1.2em] leading-[1.4] tracking-[-.01em]">
-            <slot />
-          </blockquote>
-        );
-      default:
-        return (
-          <p class="text-pretty">
-            <slot />
-          </p>
-        );
-    }
-  })()
-}
+{(() => {
+  switch (node.style) {
+    case "h2":
+      return (
+        <h2 class="mt-6 text-[26px] leading-[1.2] font-medium tracking-[-.02em]">
+          <slot />
+        </h2>
+      );
+    case "h3":
+      return (
+        <h3 class="mt-4 text-[21px] leading-tight font-medium tracking-[-.015em]">
+          <slot />
+        </h3>
+      );
+    case "blockquote":
+      return (
+        <blockquote class="my-2 border-l-2 border-current/40 pl-5 text-[1.2em] leading-[1.4] tracking-[-.01em]">
+          <slot />
+        </blockquote>
+      );
+    default:
+      return (
+        <p class="text-pretty">
+          <slot />
+        </p>
+      );
+  }
+})()}

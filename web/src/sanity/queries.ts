@@ -5,11 +5,17 @@ const LINK = `{ ..., internal->{ _type, "slug": slug.current, comingSoon } }`;
 const HEADING = `{ text, type, fontSize }`;
 const SEO = `{ metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }`;
 
+// Proportions of the image as shown: a cropped image (e.g. one screen cut from a Figma board) uses its crop, not the whole asset.
+const ASPECT = `"aspectRatio": select(
+  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),
+  asset->metadata.dimensions.aspectRatio
+)`;
+
 const RICH_TEXT = `[]{
   ...,
   markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },
-  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio },
-  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": asset->metadata.dimensions.aspectRatio } },
+  _type == "image" => { "lqip": asset->metadata.lqip, ${ASPECT} },
+  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, ${ASPECT} } },
   _type == "video" => { "url": coalesce(file.asset->url, url), poster ${IMAGE} }
 }`;
 const BODY = `body${RICH_TEXT}`;
@@ -92,7 +98,7 @@ export const WORK_SLUGS_QUERY =
 export const WORK_QUERY =
   defineQuery(`*[_type == "work" && slug.current == $slug][0]{
   _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,
-  links[] ${LINK}, summary, scope, heroImage ${IMAGE}, hoverImage ${IMAGE}, gallery[] ${IMAGE}, ${BODY}, seo ${SEO}
+  links[] ${LINK}, summary, heroImage ${IMAGE}, hoverImage ${IMAGE}, gallery[] ${IMAGE}, ${BODY}, seo ${SEO}
 }`);
 
 export const PRODUCTS_QUERY = defineQuery(

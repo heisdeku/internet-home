@@ -1,57 +1,68 @@
 ---
-import CopyEmail from '@/components/CopyEmail.astro';
-import ListeningNow from '@/components/ListeningNow.astro';
-import SmartLink from '@/components/SmartLink.astro';
-import { socialIcon } from '@/lib/socialIcons';
-import { opensInNewTab, resolveHref } from '@/sanity/links';
-import type { SITE_SETTINGS_QUERY_RESULT } from '@/sanity/types';
+import CopyEmail from "@/components/CopyEmail.astro";
+import ListeningNow from "@/components/ListeningNow.astro";
+import SmartLink from "@/components/SmartLink.astro";
+import { socialIcon } from "@/lib/socialIcons";
+import type { Settings } from "@/lib/seo";
+import { opensInNewTab, resolveHref } from "@/sanity/links";
 
 interface Props {
-	settings: NonNullable<SITE_SETTINGS_QUERY_RESULT>;
+  settings: Settings;
 }
 
 const { settings } = Astro.props;
 ---
 
 <footer
-	id="contact"
-	class="px-gutter flex flex-col gap-[clamp(64px,10vw,140px)] bg-ink pt-[clamp(64px,10vw,140px)] pb-7 text-paper"
+  id="contact"
+  class="px-gutter flex flex-col gap-[clamp(64px,10vw,140px)] bg-ink pt-[clamp(64px,10vw,140px)] pb-7 text-paper"
 >
-	<div class="flex flex-col gap-5">
-		{settings.footerPrompt && <span class="text-[13px] text-mist">{settings.footerPrompt}</span>}
-		{settings.email && <CopyEmail email={settings.email} />}
-	</div>
-	<!-- Phones: wordmark and year on one row, the links together on the next. From md the links spread across columns. -->
-	<div
-		class="flex flex-wrap items-center gap-x-6 gap-y-5 text-[13px] text-mist md:grid md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:gap-y-4"
-	>
-		<span class="font-semibold tracking-[.08em] uppercase text-paper">{settings.displayName}</span>
-		<div class="flex flex-wrap items-center gap-x-6 gap-y-2 max-md:order-last max-md:basis-full">
-			{
-				settings.footerLinks?.map((link) => {
-					const href = resolveHref(link, settings.resumeUrl);
-					const icon = link.type === 'external' && href ? socialIcon(href) : null;
-					// Known networks show their mark before the label; other links keep the arrow.
-					return icon && href ? (
-						<a
-							href={href}
-							target={opensInNewTab(link) ? '_blank' : undefined}
-							rel={opensInNewTab(link) ? 'noopener' : undefined}
-							class="hit inline-flex items-center gap-2 text-paper transition-colors hover:text-accent-light"
-						>
-							<svg viewBox="0 0 24 24" fill="currentColor" class="size-4 shrink-0" aria-hidden="true">
-								<path d={icon.path} />
-							</svg>
-							{link.label ?? icon.title}
-						</a>
-					) : (
-						<SmartLink link={link} resumeUrl={settings.resumeUrl} icon="auto" class="text-paper hover:text-accent-light" />
-					);
-				})
-			}
-		</div>
-		<span class="font-mono max-md:ml-auto md:justify-self-end">© {new Date().getFullYear()}</span>
-	</div>
+  <div class="flex flex-col gap-5">
+    {settings.footerPrompt && (
+      <span class="text-[13px] text-mist">{settings.footerPrompt}</span>
+    )}
+    {settings.email && <CopyEmail email={settings.email} />}
+  </div>
+
+  <div class="flex flex-wrap items-center gap-x-6 gap-y-5 text-[13px] text-mist md:grid md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] md:gap-y-4">
+    <span class="font-semibold tracking-[.08em] uppercase text-paper">
+      {settings.displayName}
+    </span>
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2 max-md:order-last max-md:basis-full">
+      {settings.footerLinks?.map((link) => {
+        const href = resolveHref(link, settings.resumeUrl);
+        const icon = link.type === "external" && href ? socialIcon(href) : null;
+        return icon && href ? (
+          <a
+            href={href}
+            target={opensInNewTab(link) ? "_blank" : undefined}
+            rel={opensInNewTab(link) ? "noopener" : undefined}
+            class="hit inline-flex items-center gap-2 text-paper transition-colors hover:text-accent-light"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="size-4 shrink-0"
+              aria-hidden="true"
+            >
+              <path d={icon.path} />
+            </svg>
+            {link.label ?? icon.title}
+          </a>
+        ) : (
+          <SmartLink
+            link={link}
+            resumeUrl={settings.resumeUrl}
+            icon="auto"
+            class="text-paper hover:text-accent-light"
+          />
+        );
+      })}
+    </div>
+    <span class="font-mono max-md:ml-auto md:justify-self-end">
+      © {new Date().getFullYear()}
+    </span>
+  </div>
 </footer>
 
 {settings.showListeningPlayer && <ListeningNow />}

@@ -1,132 +1,140 @@
 ---
-import JsonLd from '@/components/JsonLd.astro';
-import type { PageMeta } from '@/lib/seo';
-import type { JsonLdNode } from '@/lib/structuredData';
-import '@/styles/global.css';
-import { Font } from 'astro:assets';
-import { ClientRouter } from 'astro:transitions';
+import JsonLd from "@/components/JsonLd.astro";
+import type { PageMeta } from "@/lib/seo";
+import type { JsonLdNode } from "@/lib/structuredData";
+import "@/styles/global.css";
+import { Font } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
-	meta: PageMeta;
-	jsonLd: JsonLdNode[];
-	theme?: 'paper' | 'accent';
-	recipient?: string | null;
-	portraitUrl?: string | null;
+  meta: PageMeta;
+  jsonLd: JsonLdNode[];
+  theme?: "paper" | "accent";
+  recipient?: string | null;
+  portraitUrl?: string | null;
 }
 
-const { meta, jsonLd, theme = 'paper', recipient, portraitUrl } = Astro.props;
-const icon = (size: number) => `${portraitUrl}?w=${size}&h=${size}&fit=crop&fm=png`;
-const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
+const { meta, jsonLd, theme = "paper", recipient, portraitUrl } = Astro.props;
+const icon = (size: number) =>
+  `${portraitUrl}?w=${size}&h=${size}&fit=crop&fm=png`;
+const background = theme === "accent" ? "#2a51c8" : "#f1f1ef";
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const brimbleId = import.meta.env.PUBLIC_BRIMBLE_WEBSITE_ID;
 const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<ClientRouter />
-		<meta name="theme-color" content={background} />
-		{
-			portraitUrl ? (
-				<>
-					<link rel="icon" type="image/png" sizes="32x32" href={icon(32)} />
-					<link rel="icon" type="image/png" sizes="192x192" href={icon(192)} />
-					<link rel="apple-touch-icon" sizes="180x180" href={icon(180)} />
-				</>
-			) : (
-				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-			)
-		}
-		<link rel="preconnect" href="https://cdn.sanity.io" />
-		<Font cssVariable="--font-geist" preload />
-		<Font cssVariable="--font-geist-mono" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
+    <meta name="theme-color" content={background} />
+    {portraitUrl ? (
+      <>
+        <link rel="icon" type="image/png" sizes="32x32" href={icon(32)} />
+        <link rel="icon" type="image/png" sizes="192x192" href={icon(192)} />
+        <link rel="apple-touch-icon" sizes="180x180" href={icon(180)} />
+      </>
+    ) : (
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    )}
+    <link rel="preconnect" href="https://cdn.sanity.io" />
+    <Font cssVariable="--font-geist" preload />
+    <Font cssVariable="--font-geist-mono" />
 
-		<title>{meta.title}</title>
-		{meta.description && <meta name="description" content={meta.description} />}
-		{meta.keywords && <meta name="keywords" content={meta.keywords} />}
-		<link rel="canonical" href={meta.canonical} />
-		<meta name="robots" content={meta.robots} />
+    <title>{meta.title}</title>
+    {meta.description && <meta name="description" content={meta.description} />}
+    {meta.keywords && <meta name="keywords" content={meta.keywords} />}
+    <link rel="canonical" href={meta.canonical} />
+    <meta name="robots" content={meta.robots} />
 
-		<meta property="og:site_name" content={meta.siteName} />
-		<meta property="og:type" content={meta.ogType} />
-		<meta property="og:title" content={meta.title} />
-		{meta.description && <meta property="og:description" content={meta.description} />}
-		<meta property="og:url" content={meta.canonical} />
-		<meta property="og:image" content={meta.ogImage} />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={meta.siteName} />
+    <meta property="og:type" content={meta.ogType} />
+    <meta property="og:title" content={meta.title} />
+    {meta.description && (
+      <meta property="og:description" content={meta.description} />
+    )}
+    <meta property="og:url" content={meta.canonical} />
+    <meta property="og:image" content={meta.ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
 
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={meta.title} />
-		{meta.description && <meta name="twitter:description" content={meta.description} />}
-		<meta name="twitter:image" content={meta.ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={meta.title} />
+    {meta.description && (
+      <meta name="twitter:description" content={meta.description} />
+    )}
+    <meta name="twitter:image" content={meta.ogImage} />
 
-		<JsonLd graph={jsonLd} override={meta.jsonLdOverride} />
-		<script is:inline>document.documentElement.classList.add('js');</script>
-		{brimbleId && <script is:inline defer src="https://scripts.brimble.io/analytics/brimble.js" data-website-id={brimbleId} />}
-		{
-			qualitySiteId && (
-				<script
-					is:inline
-					async
-					src="https://embed.usequality.app/loader.js"
-					data-site-id={qualitySiteId}
-					data-api-origin="https://server.usequality.app"
-				/>
-			)
-		}
-		{
-			gaId && (
-				<script is:inline define:vars={{ gaId }}>
-					window.dataLayer = window.dataLayer || [];
-					
-					window.gtag = function () {
-						dataLayer.push(arguments);
-					};
-					gtag('js', new Date());
-					gtag('config', gaId);
-					window.addEventListener('load', () => {
-						const tag = document.createElement('script');
-						tag.async = true;
-						tag.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-						document.head.append(tag);
-					}, { once: true });
-				</script>
-			)
-		}
-	</head>
-	<body
-		data-recipient={recipient || undefined}
-		class:list={[
-			theme === 'accent'
-				? 'bg-accent text-white [--highlight:var(--color-accent-pale)] [--tone-muted:var(--color-accent-pale)] [--tone-line:var(--color-accent-light)]'
-				: '[--tone-muted:var(--color-muted)] [--tone-line:var(--color-line)]',
-		]}
-	>
-		<slot />
-		<script>
-			import { startAccordions } from '@/scripts/accordion';
-import { trackPageViews } from '@/scripts/analytics';
-import { startGreeting } from '@/scripts/greeting';
-import { startImageFades } from '@/scripts/images';
-import { startLenis } from '@/scripts/lenis';
-import { startReveal } from '@/scripts/reveal';
-import { startRotate } from '@/scripts/rotate';
+    <JsonLd graph={jsonLd} override={meta.jsonLdOverride} />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
+    {brimbleId && (
+      <script
+        is:inline
+        defer
+        src="https://scripts.brimble.io/analytics/brimble.js"
+        data-website-id={brimbleId}
+      />
+    )}
+    {qualitySiteId && (
+      <script
+        is:inline
+        async
+        src="https://embed.usequality.app/loader.js"
+        data-site-id={qualitySiteId}
+        data-api-origin="https://server.usequality.app"
+      />
+    )}
+    {gaId && <script is:inline define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        dataLayer.push(arguments);
+      };
+      gtag("js", new Date());
+      gtag("config", gaId);
+      window.addEventListener(
+        "load",
+        () => {
+          const tag = document.createElement("script");
+          tag.async = true;
+          tag.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+          document.head.append(tag);
+        },
+        { once: true },
+      );
+    </script>}
+  </head>
+  <body
+    data-recipient={recipient || undefined}
+    class:list={[
+      theme === "accent"
+        ? "bg-accent text-white [--highlight:var(--color-accent-pale)] [--tone-muted:var(--color-accent-pale)] [--tone-line:var(--color-accent-light)]"
+        : "[--tone-muted:var(--color-muted)] [--tone-line:var(--color-line)]",
+    ]}
+  >
+    <slot />
+    <script>
+      import { startAccordions } from "@/scripts/accordion";
+      import { trackPageViews } from "@/scripts/analytics";
+      import { startGreeting } from "@/scripts/greeting";
+      import { startImageFades } from "@/scripts/images";
+      import { startLenis } from "@/scripts/lenis";
+      import { startReveal } from "@/scripts/reveal";
+      import { startRotate } from "@/scripts/rotate";
 
-			
-			document.addEventListener('astro:page-load', () => {
-				startLenis();
-				startReveal();
-				startRotate();
-				startAccordions();
-				startImageFades();
-				startGreeting();
-			});
-			trackPageViews();
-		</script>
-	</body>
+      document.addEventListener("astro:page-load", () => {
+        startLenis();
+        startReveal();
+        startRotate();
+        startAccordions();
+        startImageFades();
+        startGreeting();
+      });
+      trackPageViews();
+    </script>
+  </body>
 </html>

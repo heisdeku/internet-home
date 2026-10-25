@@ -1,7 +1,3 @@
----
-
----
-
 <aside aria-label="Now playing" transition:persist>
   <a
     data-listening-now
@@ -19,21 +15,14 @@
       class="size-13 rounded bg-[#232321] object-cover"
     />
     <div class="flex min-w-0 flex-col justify-center gap-1.5">
-      <div
-        class="flex items-center gap-2 font-mono text-[11px] tracking-[.06em] text-mist uppercase"
-      >
+      <div class="flex items-center gap-2 font-mono text-[11px] tracking-[.06em] text-mist uppercase">
         <span
           class="flex h-2.5 items-end gap-0.5 group-data-[mode=last]/np:hidden"
           aria-hidden="true"
         >
-          <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq"
-          ></span>
-          <span
-            class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.2s]"
-          ></span>
-          <span
-            class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.4s]"
-          ></span>
+          <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq"></span>
+          <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.2s]"></span>
+          <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.4s]"></span>
         </span>
         <span data-label>Listening now</span>
       </div>
@@ -42,11 +31,12 @@
         <span data-artist class="flex-1 truncate"></span>
         <span data-elapsed class="font-mono"></span>
       </div>
-      <div
-        class="h-0.5 overflow-hidden rounded-sm bg-body group-data-[mode=last]/np:hidden"
-      >
-        <div data-progress class="h-full bg-accent-light" style="width:0%">
-        </div>
+      <div class="h-0.5 overflow-hidden rounded-sm bg-body group-data-[mode=last]/np:hidden">
+        <div
+          data-progress
+          class="h-full bg-accent-light"
+          style="width:0%"
+        ></div>
       </div>
     </div>
   </a>

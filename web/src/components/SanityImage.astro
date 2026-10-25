@@ -41,30 +41,28 @@ const src = (w: number) =>
     : "";
 ---
 
-{
-  hasAsset ? (
-    <span
-      class:list={["img-frame rounded bg-tile", className]}
-      style={image.lqip ? `background-image:url(${image.lqip})` : undefined}
-    >
-      <img
-        src={src(width)}
-        srcset={widths
-          .sort((a, b) => a - b)
-          .map((w) => `${src(w)} ${w}w`)
-          .join(", ")}
-        sizes={sizes}
-        alt={image.alt ?? ""}
-        width={width}
-        height={height}
-        loading={priority ? "eager" : "lazy"}
-        fetchpriority={priority ? "high" : undefined}
-        decoding={priority ? undefined : "async"}
-        data-fade-in={priority ? undefined : ""}
-        class="object-cover"
-      />
-    </span>
-  ) : (
-    <Placeholder label={placeholder} class={className} dark={dark} />
-  )
-}
+{hasAsset ? (
+  <span
+    class:list={["img-frame rounded bg-tile", className]}
+    style={image.lqip ? `background-image:url(${image.lqip})` : undefined}
+  >
+    <img
+      src={src(width)}
+      srcset={widths
+        .sort((a, b) => a - b)
+        .map((w) => `${src(w)} ${w}w`)
+        .join(", ")}
+      sizes={sizes}
+      alt={image.alt ?? ""}
+      width={width}
+      height={height}
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : undefined}
+      decoding={priority ? undefined : "async"}
+      data-fade-in={priority ? undefined : ""}
+      class="object-cover"
+    />
+  </span>
+) : (
+  <Placeholder label={placeholder} class={className} dark={dark} />
+)}

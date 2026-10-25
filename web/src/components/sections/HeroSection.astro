@@ -16,11 +16,15 @@ const { section } = Astro.props;
 const ICONS = { Map, Globe, Earth, Location } as const;
 type IconName = keyof typeof ICONS;
 const parts = (line: string) =>
-  line.split(/(\[icon:[A-Za-z]+\])/).filter(Boolean).map((part) => {
-    const match = /^\[icon:([A-Za-z]+)\]$/.exec(part);
-    const Icon = match && match[1] in ICONS ? ICONS[match[1] as IconName] : null;
-    return { Icon, text: part };
-  });
+  line
+    .split(/(\[icon:[A-Za-z]+\])/)
+    .filter(Boolean)
+    .map((part) => {
+      const match = /^\[icon:([A-Za-z]+)\]$/.exec(part);
+      const Icon =
+        match && match[1] in ICONS ? ICONS[match[1] as IconName] : null;
+      return { Icon, text: part };
+    });
 ---
 
 <section
@@ -28,15 +32,24 @@ const parts = (line: string) =>
   class="px-gutter grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-end gap-10 pt-[clamp(80px,14vw,200px)] pb-[clamp(64px,8vw,120px)]"
 >
   <div class="flex flex-col gap-1.5 text-[13px] text-muted">
-    {
-      section.meta?.map((line, i) => (
-        <span class:list={["inline-flex flex-wrap items-center gap-x-1.5", i === 0 && (section.meta?.length ?? 0) > 1 && "font-mono tracking-[.06em] uppercase"]}>
-          {parts(line).map(({ Icon, text }) =>
-            Icon ? <Icon class="size-3.5 shrink-0 text-accent" aria-hidden="true" /> : <span>{text}</span>,
-          )}
-        </span>
-      ))
-    }
+    {section.meta?.map((line, i) => (
+      <span
+        class:list={[
+          "inline-flex flex-wrap items-center gap-x-1.5",
+          i === 0 &&
+            (section.meta?.length ?? 0) > 1 &&
+            "font-mono tracking-[.06em] uppercase",
+        ]}
+      >
+        {parts(line).map(({ Icon, text }) =>
+          Icon ? (
+            <Icon class="size-3.5 shrink-0 text-accent" aria-hidden="true" />
+          ) : (
+            <span>{text}</span>
+          ),
+        )}
+      </span>
+    ))}
   </div>
   <Heading value={section.heading} size="XL" class="col-span-2 max-w-[32ch]" />
 </section>

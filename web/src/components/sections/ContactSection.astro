@@ -18,18 +18,14 @@ const { section, email, resumeUrl } = Astro.props;
   class="px-gutter flex flex-col gap-7 bg-ink py-[clamp(48px,7vw,96px)] text-paper"
 >
   <Heading value={section.heading} size="XS" class="font-normal text-mist" />
-  {
-    email && (
-      <CopyEmail email={email} subject={section.emailSubject} maxSize="88px" />
-    )
-  }
-  {
-    section.ctas && section.ctas.length > 0 && (
-      <div class="flex flex-wrap gap-2.5">
-        {section.ctas.map((cta) => (
-          <Cta cta={cta} resumeUrl={resumeUrl} tone="dark" />
-        ))}
-      </div>
-    )
-  }
+  {email && (
+    <CopyEmail email={email} subject={section.emailSubject} maxSize="88px" />
+  )}
+  {section.ctas && section.ctas.length > 0 && (
+    <div class="flex flex-wrap gap-2.5">
+      {section.ctas.map((cta) => (
+        <Cta cta={cta} resumeUrl={resumeUrl} tone="dark" />
+      ))}
+    </div>
+  )}
 </section>

@@ -7,4 +7,6 @@ const { node } = Astro.props;
 const Tag = node.listItem === "number" ? "ol" : "ul";
 ---
 
-<Tag class="my-1 flex flex-col gap-2.5"><slot /></Tag>
+<Tag class="my-1 flex flex-col gap-2.5">
+  <slot />
+</Tag>

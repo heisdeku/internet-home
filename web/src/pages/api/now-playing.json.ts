@@ -92,7 +92,6 @@ export const GET: APIRoute = async () => {
     }
   }
 
-
   const recent = await fetch(
     "https://api.spotify.com/v1/me/player/recently-played?limit=1",
     { headers },

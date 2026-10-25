@@ -1,10 +1,11 @@
 ---
-import { sanityClient } from 'sanity:client';
-import Page from '@/components/Page.astro';
-import { PAGE_QUERY } from '@/sanity/queries';
+import { sanityClient } from "sanity:client";
+import Page from "@/components/Page.astro";
+import { PAGE_QUERY } from "@/sanity/queries";
 
-const page = await sanityClient.fetch(PAGE_QUERY, { slug: 'home' });
-if (!page) throw new Error('No page with the slug "home". Create it in the Studio.');
+const page = await sanityClient.fetch(PAGE_QUERY, { slug: "home" });
+if (!page)
+  throw new Error('No page with the slug "home". Create it in the Studio.');
 ---
 
 <Page page={page} />

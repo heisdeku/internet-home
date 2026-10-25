@@ -2,6 +2,7 @@
 import Cta from "@/components/Cta.astro";
 import SanityImage from "@/components/SanityImage.astro";
 import Site from "@/layouts/Site.astro";
+import { serial } from "@/lib/format";
 import { STATUS_LABEL } from "@/lib/productStatus";
 import { buildMeta, siteOrigin } from "@/lib/seo";
 import {
@@ -10,6 +11,7 @@ import {
   siteGraph,
   webPageNode,
 } from "@/lib/structuredData";
+import { pathFor } from "@/sanity/links";
 import { PRODUCT_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import { sanityClient } from "sanity:client";
 
@@ -25,9 +27,13 @@ const [product, settings] = await Promise.all([
   sanityClient.fetch(PRODUCT_QUERY, { slug }),
   sanityClient.fetch(SITE_SETTINGS_QUERY),
 ]);
-if (!product || !settings) return Astro.rewrite("/404");
+if (!settings)
+  throw new Error(
+    "Site Settings document is missing. Create it in the Studio.",
+  );
+if (!product) return Astro.rewrite("/404");
 
-const path = `/products/${product.slug}`;
+const path = pathFor("product", product.slug);
 const origin = siteOrigin(settings, Astro.site, Astro.url);
 
 const meta = buildMeta({
@@ -37,7 +43,7 @@ const meta = buildMeta({
   seo: product.seo,
   title: product.name,
   description: product.tagline,
-  og: { kind: "product", slug: product.slug ?? "" },
+  og: { kind: "product", slug: product.slug },
 });
 
 const jsonLd = [
@@ -53,21 +59,16 @@ const jsonLd = [
     origin,
     path,
     type: "SoftwareApplication",
-    name: product.name ?? "",
+    name: product.name,
     description: product.tagline,
     updatedAt: product._updatedAt,
   }),
   breadcrumbNode(origin, [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
-    { name: product.name ?? "", path },
+    { name: product.name, path },
   ]),
 ];
-
-const year = new Intl.DateTimeFormat("en", {
-  year: "numeric",
-  timeZone: "UTC",
-});
 ---
 
 <Site meta={meta} jsonLd={jsonLd} settings={settings}>
@@ -78,34 +79,28 @@ const year = new Intl.DateTimeFormat("en", {
     >
       <div class="flex flex-col gap-6">
         <div class="flex items-center gap-2.5 font-mono text-xs">
-          <span class="rounded-sm bg-accent px-2 py-1 text-white"
-            >{STATUS_LABEL[product.status]}</span
-          >
-          <span class="text-muted"
-            >Product{product.version && ` · ${product.version}`}</span
-          >
+          <span class="rounded-sm bg-accent px-2 py-1 text-white">
+            {STATUS_LABEL[product.status]}
+          </span>
+          <span class="text-muted">
+            Product{product.version && ` · ${product.version}`}
+          </span>
         </div>
-        <h1
-          class="text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em]"
-        >
+        <h1 class="text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em]">
           {product.name}
         </h1>
       </div>
       <div class="flex flex-col gap-6">
-        <p
-          class="max-w-[36ch] text-[clamp(18px,1.6vw,22px)] leading-[1.4] text-body text-pretty"
-        >
+        <p class="max-w-[36ch] text-[clamp(18px,1.6vw,22px)] leading-[1.4] text-body text-pretty">
           {product.tagline}
         </p>
-        {
-          product.ctas && product.ctas.length > 0 && (
-            <div class="flex flex-wrap gap-2.5">
-              {product.ctas.map((cta) => (
-                <Cta cta={cta} resumeUrl={settings.resumeUrl} />
-              ))}
-            </div>
-          )
-        }
+        {product.ctas && product.ctas.length > 0 && (
+          <div class="flex flex-wrap gap-2.5">
+            {product.ctas.map((cta) => (
+              <Cta cta={cta} resumeUrl={settings.resumeUrl} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
 
@@ -122,48 +117,42 @@ const year = new Intl.DateTimeFormat("en", {
       />
     </div>
 
-    {
-      product.features && product.features.length > 0 && (
-        <section
-          data-reveal-stagger
-          class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-[clamp(24px,3vw,40px)] py-[clamp(64px,8vw,120px)]"
-        >
-          {product.features.map((feature, i) => (
-            <div class="flex flex-col gap-3 border-t border-ink pt-4.5">
-              <span class="font-mono text-xs text-accent">
-                N°{String(i + 1).padStart(2, "0")}
+    {product.features && product.features.length > 0 && (
+      <section
+        data-reveal-stagger
+        class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-[clamp(24px,3vw,40px)] py-[clamp(64px,8vw,120px)]"
+      >
+        {product.features.map((feature, i) => (
+          <div class="flex flex-col gap-3 border-t border-ink pt-4.5">
+            <span class="font-mono text-xs text-accent">N°{serial(i)}</span>
+            <span class="text-xl font-medium tracking-[-.015em]">
+              {feature.title}
+            </span>
+            <span class="text-[15px] leading-normal text-muted text-pretty">
+              {feature.description}
+            </span>
+          </div>
+        ))}
+      </section>
+    )}
+
+    {product.changelog && product.changelog.length > 0 && (
+      <section
+        data-reveal-stagger
+        class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-line py-[clamp(48px,6vw,96px)]"
+      >
+        <h2 class="text-[13px] font-medium">Changelog</h2>
+        <div class="col-span-2 flex flex-col">
+          {product.changelog.map((entry) => (
+            <div class="grid grid-cols-[120px_minmax(0,1fr)] gap-4 border-b border-line py-4.5 text-[15px]">
+              <span class="pt-0.5 font-mono text-xs text-faint">
+                {entry.version} — {entry.date.slice(0, 4)}
               </span>
-              <span class="text-xl font-medium tracking-[-.015em]">
-                {feature.title}
-              </span>
-              <span class="text-[15px] leading-normal text-muted text-pretty">
-                {feature.description}
-              </span>
+              <span class="text-pretty">{entry.note}</span>
             </div>
           ))}
-        </section>
-      )
-    }
-
-    {
-      product.changelog && product.changelog.length > 0 && (
-        <section
-          data-reveal-stagger
-          class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-line py-[clamp(48px,6vw,96px)]"
-        >
-          <h2 class="text-[13px] font-medium">Changelog</h2>
-          <div class="col-span-2 flex flex-col">
-            {product.changelog.map((entry) => (
-              <div class="grid grid-cols-[120px_minmax(0,1fr)] gap-4 border-b border-line py-4.5 text-[15px]">
-                <span class="pt-0.5 font-mono text-xs text-faint">
-                  {entry.version} — {year.format(new Date(entry.date))}
-                </span>
-                <span class="text-pretty">{entry.note}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )
-    }
+        </div>
+      </section>
+    )}
   </main>
 </Site>

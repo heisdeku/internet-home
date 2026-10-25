@@ -1,10 +1,11 @@
 ---
 import Heading from "@/components/Heading.astro";
 import type { Section } from "@/components/PageBuilder.astro";
+import { monthYear } from "@/lib/format";
 import ArrowUpRight from "reicon-astro/icons/ArrowUpRight.astro";
-import Sparkle from 'reicon-astro/icons/Sparkle.astro';
 import Minus from "reicon-astro/icons/Minus.astro";
 import Plus from "reicon-astro/icons/Plus.astro";
+import Sparkle from "reicon-astro/icons/Sparkle.astro";
 
 interface Props {
   section: Extract<Section, { _type: "experienceSection" }>;
@@ -13,14 +14,8 @@ interface Props {
 const { section } = Astro.props;
 const experience = section.entries ?? [];
 
-const monthYear = new Intl.DateTimeFormat("en", {
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-});
-
 const formatDate = (date: string | null) =>
-  date ? monthYear.format(new Date(date)) : "Present";
+  date ? monthYear(date) : "Present";
 
 const EMPLOYMENT: Record<string, string> = {
   fullTime: "Full-time",
@@ -36,7 +31,6 @@ const host = (url: string) =>
 const columns =
   "grid grid-cols-[minmax(0,1fr)_24px] gap-x-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_170px_24px]";
 
-
 const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
   const last = roles[roles.length - 1];
   const first = roles[0];
@@ -45,109 +39,119 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
 ---
 
 <section class="px-gutter pb-[clamp(80px,10vw,160px)]">
-  {
-    section.heading?.text && (
-      <Heading value={section.heading} size="XS" class="mb-6" />
-    )
-  }
+  {section.heading?.text && (
+    <Heading value={section.heading} size="XS" class="mb-6" />
+  )}
   <div data-reveal class:list={[columns, "label border-b border-ink pb-3"]}>
     <span>Company</span>
     <span class="hidden md:block">Role</span>
     <span class="hidden md:block">Period</span>
     <span></span>
   </div>
-  {
-    experience.map((job, i) => {
-      const roles = job.roles ?? [];
-      const latest = roles[0];
-      return (
-        <details
-          data-accordion
-          name="experience"
-          open={section.openFirst !== false && i === 0}
-          data-reveal
-          class="group border-b border-line"
+  {experience.map((job, i) => {
+    const roles = job.roles ?? [];
+    const latest = roles[0];
+    return (
+      <details
+        data-accordion
+        name="experience"
+        open={section.openFirst !== false && i === 0}
+        data-reveal
+        class="group border-b border-line"
+      >
+        <summary
+          class:list={[
+            columns,
+            "cursor-pointer list-none items-baseline py-5.5 hover:text-accent [&::-webkit-details-marker]:hidden",
+          ]}
         >
-          <summary
-            class:list={[
-              columns,
-              "cursor-pointer list-none items-baseline py-5.5 hover:text-accent [&::-webkit-details-marker]:hidden",
-            ]}
+          <span class="text-[clamp(18px,2vw,26px)] font-medium tracking-[-.02em]">
+            {job.company}
+          </span>
+          <span class="text-sm text-muted max-md:col-start-1 max-md:mt-1.5">
+            {latest?.title}
+          </span>
+          <span class="font-mono text-xs text-faint max-md:col-start-1 max-md:mt-1.5">
+            {roles.length > 0 && tenure(roles)}
+          </span>
+          <span
+            class="justify-self-end text-accent max-md:col-start-2 max-md:row-start-1"
+            aria-hidden="true"
           >
-            <span class="text-[clamp(18px,2vw,26px)] font-medium tracking-[-.02em]">
-              {job.company}
-            </span>
-            <span class="text-sm text-muted max-md:col-start-1 max-md:mt-1.5">{latest?.title}</span>
-            <span class="font-mono text-xs text-faint max-md:col-start-1 max-md:mt-1.5">
-              {roles.length > 0 && tenure(roles)}
-            </span>
-            <span class="justify-self-end text-accent max-md:col-start-2 max-md:row-start-1" aria-hidden="true">
-              <Plus class="size-4 group-open:hidden" />
-              <Minus class="hidden size-4 group-open:block" />
-            </span>
-          </summary>
-          <!--
+            <Plus class="size-4 group-open:hidden" />
+            <Minus class="hidden size-4 group-open:block" />
+          </span>
+        </summary>
+        <!--
             Facts sit under the company name; the roles and their highlights get the
             wide side under Role, so an entry with six bullets and one with none both read well.
           -->
-          <div class:list={[columns, "gap-y-6 pb-8 text-[15px] leading-[1.55]"]}>
-            <dl class="flex flex-col gap-4 max-md:order-last max-md:col-span-2">
-              {job.location && (
-                <div class="flex flex-col gap-1">
-                  <dt class="label">Location</dt>
-                  <dd>{job.location}</dd>
-                </div>
-              )}
-              {job.stack && (
-                <div class="flex flex-col gap-1">
-                  <dt class="label">Stack</dt>
-                  <dd>{job.stack}</dd>
-                </div>
-              )}
-              {job.url && (
-                <div class="flex flex-col gap-1">
-                  <dt class="label">Website</dt>
-                  <dd>
-                    <a
-                      href={job.url}
-                      target="_blank"
-                      rel="noopener"
-                      class="group inline-flex items-center gap-1.5 font-medium text-accent"
-                    >
-                      {host(job.url)}
-                      <ArrowUpRight class="icon-inline" style="--icon-nudge:translate(3px,-3px)" />
-                    </a>
-                  </dd>
-                </div>
-              )}
-            </dl>
-            <div class="flex max-w-[64ch] flex-col gap-7 max-md:col-span-2 md:col-span-3">
-              {roles.map((role) => (
-                <div class="flex flex-col gap-3">
-                  {/* A single role already has its title in the row above; only its type is new information. */}
-                  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    {roles.length > 1 && <span class="font-medium">{role.title}</span>}
-                    <span class="font-mono text-xs text-faint">
-                      {EMPLOYMENT[role.employmentType] ?? role.employmentType}
-                      {roles.length > 1 && ` · ${formatDate(role.startDate)} — ${formatDate(role.endDate)}`}
-                    </span>
-                  </div>
-                  {role.highlights && role.highlights.length > 0 && (
-                    <ul class="flex flex-col gap-2 text-body">
-                      {role.highlights.map((line) => (
-                        <li class="flex gap-2.5 text-pretty">
-                          <Sparkle class="mt-[3px] size-4 shrink-0 text-accent" aria-hidden="true" />
-                          <span>{line}</span>
-                        </li>
-                      ))}
-                    </ul>
+        <div class:list={[columns, "gap-y-6 pb-8 text-[15px] leading-[1.55]"]}>
+          <dl class="flex flex-col gap-4 max-md:order-last max-md:col-span-2">
+            {job.location && (
+              <div class="flex flex-col gap-1">
+                <dt class="label">Location</dt>
+                <dd>{job.location}</dd>
+              </div>
+            )}
+            {job.stack && (
+              <div class="flex flex-col gap-1">
+                <dt class="label">Stack</dt>
+                <dd>{job.stack}</dd>
+              </div>
+            )}
+            {job.url && (
+              <div class="flex flex-col gap-1">
+                <dt class="label">Website</dt>
+                <dd>
+                  <a
+                    href={job.url}
+                    target="_blank"
+                    rel="noopener"
+                    class="group inline-flex items-center gap-1.5 font-medium text-accent"
+                  >
+                    {host(job.url)}
+                    <ArrowUpRight
+                      class="icon-inline"
+                      style="--icon-nudge:translate(3px,-3px)"
+                    />
+                  </a>
+                </dd>
+              </div>
+            )}
+          </dl>
+          <div class="flex max-w-[64ch] flex-col gap-7 max-md:col-span-2 md:col-span-3">
+            {roles.map((role) => (
+              <div class="flex flex-col gap-3">
+                {/* A single role already has its title in the row above; only its type is new information. */}
+                <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  {roles.length > 1 && (
+                    <span class="font-medium">{role.title}</span>
                   )}
+                  <span class="font-mono text-xs text-faint">
+                    {EMPLOYMENT[role.employmentType] ?? role.employmentType}
+                    {roles.length > 1 &&
+                      ` · ${formatDate(role.startDate)} — ${formatDate(role.endDate)}`}
+                  </span>
                 </div>
-              ))}
-            </div>
+                {role.highlights && role.highlights.length > 0 && (
+                  <ul class="flex flex-col gap-2 text-body">
+                    {role.highlights.map((line) => (
+                      <li class="flex gap-2.5 text-pretty">
+                        <Sparkle
+                          class="mt-[3px] size-4 shrink-0 text-accent"
+                          aria-hidden="true"
+                        />
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
-        </details>
-      );
-    })
-  }
+        </div>
+      </details>
+    );
+  })}
 </section>

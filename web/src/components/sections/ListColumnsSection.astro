@@ -16,31 +16,34 @@ const row = "border-b border-(--tone-line) pb-3.5 text-[17px]";
   data-reveal-stagger
   class="px-gutter grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-[clamp(32px,4vw,56px)] py-[clamp(56px,8vw,112px)]"
 >
-  {
-    section.columns?.map((column) => (
-      <div class="flex flex-col gap-3.5">
-        <span class="label text-(--tone-muted)">{column.label}</span>
-        {column.items?.map((item) =>
-          item.link ? (
-            <SmartLink
-              link={item.link}
-              resumeUrl={resumeUrl}
-              class:list={[
-                row,
-                "group flex justify-between gap-3 hover:text-highlight",
-              ]}
-            >
-              <span>{item.text}</span>
-              {/* A coming-soon target shows its badge instead of the arrow. */}
-              {!(item.link.type === "internal" && item.link.internal?.comingSoon) && (
-                <ArrowRight class="icon-inline" style="--icon-nudge:translateX(4px)" />
-              )}
-            </SmartLink>
-          ) : (
-            <span class={row}>{item.text}</span>
-          ),
-        )}
-      </div>
-    ))
-  }
+  {section.columns?.map((column) => (
+    <div class="flex flex-col gap-3.5">
+      <span class="label text-(--tone-muted)">{column.label}</span>
+      {column.items?.map((item) =>
+        item.link ? (
+          <SmartLink
+            link={item.link}
+            resumeUrl={resumeUrl}
+            class:list={[
+              row,
+              "group flex justify-between gap-3 hover:text-highlight",
+            ]}
+          >
+            <span>{item.text}</span>
+            {/* A coming-soon target shows its badge instead of the arrow. */}
+            {!(
+              item.link.type === "internal" && item.link.internal?.comingSoon
+            ) && (
+              <ArrowRight
+                class="icon-inline"
+                style="--icon-nudge:translateX(4px)"
+              />
+            )}
+          </SmartLink>
+        ) : (
+          <span class={row}>{item.text}</span>
+        ),
+      )}
+    </div>
+  ))}
 </section>

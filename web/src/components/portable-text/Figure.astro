@@ -19,6 +19,12 @@ const height = Math.round(WIDTH / (node.aspectRatio ?? 16 / 9));
 ---
 
 <figure class="my-2 flex flex-col gap-2.5">
-  <SanityImage image={node} placeholder="image" width={WIDTH} height={height} class="w-full" />
-  {node.caption && <figcaption class="font-mono text-[11px] tracking-[.04em] text-faint uppercase">{node.caption}</figcaption>}
+  <SanityImage
+    image={node}
+    placeholder="image"
+    width={WIDTH}
+    height={height}
+    class="w-full"
+  />
+  {node.caption && <figcaption class="caption">{node.caption}</figcaption>}
 </figure>

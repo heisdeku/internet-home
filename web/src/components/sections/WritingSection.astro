@@ -2,6 +2,8 @@
 import Heading from "@/components/Heading.astro";
 import type { Section } from "@/components/PageBuilder.astro";
 import SmartLink from "@/components/SmartLink.astro";
+import { monthYear } from "@/lib/format";
+import { pathFor } from "@/sanity/links";
 
 interface Props {
   section: Extract<Section, { _type: "writingSection" }>;
@@ -13,11 +15,6 @@ const posts = section.limit
   ? section.posts.slice(0, section.limit)
   : section.posts;
 const stacked = section.layout === "stack";
-const monthYear = new Intl.DateTimeFormat("en", {
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-});
 const hasAside = section.heading?.text || section.link;
 ---
 
@@ -31,38 +28,44 @@ const hasAside = section.heading?.text || section.link;
       : "grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-line py-[clamp(64px,8vw,120px)]",
   ]}
 >
-  {
-    hasAside && (
-      <div class="flex flex-col items-start gap-3">
-        <Heading value={section.heading} size="XS" />
-        {section.link && (
-          <SmartLink
-            link={section.link}
-            resumeUrl={resumeUrl}
-            icon="auto"
-            class="text-[13px] text-muted"
-          />
-        )}
-      </div>
-    )
-  }
+  {hasAside && (
+    <div class="flex flex-col items-start gap-3">
+      <Heading value={section.heading} size="XS" />
+      {section.link && (
+        <SmartLink
+          link={section.link}
+          resumeUrl={resumeUrl}
+          icon="auto"
+          class="text-[13px] text-muted"
+        />
+      )}
+    </div>
+  )}
   <div class:list={["dim-siblings flex flex-col", !stacked && "col-span-2"]}>
-    {
-      posts.map((post) => {
-        const Tag = post.comingSoon ? "div" : "a";
-        return (
+    {posts.map((post) => {
+      const Tag = post.comingSoon ? "div" : "a";
+      const date = stacked
+        ? monthYear(post.publishedAt)
+        : post.publishedAt.slice(0, 4);
+      return (
         <Tag
-          href={post.comingSoon ? undefined : `/writing/${post.slug}`}
-          class:list={["grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 border-b border-line py-5", !post.comingSoon && "row-slide transition-colors duration-300", post.comingSoon && "is-soon"]}
+          href={post.comingSoon ? undefined : pathFor("post", post.slug)}
+          class:list={[
+            "grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 border-b border-line py-5",
+            !post.comingSoon && "row-slide transition-colors duration-300",
+            post.comingSoon && "is-soon",
+          ]}
           aria-disabled={post.comingSoon ? "true" : undefined}
         >
           <span class="text-[clamp(17px,1.6vw,22px)] font-medium tracking-[-.015em] text-pretty">
             {post.title}
           </span>
           <span class="font-mono text-xs text-faint">
-            {post.comingSoon ? <span class="soon-badge">Coming soon</span> : stacked
-              ? monthYear.format(new Date(post.publishedAt))
-              : post.publishedAt.slice(0, 4)}
+            {post.comingSoon ? (
+              <span class="soon-badge">Coming soon</span>
+            ) : (
+              date
+            )}
           </span>
           {stacked && (
             <span class="col-span-2 max-w-[60ch] text-sm leading-normal text-muted text-pretty">
@@ -70,8 +73,7 @@ const hasAside = section.heading?.text || section.link;
             </span>
           )}
         </Tag>
-        );
-      })
-    }
+      );
+    })}
   </div>
 </section>

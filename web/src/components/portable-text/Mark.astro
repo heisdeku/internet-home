@@ -1,12 +1,12 @@
 ---
 import type { MarkProps } from "astro-portabletext/types";
 import BrandLink from "@/components/BrandLink.astro";
-import { pathFor } from "@/sanity/links";
+import { pathFor, type RoutedType } from "@/sanity/links";
 
 type LinkDef = {
   linkType?: "external" | "internal" | "company" | "tool";
   href?: string;
-  internal?: Parameters<typeof pathFor>[0] | null;
+  internal?: { _type: RoutedType; slug: string } | null;
   company?: {
     company: string | null;
     url: string | null;
@@ -19,80 +19,83 @@ type LinkDef = {
 type Props = MarkProps<LinkDef>;
 
 const { node } = Astro.props;
-
-let href: string | null = null;
-let newTab = false;
-const company =
-  node.markType === "link" && node.markDef.linkType === "company"
-    ? node.markDef.company
-    : null;
-const tool =
-  node.markType === "link" && node.markDef.linkType === "tool"
-    ? node.markDef.tool
-    : null;
-if (node.markType === "link" && !company && !tool) {
-  const def = node.markDef;
-  href =
-    def.linkType === "internal"
-      ? def.internal
-        ? pathFor(def.internal)
-        : null
-      : (def.href ?? null);
-  newTab = def.openInNewTab === true;
-}
 ---
 
-{
-  company ? (
-    <BrandLink
-      label=""
-      href={company.url}
-      logoUrl={company.logo}
-      color={company.brandColor}
-      class="font-medium"
-    >
-      <slot />
-    </BrandLink>
-  ) : tool ? (
-    <BrandLink
-      label=""
-      href={tool.url}
-      path={tool.icon}
-      class="font-medium"
-    >
-      <slot />
-    </BrandLink>
-  ) : node.markType === "link" && !href ? (
-    <span>
-      <slot />
-    </span>
-  ) : node.markType === "link" ? (
-    <a
-      href={href}
-      class="hit underline underline-offset-[3px] decoration-current/40 transition-colors hover:text-accent hover:decoration-current"
-      target={newTab ? "_blank" : undefined}
-      rel={newTab ? "noopener" : undefined}
-    >
-      <slot />
-    </a>
-  ) : node.markType === "code" ? (
-    <code
-      translate="no"
-      class="rounded-[3px] bg-current/10 px-1.5 py-0.5 font-mono text-[.85em]"
-    >
-      <slot />
-    </code>
-  ) : node.markType === "em" ? (
-    <em>
-      <slot />
-    </em>
-  ) : node.markType === "underline" ? (
-    <span class="underline underline-offset-[3px]">
-      <slot />
-    </span>
-  ) : (
-    <strong class="font-medium">
-      <slot />
-    </strong>
-  )
-}
+{(() => {
+  switch (node.markType) {
+    case "link": {
+      const def = node.markDef;
+      if (def.linkType === "company" && def.company)
+        return (
+          <BrandLink
+            label=""
+            href={def.company.url}
+            logoUrl={def.company.logo}
+            color={def.company.brandColor}
+            class="font-medium"
+          >
+            <slot />
+          </BrandLink>
+        );
+      if (def.linkType === "tool" && def.tool)
+        return (
+          <BrandLink
+            label=""
+            href={def.tool.url}
+            path={def.tool.icon}
+            class="font-medium"
+          >
+            <slot />
+          </BrandLink>
+        );
+      const href =
+        def.linkType === "internal"
+          ? def.internal && pathFor(def.internal._type, def.internal.slug)
+          : def.href;
+      if (!href)
+        return (
+          <span>
+            <slot />
+          </span>
+        );
+      const newTab = def.openInNewTab === true;
+      return (
+        <a
+          href={href}
+          class="hit underline underline-offset-[3px] decoration-current/40 transition-colors hover:text-accent hover:decoration-current"
+          target={newTab ? "_blank" : undefined}
+          rel={newTab ? "noopener" : undefined}
+        >
+          <slot />
+        </a>
+      );
+    }
+    case "code":
+      return (
+        <code
+          translate="no"
+          class="rounded-[3px] bg-current/10 px-1.5 py-0.5 font-mono text-[.85em]"
+        >
+          <slot />
+        </code>
+      );
+    case "em":
+      return (
+        <em>
+          <slot />
+        </em>
+      );
+    case "underline":
+      return (
+        <span class="underline underline-offset-[3px]">
+          <slot />
+        </span>
+      );
+    default:
+      return (
+        <strong class="font-medium">
+          <slot />
+        </strong>
+      );
+  }
+})()}
