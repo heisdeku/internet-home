@@ -12,32 +12,18 @@ import {
   webPageNode,
 } from "@/lib/structuredData";
 import { pathFor } from "@/sanity/links";
-import { SITE_SETTINGS_QUERY, WORK_QUERY } from "@/sanity/queries";
-import type { WORK_SLUGS_QUERY_RESULT } from "@/sanity/types";
+import {
+  SITE_SETTINGS_QUERY,
+  WORK_QUERY,
+  WORK_SLUGS_QUERY,
+} from "@/sanity/queries";
 import ArrowRight from "reicon-astro/icons/ArrowRight.astro";
 import { sanityClient } from "sanity:client";
 
-export async function getStaticPaths() {
-  const { sanityClient } = await import("sanity:client");
-  const { WORK_SLUGS_QUERY } = await import("@/sanity/queries");
-  const all = await sanityClient.fetch(WORK_SLUGS_QUERY);
-  return all.map((work, i) => ({
-    params: { slug: work.slug },
-    props: { index: i, all },
-  }));
-}
-
-interface Props {
-  index: number;
-  all: WORK_SLUGS_QUERY_RESULT;
-}
-
-const { index, all } = Astro.props;
 const { slug } = Astro.params;
-const next = all[(index + 1) % all.length];
-
-const [work, settings] = await Promise.all([
+const [work, all, settings] = await Promise.all([
   sanityClient.fetch(WORK_QUERY, { slug }),
+  sanityClient.fetch(WORK_SLUGS_QUERY),
   sanityClient.fetch(SITE_SETTINGS_QUERY),
 ]);
 if (!settings)
@@ -45,6 +31,9 @@ if (!settings)
     "Site Settings document is missing. Create it in the Studio.",
   );
 if (!work) return Astro.rewrite("/404");
+
+const index = all.findIndex((entry) => entry.slug === work.slug);
+const next = all[(index + 1) % all.length];
 
 const path = pathFor("work", work.slug);
 const origin = siteOrigin(settings, Astro.site, Astro.url);

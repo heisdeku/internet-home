@@ -8,8 +8,6 @@ import { createRequire } from "node:module";
 import { sanityClient } from "sanity:client";
 import satori from "satori";
 
-export const prerender = false;
-
 const KIND_TO_TYPE: Record<Exclude<OgKind, "site">, string> = {
   page: "page",
   outreach: "outreach",

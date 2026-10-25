@@ -1,9 +1,8 @@
 // @ts-check
 import node from "@astrojs/node";
-import sitemap from "@astrojs/sitemap";
 import sanity from "@sanity/astro";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig, fontProviders, memoryCache } from "astro/config";
 import { loadEnv } from "vite";
 
 const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, PUBLIC_SITE_URL } =
@@ -12,7 +11,21 @@ const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, PUBLIC_SITE_URL } =
 export default defineConfig({
   site: PUBLIC_SITE_URL || "https://feranmiadedokun.com",
   trailingSlash: "never",
+  output: "server",
   adapter: node({ mode: "standalone" }),
+  cache: { provider: memoryCache({ max: 500 }) },
+  routeRules: Object.fromEntries(
+    [
+      "/",
+      "/[...slug]",
+      "/intro/[slug]",
+      "/work/[slug]",
+      "/products/[slug]",
+      "/writing/[slug]",
+      "/og/[kind]/[slug].png",
+      "/sitemap.xml",
+    ].map((route) => [route, { maxAge: 3600, swr: 86400, tags: ["sanity"] }]),
+  ),
   fonts: [
     {
       provider: fontProviders.google(),
@@ -38,9 +51,6 @@ export default defineConfig({
       dataset: PUBLIC_SANITY_DATASET,
       apiVersion: "2026-10-20",
       useCdn: false,
-    }),
-    sitemap({
-      filter: (page) => !/\/(intro|og|api)(\/|$)/.test(new URL(page).pathname),
     }),
   ],
   vite: {

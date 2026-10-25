@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
 
-/** Intro pages are personal outreach, so crawlers are kept out of them here as well as via noindex. */
 export const GET: APIRoute = ({ site }) => {
   const origin = site?.origin ?? "";
   const body = [
@@ -10,7 +9,7 @@ export const GET: APIRoute = ({ site }) => {
     "Disallow: /og/",
     "Disallow: /api/",
     "",
-    `Sitemap: ${origin}/sitemap-index.xml`,
+    `Sitemap: ${origin}/sitemap.xml`,
     "",
   ].join("\n");
   return new Response(body, {

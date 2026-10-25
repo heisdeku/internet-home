@@ -16,13 +16,6 @@ import { pathFor } from "@/sanity/links";
 import { PRODUCT_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/queries";
 import { sanityClient } from "sanity:client";
 
-export async function getStaticPaths() {
-  const { sanityClient } = await import("sanity:client");
-  const { PRODUCT_SLUGS_QUERY } = await import("@/sanity/queries");
-  const products = await sanityClient.fetch(PRODUCT_SLUGS_QUERY);
-  return products.map(({ slug }) => ({ params: { slug } }));
-}
-
 const { slug } = Astro.params;
 const [product, settings] = await Promise.all([
   sanityClient.fetch(PRODUCT_QUERY, { slug }),

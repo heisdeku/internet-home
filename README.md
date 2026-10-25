@@ -82,7 +82,7 @@ Follows the same approach as the AAIF and Medspa sites.
 - **One URL per page**: `trailingSlash: 'never'` in `astro.config.mjs`, so canonical tags, the sitemap and the server's 301s all agree.
 - **Structured data** (`web/src/lib/structuredData.ts`): WebSite and Person on every page, WebPage per page, BlogPosting for posts, CreativeWork or SoftwareApplication for works and products, BreadcrumbList on detail pages.
 - **Share images on the fly**: `/og/<kind>/<slug>.png` is a server route (`web/src/pages/og/[kind]/[slug].png.ts`) that renders a 1200×630 card with satori from the document's title and summary. Uploading an image in the SEO tab overrides it.
-- **Sitemap and robots**: `@astrojs/sitemap` builds `sitemap-index.xml` from the static routes; `robots.txt` points at it. Both exclude `/intro`.
+- **Sitemap and robots**: `web/src/pages/sitemap.xml.ts` lists every page, work, product and post from Sanity on request; `robots.txt` points at it. Both exclude `/intro`.
 - **Intro pages** are always `noindex, nofollow` and excluded from the sitemap and robots, but still get full meta tags and a generated share image so links unfurl in email and chat.
 
 Set `PUBLIC_SITE_URL` (and `siteUrl` in Site Settings) to the production origin.
@@ -95,11 +95,19 @@ To wire it up: create an app at developer.spotify.com, authorise it once with th
 
 ## Deploy
 
-The site is hosted on Brimble as a Node web service, configured by `brimble.toml` at the repo root: `bun install --frozen-lockfile` and `bun run build` from the root (the workspaces share one lockfile), then `npm start`, which runs the standalone Node server from `@astrojs/node`. That server serves the prerendered pages and runs the share-image and Spotify routes on demand. Public env vars are in `brimble.toml`; add the `SPOTIFY_*` secrets in the Brimble dashboard. The Studio is hosted by Sanity at https://oluwaferanmi.sanity.studio. It redeploys automatically through GitHub Actions (`.github/workflows/deploy-studio.yml`) on every push to `main` that touches `studio/`, or manually with `bun run --cwd studio deploy`. The workflow needs one repository secret, `SANITY_AUTH_TOKEN` (a token with Deploy Studio permission), and optionally the variables `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET` and `SANITY_STUDIO_STUDIO_HOST`, which default to `1dyyk69c`, `production` and `oluwaferanmi`.
+The site is hosted on Brimble as a Node web service, configured by `brimble.toml` at the repo root: `bun install --frozen-lockfile` and `bun run build` from the root (the workspaces share one lockfile), then `npm start`, which runs the standalone Node server from `@astrojs/node`. That server renders every page from Sanity on request (see Caching below) and runs the share-image and Spotify routes. Public env vars are in `brimble.toml`; add the `SPOTIFY_*` secrets and `SANITY_REVALIDATE_SECRET` in the Brimble dashboard. The Studio is hosted by Sanity at https://oluwaferanmi.sanity.studio. It redeploys automatically through GitHub Actions (`.github/workflows/deploy-studio.yml`) on every push to `main` that touches `studio/`, or manually with `bun run --cwd studio deploy`. The workflow needs one repository secret, `SANITY_AUTH_TOKEN` (a token with Deploy Studio permission), and optionally the variables `SANITY_STUDIO_PROJECT_ID`, `SANITY_STUDIO_DATASET` and `SANITY_STUDIO_STUDIO_HOST`, which default to `1dyyk69c`, `production` and `oluwaferanmi`.
+
+## Caching and revalidation
+
+Pages are server-rendered (`output: "server"`) and kept in Astro's in-memory route cache (`cache` and `routeRules` in `web/astro.config.mjs`), so a repeat visit is served from memory instead of querying Sanity. Every cached route carries the `sanity` tag.
+
+A Sanity webhook posts to `/api/revalidate` on every create, update and delete of a published document. The route checks the signature against `SANITY_REVALIDATE_SECRET` and drops everything tagged `sanity`, so the next visit renders fresh content. Every page reads Site Settings and the home page lists every entry, which is why one publish clears the whole cache rather than single pages. Without the webhook, entries still go stale after an hour and are refreshed in the background.
+
+Set up the webhook once under sanity.io/manage → API → Webhooks: URL `https://feranmiadedokun.com/api/revalidate`, dataset `production`, trigger on create, update and delete, method `POST`, and the same secret as `SANITY_REVALIDATE_SECRET`. The cache lives in the Node process, so it is per instance and empties on each deploy.
 
 ## Publishing controls
 
-- **Coming soon** (`comingSoon` on works, products and posts): the entry stays in its list with a "Coming soon" badge but is not clickable, no detail page is built, it is left out of the sitemap, and any Studio link pointing at it renders as plain text with the badge.
+- **Coming soon** (`comingSoon` on works, products and posts): the entry stays in its list with a "Coming soon" badge but is not clickable, its detail URL returns 404, it is left out of the sitemap, and any Studio link pointing at it renders as plain text with the badge.
 - **Hide from the site** (`hidden` on works, products, posts and experience entries): the entry stays in the Studio but disappears from every list, the companies column, routes and the sitemap.
 
 ## Accessibility and responsiveness

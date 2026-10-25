@@ -13,27 +13,16 @@ import {
   webPageNode,
 } from "@/lib/structuredData";
 import { pathFor } from "@/sanity/links";
-import { POST_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/queries";
+import {
+  POST_QUERY,
+  POST_SLUGS_QUERY,
+  SITE_SETTINGS_QUERY,
+} from "@/sanity/queries";
 
-export async function getStaticPaths() {
-  const { sanityClient } = await import("sanity:client");
-  const { POST_SLUGS_QUERY } = await import("@/sanity/queries");
-  const posts = await sanityClient.fetch(POST_SLUGS_QUERY);
-  return posts.map((post, i) => ({
-    params: { slug: post.slug },
-    props: { previous: posts[i + 1] ?? null, next: posts[i - 1] ?? null },
-  }));
-}
-
-interface Props {
-  previous: { slug: string; title: string } | null;
-  next: { slug: string; title: string } | null;
-}
-
-const { previous, next } = Astro.props;
 const { slug } = Astro.params;
-const [post, settings] = await Promise.all([
+const [post, posts, settings] = await Promise.all([
   sanityClient.fetch(POST_QUERY, { slug }),
+  sanityClient.fetch(POST_SLUGS_QUERY),
   sanityClient.fetch(SITE_SETTINGS_QUERY),
 ]);
 if (!settings)
@@ -41,6 +30,10 @@ if (!settings)
     "Site Settings document is missing. Create it in the Studio.",
   );
 if (!post) return Astro.rewrite("/404");
+
+const index = posts.findIndex((entry) => entry.slug === post.slug);
+const previous = posts[index + 1];
+const next = posts[index - 1];
 
 const path = pathFor("post", post.slug);
 const origin = siteOrigin(settings, Astro.site, Astro.url);

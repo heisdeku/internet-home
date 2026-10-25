@@ -71,18 +71,10 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   navigation[] ${LINK}, footerLinks[] ${LINK}, footerPrompt, siteUrl, siteTitle, seo ${SEO}
 }`);
 
-export const PAGE_SLUGS_QUERY = defineQuery(
-  `*[_type == "page" && defined(slug.current)]{ "slug": slug.current }`,
-);
-
 export const PAGE_QUERY =
   defineQuery(`*[_type == "page" && slug.current == $slug][0]{
   _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo ${SEO}, ${PAGE_BUILDER}
 }`);
-
-export const OUTREACH_SLUGS_QUERY = defineQuery(
-  `*[_type == "outreach" && defined(slug.current)]{ "slug": slug.current }`,
-);
 
 export const OUTREACH_QUERY =
   defineQuery(`*[_type == "outreach" && slug.current == $slug][0]{
@@ -96,7 +88,7 @@ export const WORK_SLUGS_QUERY =
 }`);
 
 export const WORK_QUERY =
-  defineQuery(`*[_type == "work" && slug.current == $slug][0]{
+  defineQuery(`*[_type == "work" && slug.current == $slug && comingSoon != true && hidden != true][0]{
   _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,
   links[] ${LINK}, summary, heroImage ${IMAGE}, hoverImage ${IMAGE}, gallery[] ${IMAGE}, ${BODY}, seo ${SEO}
 }`);
@@ -105,12 +97,8 @@ export const PRODUCTS_QUERY = defineQuery(
   `*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) ${PRODUCT_CARD}`,
 );
 
-export const PRODUCT_SLUGS_QUERY = defineQuery(
-  `*[_type == "product" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){ "slug": slug.current }`,
-);
-
 export const PRODUCT_QUERY =
-  defineQuery(`*[_type == "product" && slug.current == $slug][0]{
+  defineQuery(`*[_type == "product" && slug.current == $slug && comingSoon != true && hidden != true][0]{
   _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] ${LINK},
   preview ${IMAGE},
   features[]{ _key, title, description },
@@ -128,9 +116,17 @@ export const POST_SLUGS_QUERY = defineQuery(
 );
 
 export const POST_QUERY =
-  defineQuery(`*[_type == "post" && slug.current == $slug][0]{
+  defineQuery(`*[_type == "post" && slug.current == $slug && comingSoon != true && hidden != true][0]{
   _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, ${BODY}, seo ${SEO}
 }`);
+
+/** Every routed document, for the sitemap. Intro pages are personal outreach and stay out of it. */
+export const SITEMAP_QUERY = defineQuery(`*[
+  defined(slug.current) && (
+    _type == "page" ||
+    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)
+  )
+]{ _type, "slug": slug.current, _updatedAt }`);
 
 /** The few fields the generated share image needs, for any document type with a slug. */
 export const OG_DOC_QUERY =

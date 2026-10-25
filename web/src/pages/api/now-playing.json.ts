@@ -1,7 +1,5 @@
 import type { APIRoute } from "astro";
 
-export const prerender = false;
-
 type Track = { title: string; artist: string; albumArt: string; url: string };
 
 export type NowPlaying =
