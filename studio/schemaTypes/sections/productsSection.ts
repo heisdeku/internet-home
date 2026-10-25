@@ -19,6 +19,9 @@ export const productsSection = defineType({
   ],
   preview: {
     select: {products: 'products'},
-    prepare: ({products}) => ({title: 'Products grid', subtitle: products?.length ? `${products.length} selected` : 'All products'}),
+    prepare: ({products}) => ({
+      title: 'Products grid',
+      subtitle: products?.length ? `${products.length} selected` : 'All products',
+    }),
   },
 })

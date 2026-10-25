@@ -1,5 +1,6 @@
 import {PackageIcon} from '@sanity/icons/Package'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {comingSoonField, hiddenField, manualOrdering, orderField} from './listingFields'
 import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 
 export const product = defineType({
@@ -20,20 +21,8 @@ export const product = defineType({
       options: {source: 'name'},
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'hidden',
-      title: 'Hide from the site',
-      description: 'Keeps the entry in the Studio but removes it from every list and page',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'comingSoon',
-      title: 'Coming soon',
-      description: 'Listed with a "Coming soon" badge, not clickable, and no page is published yet',
-      type: 'boolean',
-      initialValue: false,
-    }),
+    hiddenField,
+    comingSoonField,
     defineField({
       name: 'status',
       type: 'string',
@@ -81,14 +70,9 @@ export const product = defineType({
       of: [defineArrayMember({type: 'changelogEntry'})],
     }),
     defineField({name: 'seo', type: 'seo'}),
-    defineField({
-      name: 'order',
-      description: 'Lower numbers appear first',
-      type: 'number',
-      validation: (rule) => rule.required().integer(),
-    }),
+    orderField,
   ],
-  orderings: [{title: 'Manual order', name: 'order', by: [{field: 'order', direction: 'asc'}]}],
+  orderings: [manualOrdering],
   preview: {
     select: {title: 'name', subtitle: 'status', media: 'preview'},
   },

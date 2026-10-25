@@ -48,7 +48,11 @@ export const listColumnsSection = defineType({
   preview: {
     select: {columns: 'columns'},
     prepare: ({columns}) => ({
-      title: (columns ?? []).map((c: {label?: string}) => c.label).filter(Boolean).join(' · ') || 'List columns',
+      title:
+        (columns ?? [])
+          .map((c: {label?: string}) => c.label)
+          .filter(Boolean)
+          .join(' · ') || 'List columns',
       subtitle: 'List columns',
     }),
   },

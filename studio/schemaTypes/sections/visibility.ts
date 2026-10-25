@@ -1,6 +1,5 @@
 import {defineField} from 'sanity'
 
-/** Shared by every page-builder section. Mobile/desktop split at the site's `md` breakpoint (768px). */
 export const visibilityFieldset = {
   name: 'visibility',
   title: 'Visibility',
@@ -11,7 +10,8 @@ export const visibilityFields = [
   defineField({
     name: 'hidden',
     title: 'Hidden',
-    description: 'Hide this section on every screen size. It stays in the Studio, ready to switch back on.',
+    description:
+      'Hide this section on every screen size. It stays in the Studio, ready to switch back on.',
     type: 'boolean',
     initialValue: false,
     fieldset: 'visibility',

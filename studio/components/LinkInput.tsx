@@ -1,23 +1,26 @@
 import {Flex, Stack, Text} from '@sanity/ui'
 import {useEffect} from 'react'
-import {FormFieldValidationStatus, ObjectInputMember, set, type FieldMember, type ObjectInputProps} from 'sanity'
+import {
+  FormFieldValidationStatus,
+  ObjectInputMember,
+  set,
+  type FieldMember,
+  type ObjectInputProps,
+} from 'sanity'
+import {LINK_TYPES} from './LinkTypeInput'
 
-/**
- * Lays out a link object as: label, then [type picker | type-specific field],
- * then the remaining fields. Mirrors the AAIF Studio's LinkInput.
- */
 export function LinkInput(props: ObjectInputProps) {
+  const {onChange, readOnly} = props
   const members = props.members.filter((m): m is FieldMember => m.kind === 'field')
   const [labelField, typeField, ...rest] = members
-  const type = (props.value?.type as string | undefined) ?? 'internal'
+  const savedType = props.value?.type as string | undefined
+  const type = savedType ?? 'internal'
   const linkField = rest.find((m) => m.name === type) ?? rest[0]
-  const otherFields = rest.filter(
-    (m) => !['internal', 'external', 'relative', 'email', 'phone', 'resume'].includes(m.name),
-  )
+  const otherFields = rest.filter((m) => !LINK_TYPES.some((linkType) => linkType.value === m.name))
 
   useEffect(() => {
-    if (!props.value?.type && !props.readOnly) props.onChange(set('internal', ['type']))
-  }, [props.value?.type, props.readOnly, props.onChange])
+    if (!savedType && !readOnly) onChange(set('internal', ['type']))
+  }, [savedType, readOnly, onChange])
 
   const renderProps = {
     renderAnnotation: props.renderAnnotation,

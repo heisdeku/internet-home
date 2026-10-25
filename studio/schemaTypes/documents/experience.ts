@@ -1,5 +1,6 @@
 import {UsersIcon} from '@sanity/icons/Users'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {hiddenField, manualOrdering, orderField} from './listingFields'
 
 const EMPLOYMENT_TYPES = [
   {title: 'Full-time', value: 'fullTime'},
@@ -57,13 +58,7 @@ export const experience = defineType({
   icon: UsersIcon,
   fields: [
     defineField({name: 'company', type: 'string', validation: (rule) => rule.required()}),
-    defineField({
-      name: 'hidden',
-      title: 'Hide from the site',
-      description: 'Keeps the entry in the Studio but removes it from every list and page',
-      type: 'boolean',
-      initialValue: false,
-    }),
+    hiddenField,
     defineField({
       name: 'logo',
       description: 'Square mark shown beside the company name on hover',
@@ -85,14 +80,9 @@ export const experience = defineType({
       validation: (rule) => rule.required().min(1),
     }),
     defineField({name: 'stack', type: 'string'}),
-    defineField({
-      name: 'order',
-      description: 'Lower numbers appear first',
-      type: 'number',
-      validation: (rule) => rule.required().integer(),
-    }),
+    orderField,
   ],
-  orderings: [{title: 'Manual order', name: 'order', by: [{field: 'order', direction: 'asc'}]}],
+  orderings: [manualOrdering],
   preview: {
     select: {title: 'company', role: 'roles.0.title'},
     prepare: ({title, role}) => ({title, subtitle: role}),

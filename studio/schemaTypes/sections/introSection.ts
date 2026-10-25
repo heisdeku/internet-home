@@ -1,5 +1,6 @@
 import {EnvelopeIcon} from '@sanity/icons/Envelope'
 import {defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const introSection = defineType({
@@ -22,6 +23,6 @@ export const introSection = defineType({
   ],
   preview: {
     select: {title: 'heading.text', greeting: 'greeting'},
-    prepare: ({title, greeting}) => ({title: title?.replace(/<\/?span>/g, ''), subtitle: greeting}),
+    prepare: ({title, greeting}) => ({title: headingText(title), subtitle: greeting}),
   },
 })

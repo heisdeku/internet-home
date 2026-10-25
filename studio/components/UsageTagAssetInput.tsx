@@ -19,7 +19,7 @@ export function UsageTagAssetInput(props: InputProps) {
 }
 
 function AssetUsageTagger(props: InputProps) {
-  const client = useClient({apiVersion: '2025-01-01'})
+  const client = useClient({apiVersion: '2026-10-20'})
   const schema = useSchema()
   const toast = useToast()
   const doc = useFormValue([]) as SanityDocument

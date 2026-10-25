@@ -5,17 +5,18 @@ import {ObjectInputMember, set, type FieldMember, type ObjectInputProps} from 's
 const TYPE_OPTIONS = ['h1', 'h2', 'h3', 'h4', 'p']
 const SIZE_OPTIONS = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL']
 
-/** Heading editor: the text with pill toggles for tag and size underneath (as in the AAIF Studio). */
 export function TitleInput(props: ObjectInputProps) {
+  const {onChange, readOnly} = props
   const members = props.members.filter((m): m is FieldMember => m.kind === 'field')
   const textField = members.find((m) => m.name === 'text')
   const otherFields = members.filter((m) => !['text', 'type', 'fontSize'].includes(m.name))
-  const currentType = (props.value?.type as string | undefined) ?? 'h2'
+  const savedType = props.value?.type as string | undefined
+  const currentType = savedType ?? 'h2'
   const currentSize = (props.value?.fontSize as string | undefined) ?? ''
 
   useEffect(() => {
-    if (props.value?.type === undefined && !props.readOnly) props.onChange(set('h2', ['type']))
-  }, [props.value?.type, props.readOnly, props.onChange])
+    if (savedType === undefined && !readOnly) onChange(set('h2', ['type']))
+  }, [savedType, readOnly, onChange])
 
   const renderProps = {
     renderAnnotation: props.renderAnnotation,
@@ -45,7 +46,7 @@ export function TitleInput(props: ObjectInputProps) {
               fontSize={0}
               radius="full"
               style={active ? undefined : {opacity: 0.55}}
-              onClick={() => props.onChange(set(option, [path]))}
+              onClick={() => onChange(set(option, [path]))}
             />
           )
         })}
@@ -57,7 +58,11 @@ export function TitleInput(props: ObjectInputProps) {
     <Stack gap={4}>
       <Stack gap={2}>
         {textField && (
-          <ObjectInputMember member={textField} {...renderProps} renderField={(fieldProps) => <>{fieldProps.children}</>} />
+          <ObjectInputMember
+            member={textField}
+            {...renderProps}
+            renderField={(fieldProps) => <>{fieldProps.children}</>}
+          />
         )}
         {pills('Tag:', TYPE_OPTIONS, currentType, 'type')}
         {pills('Size:', SIZE_OPTIONS, currentSize, 'fontSize')}

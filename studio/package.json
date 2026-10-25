@@ -11,7 +11,8 @@
     "dev": "sanity dev",
     "start": "sanity start",
     "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
-    "schema:deploy": "sanity schema deploy"
+    "schema:deploy": "sanity schema deploy",
+    "format": "prettier --write ."
   },
   "keywords": [
     "sanity"

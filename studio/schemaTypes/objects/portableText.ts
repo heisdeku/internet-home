@@ -1,4 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {INTERNAL_TARGETS} from './links'
 
 export const linkAnnotation = defineArrayMember({
   name: 'link',
@@ -28,13 +29,14 @@ export const linkAnnotation = defineArrayMember({
       description: 'A web, email, phone or relative link',
       type: 'url',
       hidden: ({parent}) => parent?.linkType !== 'external',
-      validation: (rule) => rule.uri({scheme: ['http', 'https', 'mailto', 'tel'], allowRelative: true}),
+      validation: (rule) =>
+        rule.uri({scheme: ['http', 'https', 'mailto', 'tel'], allowRelative: true}),
     }),
     defineField({
       name: 'internal',
       title: 'Document',
       type: 'reference',
-      to: [{type: 'page'}, {type: 'outreach'}, {type: 'work'}, {type: 'product'}, {type: 'post'}],
+      to: INTERNAL_TARGETS,
       hidden: ({parent}) => parent?.linkType !== 'internal',
     }),
     defineField({
@@ -107,7 +109,7 @@ export const portableText = defineType({
               ],
             }),
           ],
-          validation: (rule) => rule.required().min(2).max(4),
+          validation: (rule) => rule.required().min(2).max(12),
         }),
         defineField({
           name: 'columns',

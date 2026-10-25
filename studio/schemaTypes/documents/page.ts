@@ -36,7 +36,7 @@ export const page = defineType({
       group: 'settings',
       options: {
         list: [
-          {title: 'Paper (default)', value: 'paper'},
+          {title: 'Paper', value: 'paper'},
           {title: 'Blue', value: 'accent'},
         ],
         layout: 'radio',

@@ -1,5 +1,6 @@
 import {PlayIcon} from '@sanity/icons/Play'
 import {defineField, defineType} from 'sanity'
+import {ASPECT_RATIOS} from './embed'
 
 /** A video from an uploaded file or a direct URL, with a poster. Embedded players use `embed`. */
 export const video = defineType({
@@ -55,12 +56,7 @@ export const video = defineType({
       description: 'Reserves the space before the video loads',
       type: 'string',
       options: {
-        list: [
-          {title: '16:9', value: '16/9'},
-          {title: '4:3', value: '4/3'},
-          {title: '1:1', value: '1/1'},
-          {title: '9:16', value: '9/16'},
-        ],
+        list: ASPECT_RATIOS,
         layout: 'radio',
         direction: 'horizontal',
       },
@@ -69,13 +65,18 @@ export const video = defineType({
     defineField({name: 'caption', type: 'string'}),
     defineField({
       name: 'autoplay',
-      description: 'Muted, looping and without controls, for motion clips. Off shows a play button.',
+      description:
+        'Muted, looping and without controls, for motion clips. Off shows a play button.',
       type: 'boolean',
       initialValue: true,
     }),
   ],
   preview: {
     select: {caption: 'caption', media: 'poster', source: 'source'},
-    prepare: ({caption, media, source}) => ({title: caption || 'Video', subtitle: source === 'url' ? 'From URL' : 'Uploaded', media}),
+    prepare: ({caption, media, source}) => ({
+      title: caption || 'Video',
+      subtitle: source === 'url' ? 'From URL' : 'Uploaded',
+      media,
+    }),
   },
 })

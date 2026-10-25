@@ -1,5 +1,6 @@
 import {UsersIcon} from '@sanity/icons/Users'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const experienceSection = defineType({
@@ -13,7 +14,8 @@ export const experienceSection = defineType({
     defineField({
       name: 'entries',
       title: 'Relevant roles',
-      description: 'Pick the companies to show, in order. Leave empty to show every Experience document.',
+      description:
+        'Pick the companies to show, in order. Leave empty to show every Experience document.',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: [{type: 'experience'}]})],
     }),
@@ -28,7 +30,7 @@ export const experienceSection = defineType({
   preview: {
     select: {title: 'heading.text', entries: 'entries'},
     prepare: ({title, entries}) => ({
-      title: title || 'Experience',
+      title: headingText(title) || 'Experience',
       subtitle: entries?.length ? `${entries.length} selected` : 'All experience',
     }),
   },

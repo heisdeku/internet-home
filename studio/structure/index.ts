@@ -1,7 +1,7 @@
 import {CogIcon} from '@sanity/icons/Cog'
 import type {StructureResolver} from 'sanity/structure'
 
-const SINGLETONS = ['siteSettings']
+export const SINGLETONS = ['siteSettings']
 const LISTED = ['page', 'outreach', 'work', 'product', 'experience', 'tool', 'post']
 
 export const structure: StructureResolver = (S) =>

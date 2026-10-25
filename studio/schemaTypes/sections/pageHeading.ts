@@ -1,5 +1,6 @@
 import {BlockContentIcon} from '@sanity/icons/BlockContent'
 import {defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const pageHeading = defineType({
@@ -16,6 +17,6 @@ export const pageHeading = defineType({
   ],
   preview: {
     select: {title: 'heading.text'},
-    prepare: ({title}) => ({title: title?.replace(/<\/?span>/g, ''), subtitle: 'Page heading'}),
+    prepare: ({title}) => ({title: headingText(title), subtitle: 'Page heading'}),
   },
 })

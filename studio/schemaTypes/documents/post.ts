@@ -1,5 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {comingSoonField, hiddenField} from './listingFields'
 import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 
 export const post = defineType({
@@ -20,20 +21,8 @@ export const post = defineType({
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'hidden',
-      title: 'Hide from the site',
-      description: 'Keeps the entry in the Studio but removes it from every list and page',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'comingSoon',
-      title: 'Coming soon',
-      description: 'Listed with a "Coming soon" badge, not clickable, and no page is published yet',
-      type: 'boolean',
-      initialValue: false,
-    }),
+    hiddenField,
+    comingSoonField,
     defineField({
       name: 'publishedAt',
       type: 'date',
@@ -65,7 +54,11 @@ export const post = defineType({
     defineField({name: 'seo', type: 'seo'}),
   ],
   orderings: [
-    {title: 'Newest first', name: 'publishedAtDesc', by: [{field: 'publishedAt', direction: 'desc'}]},
+    {
+      title: 'Newest first',
+      name: 'publishedAtDesc',
+      by: [{field: 'publishedAt', direction: 'desc'}],
+    },
   ],
   preview: {
     select: {title: 'title', subtitle: 'publishedAt'},

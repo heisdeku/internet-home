@@ -1,5 +1,6 @@
 import {DocumentTextIcon} from '@sanity/icons/DocumentText'
 import {defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const writingSection = defineType({
@@ -15,7 +16,7 @@ export const writingSection = defineType({
       name: 'limit',
       description: 'Leave empty to list every post',
       type: 'number',
-      validation: (rule) => rule.integer().positive(),
+      validation: (rule) => rule.integer().min(1),
     }),
     defineField({
       name: 'layout',
@@ -33,6 +34,9 @@ export const writingSection = defineType({
   ],
   preview: {
     select: {title: 'heading.text', limit: 'limit'},
-    prepare: ({title, limit}) => ({title: title || 'Writing', subtitle: limit ? `Latest ${limit} posts` : 'All posts'}),
+    prepare: ({title, limit}) => ({
+      title: headingText(title) || 'Writing',
+      subtitle: limit ? `Latest ${limit} posts` : 'All posts',
+    }),
   },
 })

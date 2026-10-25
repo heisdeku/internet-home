@@ -8,6 +8,11 @@ export const feature = defineType({
   icon: SparklesIcon,
   fields: [
     defineField({name: 'title', type: 'string', validation: (rule) => rule.required()}),
-    defineField({name: 'description', type: 'text', rows: 3, validation: (rule) => rule.required()}),
+    defineField({
+      name: 'description',
+      type: 'text',
+      rows: 3,
+      validation: (rule) => rule.required(),
+    }),
   ],
 })

@@ -1,6 +1,14 @@
 import {CodeBlockIcon} from '@sanity/icons/CodeBlock'
 import {defineField, defineType} from 'sanity'
 
+/** Shared with `video`; the web sets these as the frame's CSS `aspect-ratio`. */
+export const ASPECT_RATIOS = [
+  {title: '16:9', value: '16/9'},
+  {title: '4:3', value: '4/3'},
+  {title: '1:1', value: '1/1'},
+  {title: '9:16', value: '9/16'},
+]
+
 /** Embedded content: YouTube, Vimeo, Loom, CodeSandbox, Figma, maps… Paste the page URL or the iframe src. */
 export const embed = defineType({
   name: 'embed',
@@ -11,7 +19,8 @@ export const embed = defineType({
     defineField({
       name: 'url',
       title: 'Embed URL',
-      description: 'YouTube, Vimeo and Loom page links are converted to their players automatically',
+      description:
+        'YouTube, Vimeo and Loom page links are converted to their players automatically',
       type: 'url',
       validation: (rule) => rule.required(),
     }),
@@ -25,12 +34,7 @@ export const embed = defineType({
       description: 'Width to height of the embedded frame',
       type: 'string',
       options: {
-        list: [
-          {title: '16:9', value: '16/9'},
-          {title: '4:3', value: '4/3'},
-          {title: '1:1', value: '1/1'},
-          {title: '9:16', value: '9/16'},
-        ],
+        list: ASPECT_RATIOS,
         layout: 'radio',
         direction: 'horizontal',
       },

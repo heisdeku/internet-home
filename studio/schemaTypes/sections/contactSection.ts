@@ -1,5 +1,6 @@
 import {CommentIcon} from '@sanity/icons/Comment'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const contactSection = defineType({
@@ -11,12 +12,21 @@ export const contactSection = defineType({
   fieldsets: [visibilityFieldset],
   fields: [
     defineField({name: 'heading', type: 'heading'}),
-    defineField({name: 'emailSubject', description: 'Pre-filled subject for the mailto link', type: 'string'}),
-    defineField({name: 'ctas', title: 'Buttons', type: 'array', of: [defineArrayMember({type: 'cta'})]}),
+    defineField({
+      name: 'emailSubject',
+      description: 'Pre-filled subject for the mailto link',
+      type: 'string',
+    }),
+    defineField({
+      name: 'ctas',
+      title: 'Buttons',
+      type: 'array',
+      of: [defineArrayMember({type: 'cta'})],
+    }),
     ...visibilityFields,
   ],
   preview: {
     select: {title: 'heading.text'},
-    prepare: ({title}) => ({title: title || 'Contact band', subtitle: 'Contact band'}),
+    prepare: ({title}) => ({title: headingText(title) || 'Contact band', subtitle: 'Contact band'}),
   },
 })

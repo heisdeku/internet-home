@@ -3,7 +3,6 @@ import {defineField, defineType} from 'sanity'
 import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 import {pageBuilderField} from '../pageBuilder'
 
-/** A personalised intro page at /intro/[slug], for job applications, cold emails and outreach. Never indexed. */
 export const outreach = defineType({
   name: 'outreach',
   title: 'Intro page',
@@ -31,7 +30,12 @@ export const outreach = defineType({
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),
-    defineField({name: 'recipient', description: 'Who this page is for', type: 'string', group: 'content'}),
+    defineField({
+      name: 'recipient',
+      description: 'Who this page is for',
+      type: 'string',
+      group: 'content',
+    }),
     defineField({name: 'company', type: 'string', group: 'content'}),
     {...pageBuilderField, group: 'content'},
     defineField({
@@ -65,6 +69,9 @@ export const outreach = defineType({
   ],
   preview: {
     select: {title: 'title', slug: 'slug.current', company: 'company'},
-    prepare: ({title, slug, company}) => ({title, subtitle: `/intro/${slug}${company ? ` · ${company}` : ''}`}),
+    prepare: ({title, slug, company}) => ({
+      title,
+      subtitle: `/intro/${slug}${company ? ` · ${company}` : ''}`,
+    }),
   },
 })

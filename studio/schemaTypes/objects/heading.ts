@@ -1,7 +1,13 @@
 import {defineField, defineType} from 'sanity'
 import {TitleInput} from '../../components/TitleInput'
 
-/** A heading with its tag and size chosen by the editor. `<span>` inside the text is the accent highlight. */
+export const headingText = (text: string | undefined) =>
+  text
+    ?.replace(/<rotate>(.*?)<\/rotate>/g, (_, words: string) => words.split('|')[0].trim())
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
 export const heading = defineType({
   name: 'heading',
   title: 'Heading',
@@ -28,7 +34,7 @@ export const heading = defineType({
   preview: {
     select: {text: 'text', type: 'type', fontSize: 'fontSize'},
     prepare: ({text, type, fontSize}) => ({
-      title: text?.replace(/<\/?span>/g, '') || 'Heading',
+      title: headingText(text) || 'Heading',
       subtitle: `${type?.toUpperCase() ?? 'H2'}${fontSize ? ` · ${fontSize}` : ''}`,
     }),
   },

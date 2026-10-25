@@ -1,5 +1,6 @@
 import {StarIcon} from '@sanity/icons/Star'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const heroSection = defineType({
@@ -22,6 +23,6 @@ export const heroSection = defineType({
   ],
   preview: {
     select: {title: 'heading.text'},
-    prepare: ({title}) => ({title: title?.replace(/<\/?span>/g, ''), subtitle: 'Hero'}),
+    prepare: ({title}) => ({title: headingText(title), subtitle: 'Hero'}),
   },
 })

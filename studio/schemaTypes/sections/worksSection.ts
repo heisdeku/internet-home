@@ -1,5 +1,6 @@
 import {CaseIcon} from '@sanity/icons/Case'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const worksSection = defineType({
@@ -13,7 +14,8 @@ export const worksSection = defineType({
     defineField({
       name: 'works',
       title: 'Selected works',
-      description: 'Pick the works to show, in order. Leave empty to show every work in its manual order.',
+      description:
+        'Pick the works to show, in order. Leave empty to show every work in its manual order.',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: [{type: 'work'}]})],
     }),
@@ -46,7 +48,7 @@ export const worksSection = defineType({
   preview: {
     select: {title: 'heading.text', works: 'works'},
     prepare: ({title, works}) => ({
-      title: title?.replace(/<\/?span>/g, '') || 'Works',
+      title: headingText(title) || 'Works',
       subtitle: works?.length ? `${works.length} selected` : 'All works',
     }),
   },

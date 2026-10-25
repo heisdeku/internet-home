@@ -10,7 +10,8 @@ export const seo = defineType({
       name: 'metaTitle',
       description: 'Browser tab and search result title. Keep under 60 characters.',
       type: 'string',
-      validation: (rule) => rule.max(70).warning('Titles over 60 characters get cut off in search results'),
+      validation: (rule) =>
+        rule.max(70).warning('Titles over 60 characters get cut off in search results'),
     }),
     defineField({
       name: 'metaDescription',
@@ -50,7 +51,8 @@ export const seo = defineType({
     defineField({
       name: 'structuredData',
       title: 'Structured data (JSON-LD)',
-      description: 'Usually leave empty. Anything pasted here replaces the generated description of this page.',
+      description:
+        'Usually leave empty. Anything pasted here replaces the generated description of this page.',
       type: 'text',
       rows: 8,
     }),

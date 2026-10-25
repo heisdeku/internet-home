@@ -1,5 +1,6 @@
 import {TextIcon} from '@sanity/icons/Text'
 import {defineField, defineType} from 'sanity'
+import {headingText} from '../objects/heading'
 import {visibilityFields, visibilityFieldset} from './visibility'
 
 export const richTextSection = defineType({
@@ -15,6 +16,6 @@ export const richTextSection = defineType({
   ],
   preview: {
     select: {title: 'heading.text'},
-    prepare: ({title}) => ({title: title || 'Rich text', subtitle: 'Rich text'}),
+    prepare: ({title}) => ({title: headingText(title) || 'Rich text', subtitle: 'Rich text'}),
   },
 })

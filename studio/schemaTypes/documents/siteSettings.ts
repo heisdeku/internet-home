@@ -20,8 +20,18 @@ export const siteSettings = defineType({
       group: 'identity',
       validation: (rule) => rule.required(),
     }),
-    defineField({name: 'fullName', type: 'string', group: 'identity', validation: (rule) => rule.required()}),
-    defineField({name: 'jobTitle', type: 'string', group: 'identity', validation: (rule) => rule.required()}),
+    defineField({
+      name: 'fullName',
+      type: 'string',
+      group: 'identity',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'jobTitle',
+      type: 'string',
+      group: 'identity',
+      validation: (rule) => rule.required(),
+    }),
     defineField({
       name: 'timeZone',
       description: 'IANA time zone used for the live clock, e.g. Africa/Lagos',
@@ -50,15 +60,22 @@ export const siteSettings = defineType({
       name: 'availabilityLabel',
       description: 'Shown beside the green dot in the header when "Available for work" is on',
       type: 'string',
+      group: 'identity',
       initialValue: 'Available for work',
     }),
     defineField({
       name: 'notFound',
       title: '404 page',
       type: 'object',
+      group: 'navigation',
       fields: [
         defineField({name: 'title', type: 'string', initialValue: 'Page not found'}),
-        defineField({name: 'linkLabel', title: 'Link label', type: 'string', initialValue: 'Back to the home page'}),
+        defineField({
+          name: 'linkLabel',
+          title: 'Link label',
+          type: 'string',
+          initialValue: 'Back to the home page',
+        }),
       ],
     }),
     defineField({
@@ -68,7 +85,12 @@ export const siteSettings = defineType({
       group: 'identity',
       validation: (rule) => rule.required().email(),
     }),
-    defineField({name: 'resume', type: 'file', group: 'identity', options: {accept: 'application/pdf'}}),
+    defineField({
+      name: 'resume',
+      type: 'file',
+      group: 'identity',
+      options: {accept: 'application/pdf'},
+    }),
     defineField({
       name: 'showListeningPlayer',
       title: 'Show "Listening now" player',
@@ -99,7 +121,8 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: 'siteUrl',
-      description: 'Production origin, e.g. https://feranmiadedokun.com. Used for canonical URLs, the sitemap and share images.',
+      description:
+        'Production origin, e.g. https://feranmiadedokun.com. Used for canonical URLs, the sitemap and share images.',
       type: 'url',
       group: 'seo',
     }),

@@ -5,9 +5,7 @@ import {structureTool} from 'sanity/structure'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
 import {UsageTagAssetInput} from './components/UsageTagAssetInput'
 import {schemaTypes} from './schemaTypes'
-import {structure} from './structure'
-
-const SINGLETONS = new Set(['siteSettings'])
+import {SINGLETONS, structure} from './structure'
 
 export default defineConfig({
   name: 'default',
@@ -26,13 +24,15 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
-    templates: (templates) => templates.filter((t) => !SINGLETONS.has(t.schemaType)),
+    templates: (templates) => templates.filter((t) => !SINGLETONS.includes(t.schemaType)),
   },
 
   document: {
     actions: (actions, {schemaType}) =>
-      SINGLETONS.has(schemaType)
-        ? actions.filter(({action}) => action !== 'unpublish' && action !== 'delete' && action !== 'duplicate')
+      SINGLETONS.includes(schemaType)
+        ? actions.filter(
+            ({action}) => action !== 'unpublish' && action !== 'delete' && action !== 'duplicate',
+          )
         : actions,
   },
 })

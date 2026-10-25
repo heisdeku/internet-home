@@ -1,5 +1,6 @@
 import {CaseIcon} from '@sanity/icons/Case'
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {comingSoonField, hiddenField, manualOrdering, orderField} from './listingFields'
 import {SlugWithUrlInput} from '../../components/SlugWithUrlInput'
 
 export const work = defineType({
@@ -20,20 +21,8 @@ export const work = defineType({
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'hidden',
-      title: 'Hide from the site',
-      description: 'Keeps the entry in the Studio but removes it from every list and page',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'comingSoon',
-      title: 'Coming soon',
-      description: 'Listed with a "Coming soon" badge, not clickable, and no page is published yet',
-      type: 'boolean',
-      initialValue: false,
-    }),
+    hiddenField,
+    comingSoonField,
     defineField({
       name: 'category',
       description: 'e.g. Web Platform, Mobile, Portfolio',
@@ -81,12 +70,6 @@ export const work = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'scope',
-      description: 'What the work covered, one item per line',
-      type: 'array',
-      of: [defineArrayMember({type: 'string'})],
-    }),
-    defineField({
       name: 'heroImage',
       type: 'image',
       options: {hotspot: true},
@@ -117,14 +100,9 @@ export const work = defineType({
       type: 'portableText',
     }),
     defineField({name: 'seo', type: 'seo'}),
-    defineField({
-      name: 'order',
-      description: 'Lower numbers appear first',
-      type: 'number',
-      validation: (rule) => rule.required().integer(),
-    }),
+    orderField,
   ],
-  orderings: [{title: 'Manual order', name: 'order', by: [{field: 'order', direction: 'asc'}]}],
+  orderings: [manualOrdering],
   preview: {
     select: {title: 'title', subtitle: 'category', media: 'heroImage'},
   },

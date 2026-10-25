@@ -4,14 +4,16 @@ import {ButtonVariantInput} from '../../components/ButtonVariantInput'
 import {LinkInput} from '../../components/LinkInput'
 import {LinkTypeInput} from '../../components/LinkTypeInput'
 
-const INTERNAL_TARGETS = [{type: 'page'}, {type: 'outreach'}, {type: 'work'}, {type: 'product'}, {type: 'post'}]
+export const INTERNAL_TARGETS = [
+  {type: 'page'},
+  {type: 'outreach'},
+  {type: 'work'},
+  {type: 'product'},
+  {type: 'post'},
+]
 
 type LinkOptions = {name: string; title: string; withVariant: boolean}
 
-/**
- * Same shape as the AAIF Studio's simpleLink / cta: label, type, one field per
- * type, then target and params. `cta` adds a visual variant.
- */
 function createLinkType({name, title, withVariant}: LinkOptions) {
   return defineType({
     name,
@@ -19,10 +21,21 @@ function createLinkType({name, title, withVariant}: LinkOptions) {
     type: 'object',
     icon: LinkIcon,
     components: {input: LinkInput},
-    fieldsets: [{name: 'advanced', title: 'Advanced (optional)', options: {collapsible: true, collapsed: true}}],
+    fieldsets: [
+      {
+        name: 'advanced',
+        title: 'Advanced (optional)',
+        options: {collapsible: true, collapsed: true},
+      },
+    ],
     fields: [
       defineField({name: 'label', type: 'string', validation: (rule) => rule.required()}),
-      defineField({name: 'type', type: 'string', initialValue: 'internal', components: {input: LinkTypeInput}}),
+      defineField({
+        name: 'type',
+        type: 'string',
+        initialValue: 'internal',
+        components: {input: LinkTypeInput},
+      }),
       defineField({
         name: 'internal',
         type: 'reference',
