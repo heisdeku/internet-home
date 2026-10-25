@@ -2,40 +2,44 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-export type NowPlaying =
-	| { isPlaying: false }
-	| {
-			isPlaying: true;
-			title: string;
-			artist: string;
-			albumArt: string;
-			url: string;
-			progressMs: number;
-			durationMs: number;
-	  };
+type Track = { title: string; artist: string; albumArt: string; url: string };
 
+export type NowPlaying =
+	| ({ isPlaying: true; progressMs: number; durationMs: number } & Track)
+	/** Nothing playing; the most recent track, when Spotify can tell us, so the card never goes blank. */
+	| { isPlaying: false; lastPlayed: (Track & { playedAt: string }) | null };
+
+interface SpotifyTrack {
+	name: string;
+	duration_ms: number;
+	artists: { name: string }[];
+	album: { images: { url: string }[] };
+	external_urls: { spotify: string };
+}
 interface SpotifyCurrentlyPlaying {
 	is_playing: boolean;
 	progress_ms: number;
 	currently_playing_type: string;
-	item: {
-		name: string;
-		duration_ms: number;
-		artists: { name: string }[];
-		album: { images: { url: string }[] };
-		external_urls: { spotify: string };
-	} | null;
+	item: SpotifyTrack | null;
+}
+interface SpotifyRecentlyPlayed {
+	items: { track: SpotifyTrack; played_at: string }[];
 }
 
 const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } = import.meta.env;
 
-const notPlaying = () =>
-	new Response(JSON.stringify({ isPlaying: false } satisfies NowPlaying), {
-		headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
-	});
+const json = (body: NowPlaying) =>
+	new Response(JSON.stringify(body), { headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
+
+const track = (item: SpotifyTrack): Track => ({
+	title: item.name,
+	artist: item.artists.map((a) => a.name).join(', '),
+	albumArt: item.album.images[0]?.url ?? '',
+	url: item.external_urls.spotify,
+});
 
 export const GET: APIRoute = async () => {
-	if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) return notPlaying();
+	if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) return json({ isPlaying: false, lastPlayed: null });
 
 	const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
 		method: 'POST',
@@ -45,28 +49,27 @@ export const GET: APIRoute = async () => {
 		},
 		body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: SPOTIFY_REFRESH_TOKEN }),
 	});
-	if (!tokenResponse.ok) return notPlaying();
+	if (!tokenResponse.ok) return json({ isPlaying: false, lastPlayed: null });
 	const { access_token } = (await tokenResponse.json()) as { access_token: string };
+	const headers = { authorization: `Bearer ${access_token}` };
 
-	const playing = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-		headers: { authorization: `Bearer ${access_token}` },
-	});
+	const playing = await fetch('https://api.spotify.com/v1/me/player/currently-playing', { headers });
 	// 204 means nothing is playing right now.
-	if (playing.status !== 200) return notPlaying();
+	if (playing.status === 200) {
+		const data = (await playing.json()) as SpotifyCurrentlyPlaying;
+		if (data.currently_playing_type === 'track' && data.item) {
+			if (data.is_playing) {
+				return json({ isPlaying: true, ...track(data.item), progressMs: data.progress_ms, durationMs: data.item.duration_ms });
+			}
+			// Paused: the track still on the player is the last one played.
+			return json({ isPlaying: false, lastPlayed: { ...track(data.item), playedAt: new Date().toISOString() } });
+		}
+	}
 
-	const data = (await playing.json()) as SpotifyCurrentlyPlaying;
-	if (!data.is_playing || data.currently_playing_type !== 'track' || !data.item) return notPlaying();
-
-	const body: NowPlaying = {
-		isPlaying: true,
-		title: data.item.name,
-		artist: data.item.artists.map((a) => a.name).join(', '),
-		albumArt: data.item.album.images[0]?.url ?? '',
-		url: data.item.external_urls.spotify,
-		progressMs: data.progress_ms,
-		durationMs: data.item.duration_ms,
-	};
-	return new Response(JSON.stringify(body), {
-		headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
-	});
+	// Needs the user-read-recently-played scope; without it Spotify answers 403 and the card simply hides.
+	const recent = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=1', { headers });
+	if (recent.status !== 200) return json({ isPlaying: false, lastPlayed: null });
+	const { items } = (await recent.json()) as SpotifyRecentlyPlayed;
+	const last = items[0];
+	return json({ isPlaying: false, lastPlayed: last ? { ...track(last.track), playedAt: last.played_at } : null });
 };
