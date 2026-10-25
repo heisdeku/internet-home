@@ -45,7 +45,8 @@ const track = (item: SpotifyTrack): Track => ({
   url: item.external_urls.spotify,
 });
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ cache }) => {
+  cache.set(false);
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN)
     return json({ isPlaying: false, lastPlayed: null });
 

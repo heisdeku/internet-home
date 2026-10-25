@@ -3661,7 +3661,7 @@ export type POST_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SITEMAP_QUERY
-// Query: *[  defined(slug.current) && (    _type == "page" ||    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)  )]{ _type, "slug": slug.current, _updatedAt }
+// Query: *[  defined(slug.current) && seo.noIndex != true && (    _type == "page" ||    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)  )]{ _type, "slug": slug.current, _updatedAt }
 export type SITEMAP_QUERY_RESULT = Array<
   | {
       _type: "page";
@@ -3749,7 +3749,7 @@ declare global {
     '*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }': POSTS_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }': POST_SLUGS_QUERY_RESULT;
     '*[_type == "post" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': POST_QUERY_RESULT;
-    '*[\n  defined(slug.current) && (\n    _type == "page" ||\n    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)\n  )\n]{ _type, "slug": slug.current, _updatedAt }': SITEMAP_QUERY_RESULT;
+    '*[\n  defined(slug.current) && seo.noIndex != true && (\n    _type == "page" ||\n    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)\n  )\n]{ _type, "slug": slug.current, _updatedAt }': SITEMAP_QUERY_RESULT;
     '*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(seo.metaTitle, title, name),\n  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),\n  "label": coalesce(category, status, string(year)),\n  publishedAt, recipient, company\n}': OG_DOC_QUERY_RESULT;
   }
 }

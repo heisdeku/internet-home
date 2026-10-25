@@ -120,9 +120,8 @@ export const POST_QUERY =
   _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, ${BODY}, seo ${SEO}
 }`);
 
-/** Every routed document, for the sitemap. Intro pages are personal outreach and stay out of it. */
 export const SITEMAP_QUERY = defineQuery(`*[
-  defined(slug.current) && (
+  defined(slug.current) && seo.noIndex != true && (
     _type == "page" ||
     (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)
   )
