@@ -1,16 +1,21 @@
 ---
-import type { MarkProps } from 'astro-portabletext/types';
-import BrandLink from '@/components/BrandLink.astro';
-import { toolIcon } from '@/lib/toolIcons';
-import { pathFor } from '@/sanity/links';
+import type { MarkProps } from "astro-portabletext/types";
+import BrandLink from "@/components/BrandLink.astro";
+import { toolIcon } from "@/lib/toolIcons";
+import { pathFor } from "@/sanity/links";
 
 type LinkDef = {
-	linkType?: 'external' | 'internal' | 'company' | 'tool';
-	href?: string;
-	internal?: Parameters<typeof pathFor>[0] | null;
-	company?: { company: string | null; url: string | null; logo: string | null; brandColor: string | null } | null;
-	tool?: string | null;
-	openInNewTab?: boolean;
+  linkType?: "external" | "internal" | "company" | "tool";
+  href?: string;
+  internal?: Parameters<typeof pathFor>[0] | null;
+  company?: {
+    company: string | null;
+    url: string | null;
+    logo: string | null;
+    brandColor: string | null;
+  } | null;
+  tool?: string | null;
+  openInNewTab?: boolean;
 };
 type Props = MarkProps<LinkDef>;
 
@@ -18,43 +23,78 @@ const { node } = Astro.props;
 
 let href: string | null = null;
 let newTab = false;
-const company = node.markType === 'link' && node.markDef.linkType === 'company' ? node.markDef.company : null;
-const tool = node.markType === 'link' && node.markDef.linkType === 'tool' ? toolIcon(node.markDef.tool ?? '') : null;
-const isTool = node.markType === 'link' && node.markDef.linkType === 'tool';
-if (node.markType === 'link' && !company && !isTool) {
-	const def = node.markDef;
-	href = def.linkType === 'internal' ? (def.internal ? pathFor(def.internal) : null) : (def.href ?? null);
-	newTab = def.openInNewTab === true;
+const company =
+  node.markType === "link" && node.markDef.linkType === "company"
+    ? node.markDef.company
+    : null;
+const tool =
+  node.markType === "link" && node.markDef.linkType === "tool"
+    ? toolIcon(node.markDef.tool ?? "")
+    : null;
+const isTool = node.markType === "link" && node.markDef.linkType === "tool";
+if (node.markType === "link" && !company && !isTool) {
+  const def = node.markDef;
+  href =
+    def.linkType === "internal"
+      ? def.internal
+        ? pathFor(def.internal)
+        : null
+      : (def.href ?? null);
+  newTab = def.openInNewTab === true;
 }
 ---
 
 {
-	company ? (
-		<BrandLink label="" href={company.url} logoUrl={company.logo} color={company.brandColor} class="font-medium">
-			<slot />
-		</BrandLink>
-	) : isTool ? (
-		<BrandLink label="" href={node.markDef.href} path={tool?.path} color={tool?.hex} class="font-medium">
-			<slot />
-		</BrandLink>
-	) : node.markType === 'link' && !href ? (
-		<span><slot /></span>
-	) : node.markType === 'link' ? (
-		<a
-			href={href}
-			class="hit underline underline-offset-[3px] decoration-current/40 transition-colors hover:text-accent hover:decoration-current"
-			target={newTab ? '_blank' : undefined}
-			rel={newTab ? 'noopener' : undefined}
-		>
-			<slot />
-		</a>
-	) : node.markType === 'code' ? (
-		<code translate="no" class="rounded-[3px] bg-current/10 px-1.5 py-0.5 font-mono text-[.85em]"><slot /></code>
-	) : node.markType === 'em' ? (
-		<em><slot /></em>
-	) : node.markType === 'underline' ? (
-		<span class="underline underline-offset-[3px]"><slot /></span>
-	) : (
-		<strong class="font-medium"><slot /></strong>
-	)
+  company ? (
+    <BrandLink
+      label=""
+      href={company.url}
+      logoUrl={company.logo}
+      color={company.brandColor}
+      class="font-medium"
+    >
+      <slot />
+    </BrandLink>
+  ) : isTool ? (
+    <BrandLink
+      label=""
+      href={node.markDef.href}
+      path={tool?.path}
+      class="font-medium"
+    >
+      <slot />
+    </BrandLink>
+  ) : node.markType === "link" && !href ? (
+    <span>
+      <slot />
+    </span>
+  ) : node.markType === "link" ? (
+    <a
+      href={href}
+      class="hit underline underline-offset-[3px] decoration-current/40 transition-colors hover:text-accent hover:decoration-current"
+      target={newTab ? "_blank" : undefined}
+      rel={newTab ? "noopener" : undefined}
+    >
+      <slot />
+    </a>
+  ) : node.markType === "code" ? (
+    <code
+      translate="no"
+      class="rounded-[3px] bg-current/10 px-1.5 py-0.5 font-mono text-[.85em]"
+    >
+      <slot />
+    </code>
+  ) : node.markType === "em" ? (
+    <em>
+      <slot />
+    </em>
+  ) : node.markType === "underline" ? (
+    <span class="underline underline-offset-[3px]">
+      <slot />
+    </span>
+  ) : (
+    <strong class="font-medium">
+      <slot />
+    </strong>
+  )
 }

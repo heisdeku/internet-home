@@ -1,44 +1,53 @@
 ---
-/**
- * A name that reveals its mark on hover: the logo slides in from the left while
- * the text takes the brand colour. Renders a plain span when there is no URL.
- * Pass either `logoUrl` (an image) or `path` (an SVG path, e.g. from simple-icons).
- */
 interface Props {
-	label: string;
-	href?: string | null;
-	logoUrl?: string | null;
-	path?: string | null;
-	color?: string | null;
-	/** In running text the mark floats above the word so the line never reflows; in lists it slides in beside it. */
-	mode?: 'float' | 'slide';
-	class?: string;
+  label: string;
+  href?: string | null;
+  logoUrl?: string | null;
+  path?: string | null;
+  color?: string | null;
+  mode?: "float" | "slide";
+  class?: string;
 }
 
-const { label, href, logoUrl, path, color, mode = 'float', class: className } = Astro.props;
-const Tag = href ? 'a' : 'span';
+const {
+  label,
+  href,
+  logoUrl,
+  path,
+  color,
+  mode = "float",
+  class: className,
+} = Astro.props;
+const Tag = href ? "a" : "span";
 const hasMark = Boolean(logoUrl || path);
 ---
 
 <Tag
-	href={href ?? undefined}
-	target={href ? '_blank' : undefined}
-	rel={href ? 'noopener' : undefined}
-	class:list={['brand-link', `brand-link-${mode}`, href && 'hit', hasMark && 'has-mark', className]}
-	style={color ? `--brand:${color}` : undefined}
+  href={href ?? undefined}
+  target={href ? "_blank" : undefined}
+  rel={href ? "noopener" : undefined}
+  class:list={[
+    "brand-link",
+    `brand-link-${mode}`,
+    href && "hit",
+    hasMark && "has-mark",
+    path && "brand-link-ink",
+    className,
+  ]}
+  style={color ? `--brand:${color}` : undefined}
 >
-	{
-		hasMark && (
-			<span class="brand-mark" aria-hidden="true">
-				{logoUrl ? (
-					<img src={logoUrl} alt="" loading="lazy" decoding="async" />
-				) : (
-					<svg viewBox="0 0 24 24" fill="currentColor">
-						<path d={path} />
-					</svg>
-				)}
-			</span>
-		)
-	}
-	<span>{label}<slot /></span>
+  {
+    hasMark && (
+      <span class="brand-mark" aria-hidden="true">
+        {logoUrl ? (
+          <img src={logoUrl} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d={path} />
+          </svg>
+        )}
+      </span>
+    )
+  }
+  <span>{label}<slot /></span>
 </Tag>

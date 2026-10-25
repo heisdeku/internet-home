@@ -389,9 +389,13 @@ details[data-accordion] > summary + * {
 		}
 	}
 	@media (hover: hover) {
-		&:hover,
-		&:focus-visible {
+		&:not(.brand-link-ink):hover,
+		&:not(.brand-link-ink):focus-visible {
 			color: var(--brand, var(--color-accent));
+		}
+		&.brand-link-slide.brand-link-ink:hover,
+		&.brand-link-slide.brand-link-ink:focus-visible {
+			font-weight: 500;
 		}
 	}
 }
