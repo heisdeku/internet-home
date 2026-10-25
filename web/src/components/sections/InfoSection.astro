@@ -1,10 +1,10 @@
 ---
 import BrandLink from "@/components/BrandLink.astro";
 import Heading from "@/components/Heading.astro";
-import { toolIcon } from "@/lib/toolIcons";
 import type { Section } from "@/components/PageBuilder.astro";
 import PortableText from "@/components/portable-text/PortableText.astro";
 import SmartLink from "@/components/SmartLink.astro";
+import { toolIcon } from "@/lib/toolIcons";
 
 interface Props {
   section: Extract<Section, { _type: "infoSection" }>;
@@ -17,8 +17,7 @@ const { section, resumeUrl } = Astro.props;
 <section
   id="info"
   data-reveal-stagger
-  data-reveal-step="140"
-  style="--reveal-duration:.9s"
+  style="--reveal-duration:.9s;--reveal-step:140ms"
   class="px-gutter grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-12 border-t border-line py-[clamp(64px,8vw,120px)]"
 >
   <Heading value={section.heading} size="XS" />
@@ -32,7 +31,11 @@ const { section, resumeUrl } = Astro.props;
       section.columns && section.columns.length > 0 && (
         <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-10 text-sm">
           {section.columns.map((column) => (
-            <div class="flex flex-col gap-3.5" data-reveal-stagger data-reveal-step="60">
+            <div
+              class="flex flex-col gap-3.5"
+              data-reveal-stagger
+              style="--reveal-step:60ms"
+            >
               <span class="label">{column.label}</span>
               {column.source === "experience"
                 ? section.companies.map((item) => (
@@ -48,7 +51,13 @@ const { section, resumeUrl } = Astro.props;
                 : (column.items ?? []).map((item) => {
                     const icon = toolIcon(item);
                     return (
-                      <BrandLink label={item} path={icon?.path} color={icon?.hex} mode="slide" class="border-b border-line-soft pb-3" />
+                      <BrandLink
+                        label={item}
+                        path={icon?.path}
+                        color={icon?.hex}
+                        mode="slide"
+                        class="border-b border-line-soft pb-3"
+                      />
                     );
                   })}
               {column.link && (

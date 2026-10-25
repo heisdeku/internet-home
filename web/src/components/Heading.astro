@@ -28,34 +28,73 @@ const DEFAULT_SIZE: Record<string, Size> = {
   p: "M",
 };
 
-// Display sizes rise in word by word; smaller headings simply fade with their section.
 const SPLIT_SIZES = new Set<Size>(["XL", "XXL", "3XL"]);
+
+// Wraps each word in a span whose index staggers its rise (see .split-word in global.css).
+// Done here rather than in the browser so the first paint already carries the animation.
+// A rotating word, and its screen-reader copy, keep their own markup.
+function splitWords(markup: string) {
+  let index = 0;
+  let inWhole = false;
+  return markup
+    .split(/(<[^>]+>)/)
+    .map((part) => {
+      if (part.startsWith("<")) {
+        if (/class="(sr-only|rotate-word)"/.test(part)) {
+          inWhole = true;
+          if (part.includes("rotate-word")) index++;
+        } else if (part === "</span>") inWhole = false;
+        return part;
+      }
+      if (inWhole) return part;
+      return part.replace(
+        /\S+/g,
+        (word) =>
+          `<span class="split-word" style="--i:${index++}">${word}</span>`,
+      );
+    })
+    .join("");
+}
 
 const { value, class: className, size } = Astro.props;
 const Tag = (value?.type ?? "h2") as "h1" | "h2" | "h3" | "h4" | "p";
 const resolvedSize =
   (value?.fontSize as Size | null) ?? size ?? DEFAULT_SIZE[Tag];
 
-const html = (value?.text ?? "")
+const escaped = (value?.text ?? "")
   .replace(/&/g, "&amp;")
   .replace(/</g, "&lt;")
   .replace(/>/g, "&gt;")
   .replace(/&lt;span&gt;/g, '<span class="text-highlight">')
   .replace(/&lt;\/span&gt;/g, "</span>")
   .replace(/&lt;br\s*\/?&gt;/g, "<br />")
-  // <rotate>one|two|three</rotate> cycles through its words, each rising in with a fade.
-  // Surrounding brackets travel with the word so a line never breaks between them.
-  .replace(/(\(?)&lt;rotate&gt;(.*?)&lt;\/rotate&gt;(\)?)/g, (_, open: string, words: string, close: string) => {
-    const list = words.split("|").map((word) => word.trim());
-    return `<span class="whitespace-nowrap">${open}<span class="sr-only">${list[0]}</span><span class="rotate-word" data-rotate data-words="${list.join("|")}" aria-hidden="true">${list[0]}</span>${close}</span>`;
-  });
+
+  .replace(
+    /(\(?)&lt;rotate&gt;(.*?)&lt;\/rotate&gt;(\)?)/g,
+    (_, open: string, words: string, close: string) => {
+      const list = words.split("|").map((word) => word.trim());
+      return `<span class="whitespace-nowrap">${open}<span class="sr-only">${list[0]}</span><span class="rotate-word" data-rotate data-words="${list.join("|")}" aria-hidden="true">${list[0]}</span>${close}</span>`;
+    },
+  );
+const split = SPLIT_SIZES.has(resolvedSize);
+const html = split ? splitWords(escaped) : escaped;
+const label = split
+  ? (value?.text ?? "")
+      .replace(/<rotate>(.*?)<\/rotate>/g, (_, words: string) =>
+        words.split("|")[0].trim(),
+      )
+      .replace(/<br\s*\/?>/g, " ")
+      .replace(/<[^>]+>/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+  : undefined;
 ---
 
 {
   value?.text && (
     <Tag
       class:list={["text-pretty", SIZE_CLASS[resolvedSize], className]}
-      data-split={SPLIT_SIZES.has(resolvedSize) ? "" : undefined}
+      aria-label={label}
       set:html={html}
     />
   )

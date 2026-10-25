@@ -2,14 +2,14 @@
 @import 'lenis/dist/lenis.css';
 
 @theme {
-	--font-sans: 'Geist', Helvetica, Arial, sans-serif;
-	--font-mono: 'Geist Mono', ui-monospace, monospace;
+	--font-sans: var(--font-geist);
+	--font-mono: var(--font-geist-mono);
 
 	--color-ink: #0f0f10;
 	--color-ink-soft: #1f1f1e;
 	--color-body: #3a3a37;
 	--color-muted: #5c5c58;
-	--color-faint: #686863; /* 4.95:1 on paper, so 11px labels pass AA */
+	--color-faint: #686863;
 	--color-mist: #a3a39e;
 	--color-paper: #f1f1ef;
 	--color-line: #d7d7d3;
@@ -139,35 +139,47 @@
 	}
 }
 
-/* Reveal: sections blur-up into place as they enter the viewport (and on load). */
-.js [data-reveal],
-.js [data-reveal-stagger] > * {
+
+@keyframes reveal-in {
+	from {
+		opacity: 0;
+		filter: blur(3px);
+		transform: translateY(6px);
+	}
+}
+[data-reveal],
+[data-reveal-stagger] > :not([data-reveal-stagger]) {
+	animation: reveal-in var(--reveal-duration, 0.55s) var(--ease-out-soft) both;
+	animation-delay: calc(var(--reveal-index) * var(--reveal-step, 70ms));
+}
+[data-reveal].is-pending,
+[data-reveal-stagger].is-pending > :not([data-reveal-stagger]) {
+	animation: none;
 	opacity: 0;
-	filter: blur(3px);
-	transform: translateY(6px);
-	transition:
-		opacity var(--reveal-duration, 0.55s) var(--ease-out-soft),
-		filter var(--reveal-duration, 0.55s) var(--ease-out-soft),
-		transform var(--reveal-duration, 0.55s) var(--ease-out-soft);
-	transition-delay: var(--reveal-delay, 0ms);
 }
-.js [data-reveal]:not(.is-revealed),
-.js [data-reveal-stagger]:not(.is-revealed) > * {
-	will-change: opacity, filter, transform;
+
+
+[data-reveal],
+[data-reveal-stagger] > * {
+	--reveal-index: 0;
 }
-.js [data-reveal].is-revealed,
-.js [data-reveal-stagger].is-revealed > *:not([data-reveal-stagger]),
-.js [data-reveal-stagger].is-revealed > [data-reveal-stagger] {
-	opacity: 1;
-	filter: blur(0);
-	transform: none;
-}
-/* Accent phrase inside a heading; the blue theme swaps it for the pale tint. */
+[data-reveal-stagger] > :nth-child(2) { --reveal-index: 1; }
+[data-reveal-stagger] > :nth-child(3) { --reveal-index: 2; }
+[data-reveal-stagger] > :nth-child(4) { --reveal-index: 3; }
+[data-reveal-stagger] > :nth-child(5) { --reveal-index: 4; }
+[data-reveal-stagger] > :nth-child(6) { --reveal-index: 5; }
+[data-reveal-stagger] > :nth-child(7) { --reveal-index: 6; }
+[data-reveal-stagger] > :nth-child(8) { --reveal-index: 7; }
+[data-reveal-stagger] > :nth-child(9) { --reveal-index: 8; }
+[data-reveal-stagger] > :nth-child(10) { --reveal-index: 9; }
+[data-reveal-stagger] > :nth-child(11) { --reveal-index: 10; }
+[data-reveal-stagger] > :nth-child(n + 12) { --reveal-index: 11; }
+
+
 @utility text-highlight {
 	color: var(--highlight, var(--color-accent));
 }
 
-/* Icons sit on the text baseline and nudge along their link's hover. */
 @utility icon-inline {
 	display: inline-block;
 	width: 1em;
@@ -181,7 +193,6 @@
 	}
 }
 
-/* Sliding underline for inline and nav links. */
 @utility link-underline {
 	position: relative;
 	&::after {
@@ -204,7 +215,6 @@
 	}
 }
 
-/* List rows slide their content right on hover. Transform, not padding, so nothing reflows mid-animation. */
 @utility row-slide {
 	& > * {
 		transition: transform 0.5s var(--ease-out-soft);
@@ -217,7 +227,6 @@
 	}
 }
 
-/* Hovering one item in a list quietens its siblings. */
 @utility dim-siblings {
 	& > * {
 		transition: opacity 0.35s var(--ease-in-out-soft);
@@ -229,7 +238,6 @@
 	}
 }
 
-/* Wordmark: the surname slides out on hover. */
 @utility wordmark-more {
 	display: inline-grid;
 	grid-template-columns: 0fr;
@@ -249,7 +257,6 @@
 	}
 }
 
-/* Images: a pixelated LQIP sits underneath until the full image has decoded. */
 @utility img-frame {
 	position: relative;
 	display: block;
@@ -276,19 +283,14 @@
 	}
 }
 
-/* Accordion panels ease open where the browser supports it. */
-/* Accordion panels are animated by height in scripts/accordion.ts, which works in every browser. */
 details[data-accordion] > summary + * {
 	overflow: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.js [data-reveal],
-	.js [data-reveal-stagger] > * {
-		opacity: 1;
-		filter: none;
-		transform: none;
-		transition: none;
+	[data-reveal],
+	[data-reveal-stagger] > * {
+		animation: none;
 	}
 	.js .img-frame > img[data-fade-in] {
 		opacity: 1;
@@ -297,27 +299,19 @@ details[data-accordion] > summary + * {
 	}
 }
 
-/* ---------- Fluid layer: split headings, hover media, filters, case studies ---------- */
-
-/* Display headings rise in a word at a time. */
-.js [data-split] .split-word {
+@keyframes word-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.4em);
+		filter: blur(6px);
+	}
+}
+.split-word {
 	display: inline-block;
-	opacity: 0;
-	transform: translateY(0.4em);
-	filter: blur(6px);
-	transition:
-		opacity 0.6s ease-out,
-		transform 0.8s var(--ease-out-soft),
-		filter 0.6s ease-out;
-	transition-delay: calc(var(--i, 0) * 45ms);
-}
-.js [data-split].is-split-in .split-word {
-	opacity: 1;
-	transform: none;
-	filter: none;
+	animation: word-in 0.8s var(--ease-out-soft) both;
+	animation-delay: calc(var(--i, 0) * 45ms);
 }
 
-/* Coming-soon items: listed, labelled, not interactive. */
 .soon-badge {
 	display: inline-flex;
 	align-items: center;
@@ -560,25 +554,18 @@ details[data-accordion] > summary + * {
 	.animate-pulse-dot {
 		animation: none;
 	}
-	.js [data-split] .split-word {
-		opacity: 1;
-		transform: none;
-		filter: none;
-		transition: none;
+	.split-word {
+		animation: none;
 	}
 }
 
-/* Safety net: if a script is slow to arrive, hidden content still shows after a beat. */
+/* Safety net: if the image script is slow to arrive, images still show after a beat. */
 @keyframes reveal-fallback {
 	to {
 		opacity: 1;
-		filter: none;
 		transform: none;
 	}
 }
-.js [data-reveal]:not(.is-revealed),
-.js [data-reveal-stagger]:not(.is-revealed) > *,
-.js [data-split]:not(.is-split-in) .split-word,
 .js .img-frame > img[data-fade-in]:not(.is-loaded) {
 	animation: reveal-fallback 0.6s ease-out 1.2s forwards;
 }

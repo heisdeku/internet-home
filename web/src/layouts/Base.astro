@@ -1,17 +1,16 @@
 ---
-import '@/styles/global.css';
 import JsonLd from '@/components/JsonLd.astro';
-import { ClientRouter } from 'astro:transitions';
 import type { PageMeta } from '@/lib/seo';
 import type { JsonLdNode } from '@/lib/structuredData';
+import '@/styles/global.css';
+import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	meta: PageMeta;
 	jsonLd: JsonLdNode[];
 	theme?: 'paper' | 'accent';
-	/** Set on intro pages: the visitor is greeted by this name site-wide for the session. */
 	recipient?: string | null;
-	/** Sanity asset URL of the portrait in Site Settings; drives the favicon. */
 	portraitUrl?: string | null;
 }
 
@@ -20,7 +19,6 @@ const icon = (size: number) => `${portraitUrl}?w=${size}&h=${size}&fit=crop&fm=p
 const background = theme === 'accent' ? '#2a51c8' : '#f1f1ef';
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const brimbleId = import.meta.env.PUBLIC_BRIMBLE_WEBSITE_ID;
-// Quality comment widget; it only activates on hosts enabled in the Quality project settings.
 const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 ---
 
@@ -43,12 +41,8 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 			)
 		}
 		<link rel="preconnect" href="https://cdn.sanity.io" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
-			rel="stylesheet"
-		/>
+		<Font cssVariable="--font-geist" preload />
+		<Font cssVariable="--font-geist-mono" />
 
 		<title>{meta.title}</title>
 		{meta.description && <meta name="description" content={meta.description} />}
@@ -87,17 +81,21 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 		}
 		{
 			gaId && (
-				<>
-					<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-					<script is:inline define:vars={{ gaId }}>
-						window.dataLayer = window.dataLayer || [];
-						function gtag() {
-							dataLayer.push(arguments);
-						}
-						gtag('js', new Date());
-						gtag('config', gaId);
-					</script>
-				</>
+				<script is:inline define:vars={{ gaId }}>
+					window.dataLayer = window.dataLayer || [];
+					
+					window.gtag = function () {
+						dataLayer.push(arguments);
+					};
+					gtag('js', new Date());
+					gtag('config', gaId);
+					window.addEventListener('load', () => {
+						const tag = document.createElement('script');
+						tag.async = true;
+						tag.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+						document.head.append(tag);
+					}, { once: true });
+				</script>
 			)
 		}
 	</head>
@@ -112,19 +110,17 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
 		<slot />
 		<script>
 			import { startAccordions } from '@/scripts/accordion';
-			import { trackPageViews } from '@/scripts/analytics';
-			import { startGreeting } from '@/scripts/greeting';
-			import { startImageFades } from '@/scripts/images';
-			import { startLenis } from '@/scripts/lenis';
-			import { startReveal } from '@/scripts/reveal';
-			import { startRotate } from '@/scripts/rotate';
-			import { startSplit } from '@/scripts/split';
+import { trackPageViews } from '@/scripts/analytics';
+import { startGreeting } from '@/scripts/greeting';
+import { startImageFades } from '@/scripts/images';
+import { startLenis } from '@/scripts/lenis';
+import { startReveal } from '@/scripts/reveal';
+import { startRotate } from '@/scripts/rotate';
 
-			// Runs on the first load and after every client-side navigation.
+			
 			document.addEventListener('astro:page-load', () => {
 				startLenis();
 				startReveal();
-				startSplit();
 				startRotate();
 				startAccordions();
 				startImageFades();

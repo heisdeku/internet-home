@@ -1,6 +1,4 @@
 ---
-import { sanityClient } from 'sanity:client';
-import ArrowRight from 'reicon-astro/icons/ArrowRight.astro';
 import PortableText from '@/components/portable-text/PortableText.astro';
 import SanityImage from '@/components/SanityImage.astro';
 import SmartLink from '@/components/SmartLink.astro';
@@ -9,6 +7,8 @@ import { buildMeta, siteOrigin } from '@/lib/seo';
 import { breadcrumbNode, creativeWorkNode, siteGraph, webPageNode } from '@/lib/structuredData';
 import { SITE_SETTINGS_QUERY, WORK_QUERY } from '@/sanity/queries';
 import type { WORK_SLUGS_QUERY_RESULT } from '@/sanity/types';
+import ArrowRight from 'reicon-astro/icons/ArrowRight.astro';
+import { sanityClient } from 'sanity:client';
 
 export async function getStaticPaths() {
 	const { sanityClient } = await import('sanity:client');
@@ -64,7 +64,9 @@ const facts: [string, string | null | undefined][] = [
 				<span aria-hidden="true">/</span>
 				<span>{work.category}</span>
 			</nav>
-			<h1 data-split class="text-[clamp(44px,8vw,128px)] leading-[.95] font-medium tracking-[-.045em] text-balance">{work.title}</h1>
+			<h1 aria-label={work.title} class="text-[clamp(44px,8vw,128px)] leading-[.95] font-medium tracking-[-.045em] text-balance">
+				{work.title?.split(" ").map((word, i) => <>{i > 0 && " "}<span class="split-word" style={`--i:${i}`}>{word}</span></>)}
+			</h1>
 			<p class="max-w-[52ch] text-[clamp(18px,1.7vw,24px)] leading-[1.4] tracking-[-.01em] text-body text-pretty">{work.summary}</p>
 		</header>
 
@@ -74,11 +76,9 @@ const facts: [string, string | null | undefined][] = [
 				placeholder={`${work.slug} — hero image / video`}
 				width={1600}
 				height={900}
-				loading="eager"
-				fetchpriority="high"
+				priority
 				sizes="100vw"
 				class="aspect-video w-full"
-				data-reveal
 			/>
 		</div>
 

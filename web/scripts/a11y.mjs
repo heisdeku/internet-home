@@ -25,12 +25,11 @@ for (const path of pages) {
 		failures++;
 		continue;
 	}
-	// Reveal animations gate content behind opacity; axe must see the settled page, so
-	// transitions are switched off and every reveal is completed before measuring.
+	// Reveal animations start content at opacity 0; axe must see the settled page, so
+	// motion is switched off and content held back below the fold is released before measuring.
 	await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; animation: none !important; }' });
 	await page.evaluate(() => {
-		document.querySelectorAll('[data-reveal],[data-reveal-stagger]').forEach((el) => el.classList.add('is-revealed'));
-		document.querySelectorAll('[data-split]').forEach((el) => el.classList.add('is-split-in'));
+		document.querySelectorAll('.is-pending').forEach((el) => el.classList.remove('is-pending'));
 	});
 	await page.waitForTimeout(300);
 	const { violations } = await new AxeBuilder({ page }).withTags(tags).analyze();

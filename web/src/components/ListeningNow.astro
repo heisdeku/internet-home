@@ -3,46 +3,58 @@
 ---
 
 <aside aria-label="Now playing" transition:persist>
-<a
-  data-listening-now
-  href="https://open.spotify.com/"
-  target="_blank"
-  rel="noopener"
-  class="group/np hidden data-[mode]:grid fixed bottom-[clamp(12px,2vw,24px)] left-[clamp(12px,2vw,24px)] z-20 w-[min(300px,calc(100vw-24px))] grid-cols-[52px_minmax(0,1fr)] gap-3 rounded-lg bg-ink p-2.5 text-paper shadow-[0_10px_30px_rgba(0,0,0,.18)] hover:text-paper"
->
-  <img data-art alt="" class="size-[52px] rounded bg-[#232321] object-cover" />
-  <div class="flex min-w-0 flex-col justify-center gap-1.5">
-    <div
-      class="flex items-center gap-2 font-mono text-[11px] tracking-[.06em] text-mist uppercase"
-    >
-      <span class="flex h-2.5 items-end gap-0.5 group-data-[mode=last]/np:hidden" aria-hidden="true">
-        <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq"
-        ></span>
+  <a
+    data-listening-now
+    href="https://open.spotify.com/"
+    target="_blank"
+    rel="noopener"
+    class="group/np hidden data-mode:grid fixed bottom-[clamp(12px,2vw,24px)] left-[clamp(12px,2vw,24px)] z-20 w-[min(300px,calc(100vw-24px))] grid-cols-[52px_minmax(0,1fr)] gap-3 rounded-lg bg-ink p-2.5 text-paper shadow-[0_10px_30px_rgba(0,0,0,.18)] hover:text-paper"
+  >
+    <img
+      data-art
+      alt=""
+      width="52"
+      height="52"
+      decoding="async"
+      class="size-13 rounded bg-[#232321] object-cover"
+    />
+    <div class="flex min-w-0 flex-col justify-center gap-1.5">
+      <div
+        class="flex items-center gap-2 font-mono text-[11px] tracking-[.06em] text-mist uppercase"
+      >
         <span
-          class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.2s]"
-        ></span>
-        <span
-          class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.4s]"
-        ></span>
-      </span>
-      <span data-label>Listening now</span>
+          class="flex h-2.5 items-end gap-0.5 group-data-[mode=last]/np:hidden"
+          aria-hidden="true"
+        >
+          <span class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq"
+          ></span>
+          <span
+            class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.2s]"
+          ></span>
+          <span
+            class="w-0.5 h-2.5 origin-bottom bg-accent-light animate-eq [animation-delay:.4s]"
+          ></span>
+        </span>
+        <span data-label>Listening now</span>
+      </div>
+      <span data-title class="truncate text-[13px] font-medium"></span>
+      <div class="flex items-center gap-2 text-[11px] text-mist">
+        <span data-artist class="flex-1 truncate"></span>
+        <span data-elapsed class="font-mono"></span>
+      </div>
+      <div
+        class="h-0.5 overflow-hidden rounded-sm bg-body group-data-[mode=last]/np:hidden"
+      >
+        <div data-progress class="h-full bg-accent-light" style="width:0%">
+        </div>
+      </div>
     </div>
-    <span data-title class="truncate text-[13px] font-medium"></span>
-    <div class="flex items-center gap-2 text-[11px] text-mist">
-      <span data-artist class="flex-1 truncate"></span>
-      <span data-elapsed class="font-mono"></span>
-    </div>
-    <div class="h-0.5 overflow-hidden rounded-sm bg-body group-data-[mode=last]/np:hidden">
-      <div data-progress class="h-full bg-accent-light" style="width:0%"></div>
-    </div>
-  </div>
-</a>
+  </a>
 </aside>
 
 <script>
   import type { NowPlaying } from "@/pages/api/now-playing.json";
 
-  // The card persists across page swaps; the guard keeps one poller per card.
   document.addEventListener("astro:page-load", () => {
     const card = document.querySelector<HTMLAnchorElement>(
       "[data-listening-now]:not([data-ready])",
@@ -68,15 +80,21 @@
       return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
     };
 
-    // "3 min ago" style stamp for the last-played state.
     const ago = (iso: string) => {
-      const minutes = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 60_000));
+      const minutes = Math.max(
+        1,
+        Math.round((Date.now() - new Date(iso).getTime()) / 60_000),
+      );
       if (minutes < 60) return `${minutes} min ago`;
       const hours = Math.round(minutes / 60);
       if (hours < 24) return `${hours} h ago`;
       return `${Math.round(hours / 24)} d ago`;
     };
-    const show = (data: Extract<NowPlaying, { isPlaying: true }> | NonNullable<Extract<NowPlaying, { isPlaying: false }>["lastPlayed"]>) => {
+    const show = (
+      data:
+        | Extract<NowPlaying, { isPlaying: true }>
+        | NonNullable<Extract<NowPlaying, { isPlaying: false }>["lastPlayed"]>,
+    ) => {
       card.href = data.url;
       art.src = data.albumArt;
       title.textContent = data.title;
@@ -93,8 +111,6 @@
       progress.style.width = `${(position / track.durationMs) * 100}%`;
     };
 
-    // Poll again just after the current track should end, so a switch shows within a second
-    // or two; otherwise every 12s while playing and every 30s while idle. Paused tabs wait.
     const IDLE_MS = 30_000;
     const PLAYING_MS = 12_000;
     let timer = 0;

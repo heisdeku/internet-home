@@ -1,45 +1,47 @@
 ---
-import Check from 'reicon-astro/icons/Check.astro';
-import Copy from 'reicon-astro/icons/Copy.astro';
+import Check from "reicon-astro/icons/Check.astro";
+import Copy from "reicon-astro/icons/Copy.astro";
 
-/**
- * The big email address: clicking it copies the address, and a helper pill to the right
- * says so, then confirms. If the clipboard is unavailable the click opens the mail client.
- */
 interface Props {
-	email: string;
-	/** Optional subject for the mailto fallback. */
-	subject?: string | null;
-	/** Largest size the address may reach on wide screens. */
-	maxSize?: string;
+  email: string;
+  subject?: string | null;
+  maxSize?: string;
 }
 
-const { email, subject, maxSize = '104px' } = Astro.props;
-const mailto = `mailto:${email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
-// Sized from the container so the whole address always fits one line: about 0.52em per character in Geist at this tracking.
+const { email, subject, maxSize = "104px" } = Astro.props;
+const mailto = `mailto:${email}${subject ? `?subject=${encodeURIComponent(subject)}` : ""}`;
 const style = `--email-max:${maxSize};--email-chars:${email.length}`;
 ---
 
-<span class="group/email flex flex-wrap items-baseline gap-x-5 gap-y-3 [container-type:inline-size]" style={style}>
-	<a
-		href={mailto}
-		data-copy-email
-		class="hit cursor-copy text-[min(var(--email-max),calc(100cqw/(var(--email-chars)*0.525)))] leading-none font-medium tracking-[-.04em] whitespace-nowrap text-paper transition-colors hover:text-accent-light"
-	>
-		{email}
-	</a>
-	<span
-		aria-live="polite"
-		class="inline-flex min-h-6 items-center gap-1.5 self-center rounded-full border border-paper/20 px-2.5 py-1.5 font-mono text-[11px] tracking-[.04em] whitespace-nowrap text-mist transition-colors group-hover/email:border-accent-light group-hover/email:text-paper group-data-[copied]/email:border-accent-light group-data-[copied]/email:text-accent-light"
-	>
-		<Copy class="size-3.5 group-data-[copied]/email:hidden" aria-hidden="true" />
-		<Check class="hidden size-3.5 group-data-[copied]/email:block" aria-hidden="true" />
-		<span class="group-data-[copied]/email:hidden">Click to copy</span>
-		<span class="hidden group-data-[copied]/email:inline">Copied</span>
-	</span>
+<span
+  class="group/email flex flex-wrap items-baseline gap-x-5 gap-y-3 @container"
+  style={style}
+>
+  <!-- Cloudflare would otherwise hide the address behind its email-decode script; email_off keeps it plain. -->
+  <!--email_off-->
+  <a
+    href={mailto}
+    data-copy-email
+    class="hit cursor-copy text-[min(var(--email-max),calc(100cqw/(var(--email-chars)*0.525)))] leading-none font-medium tracking-[-.04em] whitespace-nowrap text-paper transition-colors hover:text-accent-light"
+  >
+    {email}
+  </a>
+  <!--/email_off-->
+  <span
+    aria-live="polite"
+    class="inline-flex min-h-6 items-center gap-1.5 self-center rounded-full border border-paper/20 px-2.5 py-1.5 font-mono text-[11px] tracking-[.04em] whitespace-nowrap text-mist transition-colors group-hover/email:border-accent-light group-hover/email:text-paper group-data-copied/email:border-accent-light group-data-copied/email:text-accent-light"
+  >
+    <Copy class="size-3.5 group-data-copied/email:hidden" aria-hidden="true" />
+    <Check
+      class="hidden size-3.5 group-data-copied/email:block"
+      aria-hidden="true"
+    />
+    <span class="group-data-copied/email:hidden">Click to copy</span>
+    <span class="hidden group-data-copied/email:inline">Copied</span>
+  </span>
 </span>
 
 <script>
-	import { startCopyEmail } from '@/scripts/copy';
-	document.addEventListener('astro:page-load', startCopyEmail);
+  import { startCopyEmail } from "@/scripts/copy";
+  document.addEventListener("astro:page-load", startCopyEmail);
 </script>
