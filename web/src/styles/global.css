@@ -140,9 +140,11 @@
 }
 
 
+/* Starting at 0.01 rather than 0 looks identical, but Chrome skips content first painted at
+   opacity 0 when timing LCP, so a 0 start would hide the heading from the metric entirely. */
 @keyframes reveal-in {
 	from {
-		opacity: 0;
+		opacity: 0.01;
 		filter: blur(3px);
 		transform: translateY(6px);
 	}
@@ -301,7 +303,7 @@ details[data-accordion] > summary + * {
 
 @keyframes word-in {
 	from {
-		opacity: 0;
+		opacity: 0.01; /* see reveal-in */
 		transform: translateY(0.4em);
 		filter: blur(6px);
 	}
