@@ -1,0 +1,4 @@
+dist
+.astro
+src/sanity/types.ts
+bun.lock

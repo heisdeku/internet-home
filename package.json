@@ -13,7 +13,8 @@
     "start": "node web/dist/server/entry.mjs",
     "typegen": "bun run --cwd studio typegen",
     "schema:deploy": "bun run --cwd studio schema:deploy",
-    "a11y": "bun run --cwd web a11y"
+    "a11y": "bun run --cwd web a11y",
+    "format": "bun run --cwd web format && bun run --cwd studio format"
   },
   "devDependencies": {
     "npm-run-all2": "^5.0.2"

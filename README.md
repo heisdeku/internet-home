@@ -5,7 +5,7 @@ Sanity Studio and Astro site side by side, built from the "Portfolio redesign co
 ```
 portfolio/
 ├── studio/   # Sanity Studio (project 1dyyk69c, dataset production)
-└── web/      # Astro site (Tailwind v4, @sanity/astro, Vercel adapter)
+└── web/      # Astro site (Tailwind v4, @sanity/astro, Node adapter, hosted on Brimble)
 ```
 
 ## Run it
@@ -34,6 +34,7 @@ Pages are composed in the Studio, following the AAIF conventions: a `page` docum
 | `outreach` ("Intro page") | A personalised page at `/intro/<slug>` for job applications, cold emails and outreach, with the same page builder. `noindex` by default. See `/intro/reach-ai` for a sample |
 | `work`, `product`, `post` | Detail documents under `/work`, `/products` and `/writing`. Posts and the optional work body are Portable Text |
 | `experience` | A company with its roles (title, employment type, dates, highlights) |
+| `tool` | A language, framework or tool with its Simple Icons mark and URL, listed in Information columns and linked from rich text |
 
 Sections: hero, page heading (heading, description, button), works (pick which works, grid/index), products grid, writing list, information (text plus columns that can list companies from Experience), experience (pick which companies), intro greeting (supports `?to=Acme` on `/intro`), list columns, contact band (email plus buttons), rich text.
 
@@ -44,7 +45,12 @@ Adding a section: define it in `studio/schemaTypes/sections`, register it in `sc
 | Script | What it does |
 | --- | --- |
 | `bun run schema:deploy` | Pushes the schema to Sanity so MCP and agent tooling can see it |
+| `bun run format` | Runs Prettier over `web` and `studio`, each with its own config in its `package.json` |
 | `bun run typegen` | Extracts the schema and generates `web/src/sanity/types.ts` from the GROQ queries. Re-run after changing schema or queries |
+
+## Code style
+
+Each workspace has a Prettier config in its `package.json`. `studio` uses Sanity's settings (single quotes, no semicolons, 100 columns); `web` uses Prettier's defaults with the Astro and Tailwind plugins, so class lists stay sorted. `bun run format` applies both. Shared rules live in one place each: document URLs in `pathFor` (`web/src/sanity/links.ts`), date and `N°01` formatting in `web/src/lib/format.ts`, and the fields every listed document shares in `studio/schemaTypes/documents/listingFields.ts`.
 
 ## Motion
 
@@ -54,16 +60,16 @@ The feel borrows from pariola.work and victorwilliams.me. Everything respects `p
 - **Reveal on enter**: add `data-reveal` to one element, or `data-reveal-stagger` to a container whose children should blur-up one after another (`web/src/scripts/reveal.ts`, styles under "Reveal" in `global.css`).
 - **Micro-interactions** as Tailwind utilities in `global.css`: `link-underline` (sliding underline), `dim-siblings` (hovering one row quietens the rest), `wordmark-more` (the header name grows to the full name), `img-frame` (pixelated LQIP that the real image fades over once decoded).
 - Icons come from [Reicon](https://reicon.dev) via `reicon-astro`, imported per icon (`reicon-astro/icons/ArrowRight.astro`). `SmartLink` adds the matching arrow for a link's type with `icon="auto"`, so link labels in the Studio stay plain text.
-- Pill buttons press down slightly, arrows nudge on hover, and the Experience accordion eases open in browsers that support `::details-content`.
+- Pill buttons press down slightly, arrows nudge on hover, and the Experience accordion eases open (see Accordion below).
 - **Page transitions**: Astro's `ClientRouter` swaps pages in place with a cross-fade; a work's cover image morphs from the grid card into the case-study hero (`transition:name="work-<slug>"`). Every script boots from `astro:page-load`, so new page content is wired up after each navigation.
-- **Split headings**: display-size headings (`XL` and up) and case-study titles carry `data-split` and rise in word by word.
-- **Brand links**: company names (link type "Company", referencing an Experience entry with its URL, logo and brand colour) and tool names (link type "Tool or language", looked up in `simple-icons` by name via `lib/toolIcons.ts`) take the brand colour on hover and show a mark (`BrandLink.astro`). In running text the mark floats above the word so the line never reflows (`mode="float"`); in the Information lists it slides in beside the name (`mode="slide"`). Company marks are uploaded on the Experience document.
+- **Split headings**: display-size headings (`XL` and up) and case-study titles are split into `.split-word` spans on the server (`Heading.astro`) and rise in word by word.
+- **Brand links**: company names (link type "Company", referencing an Experience entry with its URL, logo and brand colour) and tool names (link type "Tool or language", referencing a `tool` document whose mark is picked from Simple Icons in the Studio) take the brand colour on hover and show a mark (`BrandLink.astro`). In running text the mark floats above the word so the line never reflows (`mode="float"`); in the Information lists it slides in beside the name (`mode="slide"`). Company marks are uploaded on the Experience document.
 - **Footer social marks**: external footer links whose host is a known network (GitHub, LinkedIn, X, Instagram, Dribbble, Behance, YouTube, Spotify, Medium, dev.to) show their mark before the label (`lib/socialIcons.ts`); other links keep the arrow.
 - **Accordion**: `<details data-accordion>` panels animate open and closed by height (`scripts/accordion.ts`), so the experience list glides in every browser including iOS Safari.
 - **Rotating word**: inside any heading text, `<rotate>frontend|mobile|backend</rotate>` cycles its options with a slide every couple of seconds (`scripts/rotate.ts`); it sits beside the `<span>` accent markup the Studio's title input already supports.
 - **Works grid**: the home page shows the first six (`limit`) with an "All work" link; the `/work` page shows everything with category filter chips (`showFilters`). Both have the grid/index toggle and a hover image that swaps in over the cover.
 - **Media in rich text**: `image` (with caption), `imageGrid` (2–4 up), `video` (uploaded file or direct URL, poster, autoplay loop or play button) and `embed` (YouTube, Vimeo, Loom links become players; any other iframe URL works, with a chosen aspect ratio). All Sanity images are served as WebP.
-- **Case studies**: a sticky fact sheet (role, client, timeline, year, stack, team, scope, links) beside the long read, `h2` rendered as small labels, Sparkle bullets, natural-aspect figures, image grids, video and embed blocks, then a table of the other projects.
+- **Case studies**: a sticky fact sheet (role, client, timeline, year, stack, team, links) beside the long read, `h2` rendered as small labels, Sparkle bullets, natural-aspect figures, image grids, video and embed blocks, then a link to the next project.
 
 
 ## SEO
@@ -83,9 +89,9 @@ Set `PUBLIC_SITE_URL` (and `siteUrl` in Site Settings) to the production origin.
 
 ## Spotify "Listening now"
 
-`web/src/pages/api/now-playing.json.ts` is an on-demand route (runs as a Vercel function) that refreshes a Spotify access token and returns the current track. The footer player polls it every 30 seconds and stays hidden when nothing is playing or the env vars are missing.
+`web/src/pages/api/now-playing.json.ts` is an on-demand route on the Node server that refreshes a Spotify access token and returns the current track, or the last one played. The footer player polls it (more often while a track is playing) and stays hidden when there is nothing to show or the env vars are missing.
 
-To wire it up: create an app at developer.spotify.com, authorise it once with the `user-read-currently-playing` scope to obtain a refresh token, then fill the `SPOTIFY_*` values in `web/.env` (and in the Vercel project settings).
+To wire it up: create an app at developer.spotify.com, authorise it once with the `user-read-currently-playing` and `user-read-recently-played` scopes to obtain a refresh token, then fill the `SPOTIFY_*` values in `web/.env` (and in the Brimble service's environment).
 
 ## Deploy
 
