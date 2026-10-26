@@ -12,7 +12,8 @@
     "start": "sanity start",
     "typegen": "sanity schema extract --enforce-required-fields --force && sanity typegen generate",
     "schema:deploy": "sanity schema deploy",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "content:check": "sanity documents validate --level error -y"
   },
   "keywords": [
     "sanity"

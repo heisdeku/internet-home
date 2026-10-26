@@ -14,7 +14,8 @@
     "typegen": "bun run --cwd studio typegen",
     "schema:deploy": "bun run --cwd studio schema:deploy",
     "a11y": "bun run --cwd web a11y",
-    "format": "bun run --cwd web format && bun run --cwd studio format"
+    "format": "bun run --cwd web format && bun run --cwd studio format",
+    "content:check": "bun run --cwd studio content:check"
   },
   "devDependencies": {
     "npm-run-all2": "^5.0.2"
