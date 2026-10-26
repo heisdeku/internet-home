@@ -12,863 +12,852 @@
  * ---------------------------------------------------------------------------------
  */
 
-export declare const internalGroqTypeReferenceTo: unique symbol;
+export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: schema.json
 export type RichTextSection = {
-  _type: "richTextSection";
-  heading?: Heading;
-  body: PortableText;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  _type: 'richTextSection'
+  heading?: Heading
+  body: PortableText
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type ContactSection = {
-  _type: "contactSection";
-  heading?: Heading;
-  emailSubject?: string;
+  _type: 'contactSection'
+  heading?: Heading
+  emailSubject?: string
   ctas?: Array<
     {
-      _key: string;
+      _key: string
     } & Cta
-  >;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  >
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type ListColumnsSection = {
-  _type: "listColumnsSection";
+  _type: 'listColumnsSection'
   columns?: Array<
     {
-      _key: string;
+      _key: string
     } & ListColumn
-  >;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  >
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type IntroSection = {
-  _type: "introSection";
-  greeting: string;
-  heading: Heading;
-  description?: PortableText;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  _type: 'introSection'
+  greeting: string
+  heading: Heading
+  description?: PortableText
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type ExperienceReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "experience";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'experience'
+}
 
 export type ExperienceSection = {
-  _type: "experienceSection";
-  heading?: Heading;
+  _type: 'experienceSection'
+  heading?: Heading
   entries?: Array<
     {
-      _key: string;
+      _key: string
     } & ExperienceReference
-  >;
-  openFirst?: boolean;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  >
+  openFirst?: boolean
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type InfoSection = {
-  _type: "infoSection";
-  heading?: Heading;
-  body: PortableText;
+  _type: 'infoSection'
+  heading?: Heading
+  body: PortableText
   columns?: Array<
     {
-      _key: string;
+      _key: string
     } & InfoColumn
-  >;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  >
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type WritingSection = {
-  _type: "writingSection";
-  heading?: Heading;
-  link?: SimpleLink;
-  limit?: number;
-  layout?: "split" | "stack";
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  _type: 'writingSection'
+  heading?: Heading
+  link?: SimpleLink
+  limit?: number
+  layout?: 'split' | 'stack'
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type ProductReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "product";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'product'
+}
 
 export type ProductsSection = {
-  _type: "productsSection";
+  _type: 'productsSection'
   products?: Array<
     {
-      _key: string;
+      _key: string
     } & ProductReference
-  >;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  >
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type WorkReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "work";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'work'
+}
 
 export type WorksSection = {
-  _type: "worksSection";
-  heading?: Heading;
+  _type: 'worksSection'
+  heading?: Heading
   works?: Array<
     {
-      _key: string;
+      _key: string
     } & WorkReference
-  >;
-  limit?: number;
-  showFilters?: boolean;
-  link?: SimpleLink;
-  defaultView?: "grid" | "index";
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  >
+  limit?: number
+  showFilters?: boolean
+  link?: SimpleLink
+  defaultView?: 'grid' | 'index'
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type PageHeading = {
-  _type: "pageHeading";
-  heading: Heading;
-  description?: PortableText;
-  cta?: Cta;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  _type: 'pageHeading'
+  heading: Heading
+  description?: PortableText
+  cta?: Cta
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type HeroSection = {
-  _type: "heroSection";
-  meta?: Array<string>;
-  heading: Heading;
-  hidden?: boolean;
-  hideOnMobile?: boolean;
-  hideOnDesktop?: boolean;
-};
+  _type: 'heroSection'
+  meta?: Array<string>
+  heading: Heading
+  hidden?: boolean
+  hideOnMobile?: boolean
+  hideOnDesktop?: boolean
+}
 
 export type ListItem = {
-  _type: "listItem";
-  text: string;
-  link?: SimpleLink;
-};
+  _type: 'listItem'
+  text: string
+  link?: SimpleLink
+}
 
 export type ListColumn = {
-  _type: "listColumn";
-  label: string;
+  _type: 'listColumn'
+  label: string
   items?: Array<
     {
-      _key: string;
+      _key: string
     } & ListItem
-  >;
-};
+  >
+}
 
 export type ToolReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "tool";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'tool'
+}
 
 export type InfoColumn = {
-  _type: "infoColumn";
-  label: string;
-  source?: "manual" | "experience";
+  _type: 'infoColumn'
+  label: string
+  source?: 'manual' | 'experience'
   tools?: Array<
     {
-      _key: string;
+      _key: string
     } & ToolReference
-  >;
-  link?: SimpleLink;
-};
+  >
+  link?: SimpleLink
+}
 
 export type Role = {
-  _type: "role";
-  title: string;
-  employmentType:
-    "fullTime" | "contract" | "freelance" | "partTime" | "internship";
-  startDate: string;
-  endDate?: string;
-  highlights?: Array<string>;
-};
+  _type: 'role'
+  title: string
+  employmentType: 'fullTime' | 'contract' | 'freelance' | 'partTime' | 'internship'
+  startDate: string
+  endDate?: string
+  highlights?: Array<string>
+}
 
 export type ChangelogEntry = {
-  _type: "changelogEntry";
-  version: string;
-  date: string;
-  note: string;
-};
+  _type: 'changelogEntry'
+  version: string
+  date: string
+  note: string
+}
 
 export type Feature = {
-  _type: "feature";
-  title: string;
-  description: string;
-};
+  _type: 'feature'
+  title: string
+  description: string
+}
 
 export type Embed = {
-  _type: "embed";
-  url: string;
-  title?: string;
-  aspectRatio?: "16/9" | "4/3" | "1/1" | "9/16";
-  caption?: string;
-};
+  _type: 'embed'
+  url: string
+  title?: string
+  aspectRatio?: '16/9' | '4/3' | '1/1' | '9/16'
+  caption?: string
+}
 
 export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+}
 
 export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
 
 export type Video = {
-  _type: "video";
-  source?: "file" | "url";
+  _type: 'video'
+  source?: 'file' | 'url'
   file?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  url?: string;
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  url?: string
   poster?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  aspectRatio?: "16/9" | "4/3" | "1/1" | "9/16";
-  caption?: string;
-  autoplay?: boolean;
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  aspectRatio?: '16/9' | '4/3' | '1/1' | '9/16'
+  caption?: string
+  autoplay?: boolean
+}
 
 export type Seo = {
-  _type: "seo";
-  metaTitle?: string;
-  metaDescription?: string;
-  keywords?: string;
+  _type: 'seo'
+  metaTitle?: string
+  metaDescription?: string
+  keywords?: string
   ogImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  canonicalUrl?: string;
-  noIndex?: boolean;
-  noFollow?: boolean;
-  structuredData?: string;
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  canonicalUrl?: string
+  noIndex?: boolean
+  noFollow?: boolean
+  structuredData?: string
+}
 
 export type PageReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "page";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'page'
+}
 
 export type OutreachReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "outreach";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'outreach'
+}
 
 export type PostReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "post";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'post'
+}
 
 export type Cta = {
-  _type: "cta";
-  label: string;
-  type?: string;
-  internal?:
-    | PageReference
-    | OutreachReference
-    | WorkReference
-    | ProductReference
-    | PostReference;
-  external?: string;
-  relative?: string;
-  email?: string;
-  phone?: string;
-  variant?: "default" | "secondary" | "text";
-  target?: "_self" | "_blank";
-  params?: string;
-};
+  _type: 'cta'
+  label: string
+  type?: string
+  internal?: PageReference | OutreachReference | WorkReference | ProductReference | PostReference
+  external?: string
+  relative?: string
+  email?: string
+  phone?: string
+  variant?: 'default' | 'secondary' | 'text'
+  target?: '_self' | '_blank'
+  params?: string
+}
 
 export type SimpleLink = {
-  _type: "simpleLink";
-  label: string;
-  type?: string;
-  internal?:
-    | PageReference
-    | OutreachReference
-    | WorkReference
-    | ProductReference
-    | PostReference;
-  external?: string;
-  relative?: string;
-  email?: string;
-  phone?: string;
-  target?: "_self" | "_blank";
-  params?: string;
-};
+  _type: 'simpleLink'
+  label: string
+  type?: string
+  internal?: PageReference | OutreachReference | WorkReference | ProductReference | PostReference
+  external?: string
+  relative?: string
+  email?: string
+  phone?: string
+  target?: '_self' | '_blank'
+  params?: string
+}
 
 export type PortableText = Array<
   | {
       children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h2" | "h3" | "blockquote";
-      listItem?: "bullet" | "number";
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'normal' | 'h2' | 'h3' | 'blockquote'
+      listItem?: 'bullet' | 'number'
       markDefs?: Array<{
-        linkType?: "external" | "internal" | "company" | "tool";
-        href?: string;
+        linkType?: 'external' | 'internal' | 'company' | 'tool'
+        href?: string
         internal?:
-          | PageReference
-          | OutreachReference
-          | WorkReference
-          | ProductReference
-          | PostReference;
-        company?: ExperienceReference;
-        tool?: ToolReference;
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
+          PageReference | OutreachReference | WorkReference | ProductReference | PostReference
+        company?: ExperienceReference
+        tool?: ToolReference
+        openInNewTab?: boolean
+        _type: 'link'
+        _key: string
+      }>
+      level?: number
+      _type: 'block'
+      _key: string
     }
   | {
-      asset?: SanityImageAssetReference;
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      caption?: string;
-      _type: "image";
-      _key: string;
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      caption?: string
+      _type: 'image'
+      _key: string
     }
   | {
       images: Array<{
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        _type: "image";
-        _key: string;
-      }>;
-      columns?: 2 | 3 | 4;
-      _type: "imageGrid";
-      _key: string;
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt?: string
+        caption?: string
+        _type: 'image'
+        _key: string
+      }>
+      columns?: 2 | 3 | 4
+      _type: 'imageGrid'
+      _key: string
     }
   | ({
-      _key: string;
+      _key: string
     } & Video)
   | ({
-      _key: string;
+      _key: string
     } & Embed)
   | ({
-      _key: string;
+      _key: string
     } & Code)
->;
+>
 
 export type Heading = {
-  _type: "heading";
-  text: string;
-  type: "h1" | "h2" | "h3" | "h4" | "p";
-  fontSize?: "XS" | "S" | "M" | "L" | "XL" | "XXL" | "3XL";
-};
+  _type: 'heading'
+  text: string
+  type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+  fontSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | '3XL'
+}
 
 export type Page = {
-  _id: string;
-  _type: "page";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
+  _id: string
+  _type: 'page'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
   pageBuilder?: Array<
     | ({
-        _key: string;
+        _key: string
       } & HeroSection)
     | ({
-        _key: string;
+        _key: string
       } & PageHeading)
     | ({
-        _key: string;
+        _key: string
       } & WorksSection)
     | ({
-        _key: string;
+        _key: string
       } & ProductsSection)
     | ({
-        _key: string;
+        _key: string
       } & WritingSection)
     | ({
-        _key: string;
+        _key: string
       } & InfoSection)
     | ({
-        _key: string;
+        _key: string
       } & ExperienceSection)
     | ({
-        _key: string;
+        _key: string
       } & IntroSection)
     | ({
-        _key: string;
+        _key: string
       } & ListColumnsSection)
     | ({
-        _key: string;
+        _key: string
       } & ContactSection)
     | ({
-        _key: string;
+        _key: string
       } & RichTextSection)
-  >;
-  theme?: "paper" | "accent";
-  chrome?: "full" | "minimal";
-  seo?: Seo;
-};
+  >
+  theme?: 'paper' | 'accent'
+  chrome?: 'full' | 'minimal'
+  seo?: Seo
+}
 
 export type Outreach = {
-  _id: string;
-  _type: "outreach";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  recipient?: string;
-  company?: string;
+  _id: string
+  _type: 'outreach'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  recipient?: string
+  company?: string
   pageBuilder?: Array<
     | ({
-        _key: string;
+        _key: string
       } & HeroSection)
     | ({
-        _key: string;
+        _key: string
       } & PageHeading)
     | ({
-        _key: string;
+        _key: string
       } & WorksSection)
     | ({
-        _key: string;
+        _key: string
       } & ProductsSection)
     | ({
-        _key: string;
+        _key: string
       } & WritingSection)
     | ({
-        _key: string;
+        _key: string
       } & InfoSection)
     | ({
-        _key: string;
+        _key: string
       } & ExperienceSection)
     | ({
-        _key: string;
+        _key: string
       } & IntroSection)
     | ({
-        _key: string;
+        _key: string
       } & ListColumnsSection)
     | ({
-        _key: string;
+        _key: string
       } & ContactSection)
     | ({
-        _key: string;
+        _key: string
       } & RichTextSection)
-  >;
-  theme?: "paper" | "accent";
-  chrome?: "minimal" | "full";
-  seo?: Seo;
-};
+  >
+  theme?: 'paper' | 'accent'
+  chrome?: 'minimal' | 'full'
+  seo?: Seo
+}
 
 export type Work = {
-  _id: string;
-  _type: "work";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  hidden?: boolean;
-  comingSoon?: boolean;
-  category: string;
-  year: number;
-  role: string;
-  stack?: string;
-  url?: string;
-  client?: string;
-  timeline?: string;
-  collaborators?: Array<string>;
+  _id: string
+  _type: 'work'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  hidden?: boolean
+  comingSoon?: boolean
+  category: string
+  year: number
+  role: string
+  stack?: string
+  url?: string
+  client?: string
+  timeline?: string
+  collaborators?: Array<string>
   links?: Array<
     {
-      _key: string;
+      _key: string
     } & SimpleLink
-  >;
-  summary: string;
+  >
+  summary: string
   heroImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
   hoverImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
   gallery?: Array<{
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }>;
-  body?: PortableText;
-  seo?: Seo;
-  order: number;
-};
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+    _key: string
+  }>
+  body?: PortableText
+  seo?: Seo
+  order: number
+}
 
 export type Product = {
-  _id: string;
-  _type: "product";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  slug: Slug;
-  hidden?: boolean;
-  comingSoon?: boolean;
-  status: "live" | "beta" | "inProgress" | "archived";
-  version?: string;
-  tagline: string;
+  _id: string
+  _type: 'product'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name: string
+  slug: Slug
+  hidden?: boolean
+  comingSoon?: boolean
+  status: 'live' | 'beta' | 'inProgress' | 'archived'
+  version?: string
+  tagline: string
   ctas?: Array<
     {
-      _key: string;
+      _key: string
     } & Cta
-  >;
+  >
   preview?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
   features?: Array<
     {
-      _key: string;
+      _key: string
     } & Feature
-  >;
-  body?: PortableText;
+  >
+  body?: PortableText
   changelog?: Array<
     {
-      _key: string;
+      _key: string
     } & ChangelogEntry
-  >;
-  seo?: Seo;
-  order: number;
-};
+  >
+  seo?: Seo
+  order: number
+}
 
 export type Post = {
-  _id: string;
-  _type: "post";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  hidden?: boolean;
-  comingSoon?: boolean;
-  publishedAt: string;
-  readingTime?: number;
-  excerpt: string;
-  tags?: Array<string>;
-  body: PortableText;
-  seo?: Seo;
-};
+  _id: string
+  _type: 'post'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  hidden?: boolean
+  comingSoon?: boolean
+  publishedAt: string
+  readingTime?: number
+  excerpt: string
+  tags?: Array<string>
+  body: PortableText
+  seo?: Seo
+}
 
 export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-};
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
 
 export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
 
 export type Tool = {
-  _id: string;
-  _type: "tool";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
+  _id: string
+  _type: 'tool'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name: string
   icon?: {
-    slug: string;
-    title: string;
-    path: string;
-  };
-  url?: string;
-};
+    slug: string
+    title: string
+    path: string
+  }
+  url?: string
+}
 
 export type Experience = {
-  _id: string;
-  _type: "experience";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  company: string;
-  hidden?: boolean;
+  _id: string
+  _type: 'experience'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  company: string
+  hidden?: boolean
   logo?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  brandColor?: string;
-  url?: string;
-  location?: string;
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  brandColor?: string
+  url?: string
+  location?: string
   roles: Array<
     {
-      _key: string;
+      _key: string
     } & Role
-  >;
-  stack?: string;
-  order: number;
-};
+  >
+  stack?: string
+  order: number
+}
 
 export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
+  _type: 'slug'
+  current: string
+  source?: string
+}
 
 export type SiteSettings = {
-  _id: string;
-  _type: "siteSettings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  displayName: string;
-  fullName: string;
-  jobTitle: string;
-  timeZone: string;
-  timeZoneLabel: string;
+  _id: string
+  _type: 'siteSettings'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  displayName: string
+  fullName: string
+  jobTitle: string
+  timeZone: string
+  timeZoneLabel: string
   portrait?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  availableForWork?: boolean;
-  availabilityLabel?: string;
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  availableForWork?: boolean
+  availabilityLabel?: string
   notFound?: {
-    title?: string;
-    linkLabel?: string;
-  };
-  email: string;
+    title?: string
+    linkLabel?: string
+  }
+  email: string
   resume?: {
-    asset?: SanityFileAssetReference;
-    media?: unknown;
-    _type: "file";
-  };
-  showListeningPlayer?: boolean;
+    asset?: SanityFileAssetReference
+    media?: unknown
+    _type: 'file'
+  }
+  showListeningPlayer?: boolean
   navigation?: Array<
     {
-      _key: string;
+      _key: string
     } & SimpleLink
-  >;
+  >
   footerLinks?: Array<
     {
-      _key: string;
+      _key: string
     } & SimpleLink
-  >;
-  footerPrompt?: string;
-  siteUrl?: string;
-  siteTitle?: string;
-  seo?: Seo;
-};
+  >
+  footerPrompt?: string
+  siteUrl?: string
+  siteTitle?: string
+  seo?: Seo
+  city?: string
+  country?: string
+  knowsAbout?: Array<string>
+  languages?: Array<string>
+}
 
 export type Code = {
-  _type: "code";
-  language?: string;
-  filename?: string;
-  code?: string;
-  highlightedLines?: Array<number>;
-};
+  _type: 'code'
+  language?: string
+  filename?: string
+  code?: string
+  highlightedLines?: Array<number>
+}
 
 export type MediaFolderReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "media.folder";
-};
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'media.folder'
+}
 
 export type MediaFolder = {
-  _id: string;
-  _type: "media.folder";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  parent?: MediaFolderReference;
-};
+  _id: string
+  _type: 'media.folder'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: string
+  parent?: MediaFolderReference
+}
 
 export type MediaTag = {
-  _id: string;
-  _type: "media.tag";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: Slug;
-};
+  _id: string
+  _type: 'media.tag'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name?: Slug
+}
 
 export type SanityImagePaletteSwatch = {
-  _type: "sanity.imagePaletteSwatch";
-  background?: string;
-  foreground?: string;
-  population?: number;
-  title?: string;
-};
+  _type: 'sanity.imagePaletteSwatch'
+  background?: string
+  foreground?: string
+  population?: number
+  title?: string
+}
 
 export type SanityImagePalette = {
-  _type: "sanity.imagePalette";
-  darkMuted?: SanityImagePaletteSwatch;
-  lightVibrant?: SanityImagePaletteSwatch;
-  darkVibrant?: SanityImagePaletteSwatch;
-  vibrant?: SanityImagePaletteSwatch;
-  dominant?: SanityImagePaletteSwatch;
-  lightMuted?: SanityImagePaletteSwatch;
-  muted?: SanityImagePaletteSwatch;
-};
+  _type: 'sanity.imagePalette'
+  darkMuted?: SanityImagePaletteSwatch
+  lightVibrant?: SanityImagePaletteSwatch
+  darkVibrant?: SanityImagePaletteSwatch
+  vibrant?: SanityImagePaletteSwatch
+  dominant?: SanityImagePaletteSwatch
+  lightMuted?: SanityImagePaletteSwatch
+  muted?: SanityImagePaletteSwatch
+}
 
 export type SanityImageDimensions = {
-  _type: "sanity.imageDimensions";
-  height: number;
-  width: number;
-  aspectRatio: number;
-};
+  _type: 'sanity.imageDimensions'
+  height: number
+  width: number
+  aspectRatio: number
+}
 
 export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  thumbHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
+  _type: 'sanity.imageMetadata'
+  location?: Geopoint
+  dimensions?: SanityImageDimensions
+  palette?: SanityImagePalette
+  lqip?: string
+  blurHash?: string
+  thumbHash?: string
+  hasAlpha?: boolean
+  isOpaque?: boolean
+}
 
 export type SanityFileAsset = {
-  _id: string;
-  _type: "sanity.fileAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash: string;
-  extension: string;
-  mimeType: string;
-  size: number;
-  assetId: string;
-  uploadId?: string;
-  path: string;
-  url: string;
-  source?: SanityAssetSourceData;
-};
+  _id: string
+  _type: 'sanity.fileAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash: string
+  extension: string
+  mimeType: string
+  size: number
+  assetId: string
+  uploadId?: string
+  path: string
+  url: string
+  source?: SanityAssetSourceData
+}
 
 export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
+  _type: 'sanity.assetSourceData'
+  name?: string
+  id?: string
+  url?: string
+}
 
 export type SanityImageAsset = {
-  _id: string;
-  _type: "sanity.imageAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash: string;
-  extension: string;
-  mimeType: string;
-  size: number;
-  assetId: string;
-  uploadId?: string;
-  path: string;
-  url: string;
-  metadata?: SanityImageMetadata;
-  source?: SanityAssetSourceData;
-};
+  _id: string
+  _type: 'sanity.imageAsset'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  originalFilename?: string
+  label?: string
+  title?: string
+  description?: string
+  altText?: string
+  sha1hash: string
+  extension: string
+  mimeType: string
+  size: number
+  assetId: string
+  uploadId?: string
+  path: string
+  url: string
+  metadata?: SanityImageMetadata
+  source?: SanityAssetSourceData
+}
 
 export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
-};
+  _type: 'geopoint'
+  lat?: number
+  lng?: number
+  alt?: number
+}
 
 export type AllSanitySchemaTypes =
   | RichTextSection
@@ -926,2834 +915,2844 @@ export type AllSanitySchemaTypes =
   | SanityFileAsset
   | SanityAssetSourceData
   | SanityImageAsset
-  | Geopoint;
+  | Geopoint
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_id == "siteSettings"][0]{  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,  navigation[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
+// Query: *[_id == "siteSettings"][0]{  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,  navigation[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, city, country, knowsAbout, languages}
 export type SITE_SETTINGS_QUERY_RESULT =
   | {
-      displayName: null;
-      fullName: null;
-      jobTitle: null;
-      timeZone: null;
-      timeZoneLabel: null;
-      availableForWork: null;
-      availabilityLabel: null;
-      notFound: null;
-      email: null;
-      resumeUrl: null;
-      portraitUrl: null;
-      showListeningPlayer: null;
-      navigation: null;
-      footerLinks: null;
-      footerPrompt: null;
-      siteUrl: null;
-      siteTitle: null;
-      seo: null;
+      displayName: null
+      fullName: null
+      jobTitle: null
+      timeZone: null
+      timeZoneLabel: null
+      availableForWork: null
+      availabilityLabel: null
+      notFound: null
+      email: null
+      resumeUrl: null
+      portraitUrl: null
+      showListeningPlayer: null
+      navigation: null
+      footerLinks: null
+      footerPrompt: null
+      siteUrl: null
+      siteTitle: null
+      seo: null
+      city: null
+      country: null
+      knowsAbout: null
+      languages: null
     }
   | {
-      displayName: null;
-      fullName: null;
-      jobTitle: null;
-      timeZone: null;
-      timeZoneLabel: null;
-      availableForWork: null;
-      availabilityLabel: null;
-      notFound: null;
-      email: null;
-      resumeUrl: null;
-      portraitUrl: null;
-      showListeningPlayer: null;
-      navigation: null;
-      footerLinks: null;
-      footerPrompt: null;
-      siteUrl: null;
-      siteTitle: null;
+      displayName: null
+      fullName: null
+      jobTitle: null
+      timeZone: null
+      timeZoneLabel: null
+      availableForWork: null
+      availabilityLabel: null
+      notFound: null
+      email: null
+      resumeUrl: null
+      portraitUrl: null
+      showListeningPlayer: null
+      navigation: null
+      footerLinks: null
+      footerPrompt: null
+      siteUrl: null
+      siteTitle: null
       seo: {
-        metaTitle: string | null;
-        metaDescription: string | null;
-        keywords: string | null;
-        noIndex: boolean | null;
-        noFollow: boolean | null;
-        canonicalUrl: string | null;
-        ogImage: string | null;
-        structuredData: string | null;
-      } | null;
+        metaTitle: string | null
+        metaDescription: string | null
+        keywords: string | null
+        noIndex: boolean | null
+        noFollow: boolean | null
+        canonicalUrl: string | null
+        ogImage: string | null
+        structuredData: string | null
+      } | null
+      city: null
+      country: null
+      knowsAbout: null
+      languages: null
     }
   | {
-      displayName: string;
-      fullName: string;
-      jobTitle: string;
-      timeZone: string;
-      timeZoneLabel: string;
-      availableForWork: boolean | null;
-      availabilityLabel: string | null;
+      displayName: string
+      fullName: string
+      jobTitle: string
+      timeZone: string
+      timeZoneLabel: string
+      availableForWork: boolean | null
+      availabilityLabel: string | null
       notFound: {
-        title?: string;
-        linkLabel?: string;
-      } | null;
-      email: string;
-      resumeUrl: string | null;
-      portraitUrl: string | null;
-      showListeningPlayer: boolean | null;
+        title?: string
+        linkLabel?: string
+      } | null
+      email: string
+      resumeUrl: string | null
+      portraitUrl: string | null
+      showListeningPlayer: boolean | null
       navigation: Array<{
-        _key: string;
-        _type: "simpleLink";
-        label: string;
-        type?: string;
+        _key: string
+        _type: 'simpleLink'
+        label: string
+        type?: string
         internal:
           | {
-              _type: "outreach";
-              slug: string;
-              comingSoon: null;
+              _type: 'outreach'
+              slug: string
+              comingSoon: null
             }
           | {
-              _type: "page";
-              slug: string;
-              comingSoon: null;
+              _type: 'page'
+              slug: string
+              comingSoon: null
             }
           | {
-              _type: "post";
-              slug: string;
-              comingSoon: boolean | null;
+              _type: 'post'
+              slug: string
+              comingSoon: boolean | null
             }
           | {
-              _type: "product";
-              slug: string;
-              comingSoon: boolean | null;
+              _type: 'product'
+              slug: string
+              comingSoon: boolean | null
             }
           | {
-              _type: "work";
-              slug: string;
-              comingSoon: boolean | null;
+              _type: 'work'
+              slug: string
+              comingSoon: boolean | null
             }
-          | null;
-        external?: string;
-        relative?: string;
-        email?: string;
-        phone?: string;
-        target?: "_blank" | "_self";
-        params?: string;
-      }> | null;
+          | null
+        external?: string
+        relative?: string
+        email?: string
+        phone?: string
+        target?: '_blank' | '_self'
+        params?: string
+      }> | null
       footerLinks: Array<{
-        _key: string;
-        _type: "simpleLink";
-        label: string;
-        type?: string;
+        _key: string
+        _type: 'simpleLink'
+        label: string
+        type?: string
         internal:
           | {
-              _type: "outreach";
-              slug: string;
-              comingSoon: null;
+              _type: 'outreach'
+              slug: string
+              comingSoon: null
             }
           | {
-              _type: "page";
-              slug: string;
-              comingSoon: null;
+              _type: 'page'
+              slug: string
+              comingSoon: null
             }
           | {
-              _type: "post";
-              slug: string;
-              comingSoon: boolean | null;
+              _type: 'post'
+              slug: string
+              comingSoon: boolean | null
             }
           | {
-              _type: "product";
-              slug: string;
-              comingSoon: boolean | null;
+              _type: 'product'
+              slug: string
+              comingSoon: boolean | null
             }
           | {
-              _type: "work";
-              slug: string;
-              comingSoon: boolean | null;
+              _type: 'work'
+              slug: string
+              comingSoon: boolean | null
             }
-          | null;
-        external?: string;
-        relative?: string;
-        email?: string;
-        phone?: string;
-        target?: "_blank" | "_self";
-        params?: string;
-      }> | null;
-      footerPrompt: string | null;
-      siteUrl: string | null;
-      siteTitle: string | null;
+          | null
+        external?: string
+        relative?: string
+        email?: string
+        phone?: string
+        target?: '_blank' | '_self'
+        params?: string
+      }> | null
+      footerPrompt: string | null
+      siteUrl: string | null
+      siteTitle: string | null
       seo: {
-        metaTitle: string | null;
-        metaDescription: string | null;
-        keywords: string | null;
-        noIndex: boolean | null;
-        noFollow: boolean | null;
-        canonicalUrl: string | null;
-        ogImage: string | null;
-        structuredData: string | null;
-      } | null;
+        metaTitle: string | null
+        metaDescription: string | null
+        keywords: string | null
+        noIndex: boolean | null
+        noFollow: boolean | null
+        canonicalUrl: string | null
+        ogImage: string | null
+        structuredData: string | null
+      } | null
+      city: string | null
+      country: string | null
+      knowsAbout: Array<string> | null
+      languages: Array<string> | null
     }
-  | null;
+  | null
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PAGE_QUERY
 // Query: *[_type == "page" && slug.current == $slug][0]{  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{  _key, _type, hideOnMobile, hideOnDesktop,  _type == "heroSection" => { meta, heading { text, type, fontSize } },  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "worksSection" => {    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },    "works": select(      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "productsSection" => {    "products": select(      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "writingSection" => {    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }  },  _type == "infoSection" => {    heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }  },  _type == "experienceSection" => {    heading { text, type, fontSize }, openFirst,    "entries": select(      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }    )  },  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} },  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} }}}
 export type PAGE_QUERY_RESULT = {
-  _id: string;
-  _type: "page";
-  _updatedAt: string;
-  title: string;
-  slug: string;
-  theme: "accent" | "paper" | null;
-  chrome: "full" | "minimal" | null;
+  _id: string
+  _type: 'page'
+  _updatedAt: string
+  title: string
+  slug: string
+  theme: 'accent' | 'paper' | null
+  chrome: 'full' | 'minimal' | null
   seo: {
-    metaTitle: string | null;
-    metaDescription: string | null;
-    keywords: string | null;
-    noIndex: boolean | null;
-    noFollow: boolean | null;
-    canonicalUrl: string | null;
-    ogImage: string | null;
-    structuredData: string | null;
-  } | null;
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    noIndex: boolean | null
+    noFollow: boolean | null
+    canonicalUrl: string | null
+    ogImage: string | null
+    structuredData: string | null
+  } | null
   pageBuilder: Array<
     | {
-        _key: string;
-        _type: "contactSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'contactSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
-        emailSubject: string | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
+        emailSubject: string | null
         ctas: Array<{
-          _key: string;
-          _type: "cta";
-          label: string;
-          type?: string;
+          _key: string
+          _type: 'cta'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          variant?: "default" | "secondary" | "text";
-          target?: "_blank" | "_self";
-          params?: string;
-        }> | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          variant?: 'default' | 'secondary' | 'text'
+          target?: '_blank' | '_self'
+          params?: string
+        }> | null
       }
     | {
-        _key: string;
-        _type: "experienceSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'experienceSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
-        openFirst: boolean | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
+        openFirst: boolean | null
         entries: Array<{
-          _id: string;
-          company: string;
-          url: string | null;
-          location: string | null;
-          stack: string | null;
+          _id: string
+          company: string
+          url: string | null
+          location: string | null
+          stack: string | null
           roles: Array<{
-            _key: string;
-            title: string;
-            employmentType:
-              "contract" | "freelance" | "fullTime" | "internship" | "partTime";
-            startDate: string;
-            endDate: string | null;
-            highlights: Array<string> | null;
-          }>;
-        }> | null;
+            _key: string
+            title: string
+            employmentType: 'contract' | 'freelance' | 'fullTime' | 'internship' | 'partTime'
+            startDate: string
+            endDate: string | null
+            highlights: Array<string> | null
+          }>
+        }> | null
       }
     | {
-        _key: string;
-        _type: "heroSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
-        meta: Array<string> | null;
+        _key: string
+        _type: 'heroSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
+        meta: Array<string> | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        };
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        }
       }
     | {
-        _key: string;
-        _type: "infoSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'infoSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
         body: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        >;
+        >
         columns: Array<{
-          _key: string;
-          label: string;
-          source: "experience" | "manual" | null;
+          _key: string
+          label: string
+          source: 'experience' | 'manual' | null
           tools: Array<{
-            _id: string;
-            name: string;
-            url: string | null;
-            icon: string | null;
-          }> | null;
+            _id: string
+            name: string
+            url: string | null
+            icon: string | null
+          }> | null
           link: {
-            _type: "simpleLink";
-            label: string;
-            type?: string;
+            _type: 'simpleLink'
+            label: string
+            type?: string
             internal:
               | {
-                  _type: "outreach";
-                  slug: string;
-                  comingSoon: null;
+                  _type: 'outreach'
+                  slug: string
+                  comingSoon: null
                 }
               | {
-                  _type: "page";
-                  slug: string;
-                  comingSoon: null;
+                  _type: 'page'
+                  slug: string
+                  comingSoon: null
                 }
               | {
-                  _type: "post";
-                  slug: string;
-                  comingSoon: boolean | null;
+                  _type: 'post'
+                  slug: string
+                  comingSoon: boolean | null
                 }
               | {
-                  _type: "product";
-                  slug: string;
-                  comingSoon: boolean | null;
+                  _type: 'product'
+                  slug: string
+                  comingSoon: boolean | null
                 }
               | {
-                  _type: "work";
-                  slug: string;
-                  comingSoon: boolean | null;
+                  _type: 'work'
+                  slug: string
+                  comingSoon: boolean | null
                 }
-              | null;
-            external?: string;
-            relative?: string;
-            email?: string;
-            phone?: string;
-            target?: "_blank" | "_self";
-            params?: string;
-          } | null;
-        }> | null;
+              | null
+            external?: string
+            relative?: string
+            email?: string
+            phone?: string
+            target?: '_blank' | '_self'
+            params?: string
+          } | null
+        }> | null
         companies: Array<{
-          _id: string;
-          company: string;
-          url: string | null;
-          logo: string | null;
-          brandColor: string | null;
-        }>;
+          _id: string
+          company: string
+          url: string | null
+          logo: string | null
+          brandColor: string | null
+        }>
       }
     | {
-        _key: string;
-        _type: "introSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
-        greeting: string;
+        _key: string
+        _type: 'introSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
+        greeting: string
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        };
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        }
         description: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        > | null;
+        > | null
       }
     | {
-        _key: string;
-        _type: "listColumnsSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'listColumnsSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         columns: Array<{
-          _key: string;
-          label: string;
+          _key: string
+          label: string
           items: Array<{
-            _key: string;
-            text: string;
+            _key: string
+            text: string
             link: {
-              _type: "simpleLink";
-              label: string;
-              type?: string;
+              _type: 'simpleLink'
+              label: string
+              type?: string
               internal:
                 | {
-                    _type: "outreach";
-                    slug: string;
-                    comingSoon: null;
+                    _type: 'outreach'
+                    slug: string
+                    comingSoon: null
                   }
                 | {
-                    _type: "page";
-                    slug: string;
-                    comingSoon: null;
+                    _type: 'page'
+                    slug: string
+                    comingSoon: null
                   }
                 | {
-                    _type: "post";
-                    slug: string;
-                    comingSoon: boolean | null;
+                    _type: 'post'
+                    slug: string
+                    comingSoon: boolean | null
                   }
                 | {
-                    _type: "product";
-                    slug: string;
-                    comingSoon: boolean | null;
+                    _type: 'product'
+                    slug: string
+                    comingSoon: boolean | null
                   }
                 | {
-                    _type: "work";
-                    slug: string;
-                    comingSoon: boolean | null;
+                    _type: 'work'
+                    slug: string
+                    comingSoon: boolean | null
                   }
-                | null;
-              external?: string;
-              relative?: string;
-              email?: string;
-              phone?: string;
-              target?: "_blank" | "_self";
-              params?: string;
-            } | null;
-          }> | null;
-        }> | null;
+                | null
+              external?: string
+              relative?: string
+              email?: string
+              phone?: string
+              target?: '_blank' | '_self'
+              params?: string
+            } | null
+          }> | null
+        }> | null
       }
     | {
-        _key: string;
-        _type: "pageHeading";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'pageHeading'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        };
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        }
         description: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        > | null;
+        > | null
         cta: {
-          _type: "cta";
-          label: string;
-          type?: string;
+          _type: 'cta'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          variant?: "default" | "secondary" | "text";
-          target?: "_blank" | "_self";
-          params?: string;
-        } | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          variant?: 'default' | 'secondary' | 'text'
+          target?: '_blank' | '_self'
+          params?: string
+        } | null
       }
     | {
-        _key: string;
-        _type: "productsSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'productsSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         products: Array<{
-          _id: string;
-          name: string;
-          slug: string;
-          status: "archived" | "beta" | "inProgress" | "live";
-          version: string | null;
-          tagline: string;
-          comingSoon: boolean | null;
+          _id: string
+          name: string
+          slug: string
+          status: 'archived' | 'beta' | 'inProgress' | 'live'
+          version: string | null
+          tagline: string
+          comingSoon: boolean | null
           preview: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
-            lqip: string | null;
-          } | null;
-        }> | null;
+            asset: SanityImageAssetReference | null
+            hotspot: SanityImageHotspot | null
+            crop: SanityImageCrop | null
+            alt: string | null
+            lqip: string | null
+          } | null
+        }> | null
       }
     | {
-        _key: string;
-        _type: "richTextSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'richTextSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
         body: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        >;
+        >
       }
     | {
-        _key: string;
-        _type: "worksSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'worksSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
-        defaultView: "grid" | "index" | null;
-        limit: number | null;
-        showFilters: boolean | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
+        defaultView: 'grid' | 'index' | null
+        limit: number | null
+        showFilters: boolean | null
         link: {
-          _type: "simpleLink";
-          label: string;
-          type?: string;
+          _type: 'simpleLink'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          target?: "_blank" | "_self";
-          params?: string;
-        } | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          target?: '_blank' | '_self'
+          params?: string
+        } | null
         works: Array<{
-          _id: string;
-          title: string;
-          slug: string;
-          category: string;
-          year: number;
-          summary: string;
-          comingSoon: boolean | null;
+          _id: string
+          title: string
+          slug: string
+          category: string
+          year: number
+          summary: string
+          comingSoon: boolean | null
           heroImage: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
-            lqip: string | null;
-          } | null;
+            asset: SanityImageAssetReference | null
+            hotspot: SanityImageHotspot | null
+            crop: SanityImageCrop | null
+            alt: string | null
+            lqip: string | null
+          } | null
           hoverImage: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
-            lqip: string | null;
-          } | null;
-        }> | null;
+            asset: SanityImageAssetReference | null
+            hotspot: SanityImageHotspot | null
+            crop: SanityImageCrop | null
+            alt: string | null
+            lqip: string | null
+          } | null
+        }> | null
       }
     | {
-        _key: string;
-        _type: "writingSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'writingSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
         link: {
-          _type: "simpleLink";
-          label: string;
-          type?: string;
+          _type: 'simpleLink'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          target?: "_blank" | "_self";
-          params?: string;
-        } | null;
-        limit: number | null;
-        layout: "split" | "stack" | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          target?: '_blank' | '_self'
+          params?: string
+        } | null
+        limit: number | null
+        layout: 'split' | 'stack' | null
         posts: Array<{
-          _id: string;
-          title: string;
-          slug: string;
-          publishedAt: string;
-          readingTime: number | null;
-          excerpt: string;
-          tags: Array<string> | null;
-          comingSoon: boolean | null;
-        }>;
+          _id: string
+          title: string
+          slug: string
+          publishedAt: string
+          readingTime: number | null
+          excerpt: string
+          tags: Array<string> | null
+          comingSoon: boolean | null
+        }>
       }
-  > | null;
-} | null;
+  > | null
+} | null
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: OUTREACH_QUERY
 // Query: *[_type == "outreach" && slug.current == $slug][0]{  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{  _key, _type, hideOnMobile, hideOnDesktop,  _type == "heroSection" => { meta, heading { text, type, fontSize } },  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "worksSection" => {    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },    "works": select(      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "productsSection" => {    "products": select(      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }    )  },  _type == "writingSection" => {    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }  },  _type == "infoSection" => {    heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }  },  _type == "experienceSection" => {    heading { text, type, fontSize }, openFirst,    "entries": select(      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }    )  },  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} },  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }} }}}
 export type OUTREACH_QUERY_RESULT = {
-  _id: string;
-  _type: "outreach";
-  _updatedAt: string;
-  title: string;
-  slug: string;
-  recipient: string | null;
-  company: string | null;
-  theme: "accent" | "paper" | null;
-  chrome: "full" | "minimal" | null;
+  _id: string
+  _type: 'outreach'
+  _updatedAt: string
+  title: string
+  slug: string
+  recipient: string | null
+  company: string | null
+  theme: 'accent' | 'paper' | null
+  chrome: 'full' | 'minimal' | null
   seo: {
-    metaTitle: string | null;
-    metaDescription: string | null;
-    keywords: string | null;
-    noIndex: boolean | null;
-    noFollow: boolean | null;
-    canonicalUrl: string | null;
-    ogImage: string | null;
-    structuredData: string | null;
-  } | null;
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    noIndex: boolean | null
+    noFollow: boolean | null
+    canonicalUrl: string | null
+    ogImage: string | null
+    structuredData: string | null
+  } | null
   pageBuilder: Array<
     | {
-        _key: string;
-        _type: "contactSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'contactSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
-        emailSubject: string | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
+        emailSubject: string | null
         ctas: Array<{
-          _key: string;
-          _type: "cta";
-          label: string;
-          type?: string;
+          _key: string
+          _type: 'cta'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          variant?: "default" | "secondary" | "text";
-          target?: "_blank" | "_self";
-          params?: string;
-        }> | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          variant?: 'default' | 'secondary' | 'text'
+          target?: '_blank' | '_self'
+          params?: string
+        }> | null
       }
     | {
-        _key: string;
-        _type: "experienceSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'experienceSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
-        openFirst: boolean | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
+        openFirst: boolean | null
         entries: Array<{
-          _id: string;
-          company: string;
-          url: string | null;
-          location: string | null;
-          stack: string | null;
+          _id: string
+          company: string
+          url: string | null
+          location: string | null
+          stack: string | null
           roles: Array<{
-            _key: string;
-            title: string;
-            employmentType:
-              "contract" | "freelance" | "fullTime" | "internship" | "partTime";
-            startDate: string;
-            endDate: string | null;
-            highlights: Array<string> | null;
-          }>;
-        }> | null;
+            _key: string
+            title: string
+            employmentType: 'contract' | 'freelance' | 'fullTime' | 'internship' | 'partTime'
+            startDate: string
+            endDate: string | null
+            highlights: Array<string> | null
+          }>
+        }> | null
       }
     | {
-        _key: string;
-        _type: "heroSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
-        meta: Array<string> | null;
+        _key: string
+        _type: 'heroSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
+        meta: Array<string> | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        };
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        }
       }
     | {
-        _key: string;
-        _type: "infoSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'infoSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
         body: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        >;
+        >
         columns: Array<{
-          _key: string;
-          label: string;
-          source: "experience" | "manual" | null;
+          _key: string
+          label: string
+          source: 'experience' | 'manual' | null
           tools: Array<{
-            _id: string;
-            name: string;
-            url: string | null;
-            icon: string | null;
-          }> | null;
+            _id: string
+            name: string
+            url: string | null
+            icon: string | null
+          }> | null
           link: {
-            _type: "simpleLink";
-            label: string;
-            type?: string;
+            _type: 'simpleLink'
+            label: string
+            type?: string
             internal:
               | {
-                  _type: "outreach";
-                  slug: string;
-                  comingSoon: null;
+                  _type: 'outreach'
+                  slug: string
+                  comingSoon: null
                 }
               | {
-                  _type: "page";
-                  slug: string;
-                  comingSoon: null;
+                  _type: 'page'
+                  slug: string
+                  comingSoon: null
                 }
               | {
-                  _type: "post";
-                  slug: string;
-                  comingSoon: boolean | null;
+                  _type: 'post'
+                  slug: string
+                  comingSoon: boolean | null
                 }
               | {
-                  _type: "product";
-                  slug: string;
-                  comingSoon: boolean | null;
+                  _type: 'product'
+                  slug: string
+                  comingSoon: boolean | null
                 }
               | {
-                  _type: "work";
-                  slug: string;
-                  comingSoon: boolean | null;
+                  _type: 'work'
+                  slug: string
+                  comingSoon: boolean | null
                 }
-              | null;
-            external?: string;
-            relative?: string;
-            email?: string;
-            phone?: string;
-            target?: "_blank" | "_self";
-            params?: string;
-          } | null;
-        }> | null;
+              | null
+            external?: string
+            relative?: string
+            email?: string
+            phone?: string
+            target?: '_blank' | '_self'
+            params?: string
+          } | null
+        }> | null
         companies: Array<{
-          _id: string;
-          company: string;
-          url: string | null;
-          logo: string | null;
-          brandColor: string | null;
-        }>;
+          _id: string
+          company: string
+          url: string | null
+          logo: string | null
+          brandColor: string | null
+        }>
       }
     | {
-        _key: string;
-        _type: "introSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
-        greeting: string;
+        _key: string
+        _type: 'introSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
+        greeting: string
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        };
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        }
         description: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        > | null;
+        > | null
       }
     | {
-        _key: string;
-        _type: "listColumnsSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'listColumnsSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         columns: Array<{
-          _key: string;
-          label: string;
+          _key: string
+          label: string
           items: Array<{
-            _key: string;
-            text: string;
+            _key: string
+            text: string
             link: {
-              _type: "simpleLink";
-              label: string;
-              type?: string;
+              _type: 'simpleLink'
+              label: string
+              type?: string
               internal:
                 | {
-                    _type: "outreach";
-                    slug: string;
-                    comingSoon: null;
+                    _type: 'outreach'
+                    slug: string
+                    comingSoon: null
                   }
                 | {
-                    _type: "page";
-                    slug: string;
-                    comingSoon: null;
+                    _type: 'page'
+                    slug: string
+                    comingSoon: null
                   }
                 | {
-                    _type: "post";
-                    slug: string;
-                    comingSoon: boolean | null;
+                    _type: 'post'
+                    slug: string
+                    comingSoon: boolean | null
                   }
                 | {
-                    _type: "product";
-                    slug: string;
-                    comingSoon: boolean | null;
+                    _type: 'product'
+                    slug: string
+                    comingSoon: boolean | null
                   }
                 | {
-                    _type: "work";
-                    slug: string;
-                    comingSoon: boolean | null;
+                    _type: 'work'
+                    slug: string
+                    comingSoon: boolean | null
                   }
-                | null;
-              external?: string;
-              relative?: string;
-              email?: string;
-              phone?: string;
-              target?: "_blank" | "_self";
-              params?: string;
-            } | null;
-          }> | null;
-        }> | null;
+                | null
+              external?: string
+              relative?: string
+              email?: string
+              phone?: string
+              target?: '_blank' | '_self'
+              params?: string
+            } | null
+          }> | null
+        }> | null
       }
     | {
-        _key: string;
-        _type: "pageHeading";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'pageHeading'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        };
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        }
         description: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        > | null;
+        > | null
         cta: {
-          _type: "cta";
-          label: string;
-          type?: string;
+          _type: 'cta'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          variant?: "default" | "secondary" | "text";
-          target?: "_blank" | "_self";
-          params?: string;
-        } | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          variant?: 'default' | 'secondary' | 'text'
+          target?: '_blank' | '_self'
+          params?: string
+        } | null
       }
     | {
-        _key: string;
-        _type: "productsSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'productsSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         products: Array<{
-          _id: string;
-          name: string;
-          slug: string;
-          status: "archived" | "beta" | "inProgress" | "live";
-          version: string | null;
-          tagline: string;
-          comingSoon: boolean | null;
+          _id: string
+          name: string
+          slug: string
+          status: 'archived' | 'beta' | 'inProgress' | 'live'
+          version: string | null
+          tagline: string
+          comingSoon: boolean | null
           preview: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
-            lqip: string | null;
-          } | null;
-        }> | null;
+            asset: SanityImageAssetReference | null
+            hotspot: SanityImageHotspot | null
+            crop: SanityImageCrop | null
+            alt: string | null
+            lqip: string | null
+          } | null
+        }> | null
       }
     | {
-        _key: string;
-        _type: "richTextSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'richTextSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
         body: Array<
           | {
               children?: Array<{
-                marks?: Array<string>;
-                text?: string;
-                _type: "span";
-                _key: string;
-              }>;
-              style?: "blockquote" | "h2" | "h3" | "normal";
-              listItem?: "bullet" | "number";
+                marks?: Array<string>
+                text?: string
+                _type: 'span'
+                _key: string
+              }>
+              style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+              listItem?: 'bullet' | 'number'
               markDefs: Array<{
-                linkType?: "company" | "external" | "internal" | "tool";
-                href?: string;
+                linkType?: 'company' | 'external' | 'internal' | 'tool'
+                href?: string
                 internal:
                   | {
-                      _type: "outreach";
-                      slug: string;
+                      _type: 'outreach'
+                      slug: string
                     }
                   | {
-                      _type: "page";
-                      slug: string;
+                      _type: 'page'
+                      slug: string
                     }
                   | {
-                      _type: "post";
-                      slug: string;
+                      _type: 'post'
+                      slug: string
                     }
                   | {
-                      _type: "product";
-                      slug: string;
+                      _type: 'product'
+                      slug: string
                     }
                   | {
-                      _type: "work";
-                      slug: string;
+                      _type: 'work'
+                      slug: string
                     }
-                  | null;
+                  | null
                 company: {
-                  company: string;
-                  url: string | null;
-                  logo: string | null;
-                  brandColor: string | null;
-                } | null;
+                  company: string
+                  url: string | null
+                  logo: string | null
+                  brandColor: string | null
+                } | null
                 tool: {
-                  name: string;
-                  url: string | null;
-                  icon: string | null;
-                } | null;
-                openInNewTab?: boolean;
-                _type: "link";
-                _key: string;
-              }> | null;
-              level?: number;
-              _type: "block";
-              _key: string;
+                  name: string
+                  url: string | null
+                  icon: string | null
+                } | null
+                openInNewTab?: boolean
+                _type: 'link'
+                _key: string
+              }> | null
+              level?: number
+              _type: 'block'
+              _key: string
             }
           | {
-              _key: string;
-              _type: "code";
-              language?: string;
-              filename?: string;
-              code?: string;
-              highlightedLines?: Array<number>;
-              markDefs: null;
+              _key: string
+              _type: 'code'
+              language?: string
+              filename?: string
+              code?: string
+              highlightedLines?: Array<number>
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "embed";
-              url: string;
-              title?: string;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              markDefs: null;
+              _key: string
+              _type: 'embed'
+              url: string
+              title?: string
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              markDefs: null
             }
           | {
-              asset?: SanityImageAssetReference;
-              media?: unknown;
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              alt?: string;
-              caption?: string;
-              _type: "image";
-              _key: string;
-              markDefs: null;
-              lqip: string | null;
-              aspectRatio: number | null;
+              asset?: SanityImageAssetReference
+              media?: unknown
+              hotspot?: SanityImageHotspot
+              crop?: SanityImageCrop
+              alt?: string
+              caption?: string
+              _type: 'image'
+              _key: string
+              markDefs: null
+              lqip: string | null
+              aspectRatio: number | null
             }
           | {
               images: Array<{
-                asset?: SanityImageAssetReference;
-                media?: unknown;
-                hotspot?: SanityImageHotspot;
-                crop?: SanityImageCrop;
-                alt?: string;
-                caption?: string;
-                _type: "image";
-                _key: string;
-                lqip: string | null;
-                aspectRatio: number | null;
-              }>;
-              columns?: 2 | 3 | 4;
-              _type: "imageGrid";
-              _key: string;
-              markDefs: null;
+                asset?: SanityImageAssetReference
+                media?: unknown
+                hotspot?: SanityImageHotspot
+                crop?: SanityImageCrop
+                alt?: string
+                caption?: string
+                _type: 'image'
+                _key: string
+                lqip: string | null
+                aspectRatio: number | null
+              }>
+              columns?: 2 | 3 | 4
+              _type: 'imageGrid'
+              _key: string
+              markDefs: null
             }
           | {
-              _key: string;
-              _type: "video";
-              source?: "file" | "url";
+              _key: string
+              _type: 'video'
+              source?: 'file' | 'url'
               file?: {
-                asset?: SanityFileAssetReference;
-                media?: unknown;
-                _type: "file";
-              };
-              url: string | null;
+                asset?: SanityFileAssetReference
+                media?: unknown
+                _type: 'file'
+              }
+              url: string | null
               poster: {
-                asset: SanityImageAssetReference | null;
-                hotspot: SanityImageHotspot | null;
-                crop: SanityImageCrop | null;
-                alt: null;
-                lqip: string | null;
-              } | null;
-              aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-              caption?: string;
-              autoplay?: boolean;
-              markDefs: null;
+                asset: SanityImageAssetReference | null
+                hotspot: SanityImageHotspot | null
+                crop: SanityImageCrop | null
+                alt: null
+                lqip: string | null
+              } | null
+              aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+              caption?: string
+              autoplay?: boolean
+              markDefs: null
             }
-        >;
+        >
       }
     | {
-        _key: string;
-        _type: "worksSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'worksSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
-        defaultView: "grid" | "index" | null;
-        limit: number | null;
-        showFilters: boolean | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
+        defaultView: 'grid' | 'index' | null
+        limit: number | null
+        showFilters: boolean | null
         link: {
-          _type: "simpleLink";
-          label: string;
-          type?: string;
+          _type: 'simpleLink'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          target?: "_blank" | "_self";
-          params?: string;
-        } | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          target?: '_blank' | '_self'
+          params?: string
+        } | null
         works: Array<{
-          _id: string;
-          title: string;
-          slug: string;
-          category: string;
-          year: number;
-          summary: string;
-          comingSoon: boolean | null;
+          _id: string
+          title: string
+          slug: string
+          category: string
+          year: number
+          summary: string
+          comingSoon: boolean | null
           heroImage: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
-            lqip: string | null;
-          } | null;
+            asset: SanityImageAssetReference | null
+            hotspot: SanityImageHotspot | null
+            crop: SanityImageCrop | null
+            alt: string | null
+            lqip: string | null
+          } | null
           hoverImage: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
-            lqip: string | null;
-          } | null;
-        }> | null;
+            asset: SanityImageAssetReference | null
+            hotspot: SanityImageHotspot | null
+            crop: SanityImageCrop | null
+            alt: string | null
+            lqip: string | null
+          } | null
+        }> | null
       }
     | {
-        _key: string;
-        _type: "writingSection";
-        hideOnMobile: boolean | null;
-        hideOnDesktop: boolean | null;
+        _key: string
+        _type: 'writingSection'
+        hideOnMobile: boolean | null
+        hideOnDesktop: boolean | null
         heading: {
-          text: string;
-          type: "h1" | "h2" | "h3" | "h4" | "p";
-          fontSize: "3XL" | "L" | "M" | "S" | "XL" | "XS" | "XXL" | null;
-        } | null;
+          text: string
+          type: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
+          fontSize: '3XL' | 'L' | 'M' | 'S' | 'XL' | 'XS' | 'XXL' | null
+        } | null
         link: {
-          _type: "simpleLink";
-          label: string;
-          type?: string;
+          _type: 'simpleLink'
+          label: string
+          type?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
-                comingSoon: null;
+                _type: 'outreach'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "page";
-                slug: string;
-                comingSoon: null;
+                _type: 'page'
+                slug: string
+                comingSoon: null
               }
             | {
-                _type: "post";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'post'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "product";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'product'
+                slug: string
+                comingSoon: boolean | null
               }
             | {
-                _type: "work";
-                slug: string;
-                comingSoon: boolean | null;
+                _type: 'work'
+                slug: string
+                comingSoon: boolean | null
               }
-            | null;
-          external?: string;
-          relative?: string;
-          email?: string;
-          phone?: string;
-          target?: "_blank" | "_self";
-          params?: string;
-        } | null;
-        limit: number | null;
-        layout: "split" | "stack" | null;
+            | null
+          external?: string
+          relative?: string
+          email?: string
+          phone?: string
+          target?: '_blank' | '_self'
+          params?: string
+        } | null
+        limit: number | null
+        layout: 'split' | 'stack' | null
         posts: Array<{
-          _id: string;
-          title: string;
-          slug: string;
-          publishedAt: string;
-          readingTime: number | null;
-          excerpt: string;
-          tags: Array<string> | null;
-          comingSoon: boolean | null;
-        }>;
+          _id: string
+          title: string
+          slug: string
+          publishedAt: string
+          readingTime: number | null
+          excerpt: string
+          tags: Array<string> | null
+          comingSoon: boolean | null
+        }>
       }
-  > | null;
-} | null;
+  > | null
+} | null
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: WORK_SLUGS_QUERY
 // Query: *[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){  "slug": slug.current, title, category, year}
 export type WORK_SLUGS_QUERY_RESULT = Array<{
-  slug: string;
-  title: string;
-  category: string;
-  year: number;
-}>;
+  slug: string
+  title: string
+  category: string
+  year: number
+}>
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: WORK_QUERY
 // Query: *[_type == "work" && slug.current == $slug && comingSoon != true && hidden != true][0]{  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,  links[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type WORK_QUERY_RESULT = {
-  _id: string;
-  _updatedAt: string;
-  title: string;
-  slug: string;
-  category: string;
-  year: number;
-  role: string;
-  stack: string | null;
-  url: string | null;
-  client: string | null;
-  timeline: string | null;
-  collaborators: Array<string> | null;
+  _id: string
+  _updatedAt: string
+  title: string
+  slug: string
+  category: string
+  year: number
+  role: string
+  stack: string | null
+  url: string | null
+  client: string | null
+  timeline: string | null
+  collaborators: Array<string> | null
   links: Array<{
-    _key: string;
-    _type: "simpleLink";
-    label: string;
-    type?: string;
+    _key: string
+    _type: 'simpleLink'
+    label: string
+    type?: string
     internal:
       | {
-          _type: "outreach";
-          slug: string;
-          comingSoon: null;
+          _type: 'outreach'
+          slug: string
+          comingSoon: null
         }
       | {
-          _type: "page";
-          slug: string;
-          comingSoon: null;
+          _type: 'page'
+          slug: string
+          comingSoon: null
         }
       | {
-          _type: "post";
-          slug: string;
-          comingSoon: boolean | null;
+          _type: 'post'
+          slug: string
+          comingSoon: boolean | null
         }
       | {
-          _type: "product";
-          slug: string;
-          comingSoon: boolean | null;
+          _type: 'product'
+          slug: string
+          comingSoon: boolean | null
         }
       | {
-          _type: "work";
-          slug: string;
-          comingSoon: boolean | null;
+          _type: 'work'
+          slug: string
+          comingSoon: boolean | null
         }
-      | null;
-    external?: string;
-    relative?: string;
-    email?: string;
-    phone?: string;
-    target?: "_blank" | "_self";
-    params?: string;
-  }> | null;
-  summary: string;
+      | null
+    external?: string
+    relative?: string
+    email?: string
+    phone?: string
+    target?: '_blank' | '_self'
+    params?: string
+  }> | null
+  summary: string
   heroImage: {
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    lqip: string | null;
-  } | null;
+    asset: SanityImageAssetReference | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    alt: string | null
+    lqip: string | null
+  } | null
   hoverImage: {
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    lqip: string | null;
-  } | null;
+    asset: SanityImageAssetReference | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    alt: string | null
+    lqip: string | null
+  } | null
   gallery: Array<{
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    lqip: string | null;
-  }> | null;
+    asset: SanityImageAssetReference | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    alt: string | null
+    lqip: string | null
+  }> | null
   body: Array<
     | {
         children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h2" | "h3" | "normal";
-        listItem?: "bullet" | "number";
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+        listItem?: 'bullet' | 'number'
         markDefs: Array<{
-          linkType?: "company" | "external" | "internal" | "tool";
-          href?: string;
+          linkType?: 'company' | 'external' | 'internal' | 'tool'
+          href?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
+                _type: 'outreach'
+                slug: string
               }
             | {
-                _type: "page";
-                slug: string;
+                _type: 'page'
+                slug: string
               }
             | {
-                _type: "post";
-                slug: string;
+                _type: 'post'
+                slug: string
               }
             | {
-                _type: "product";
-                slug: string;
+                _type: 'product'
+                slug: string
               }
             | {
-                _type: "work";
-                slug: string;
+                _type: 'work'
+                slug: string
               }
-            | null;
+            | null
           company: {
-            company: string;
-            url: string | null;
-            logo: string | null;
-            brandColor: string | null;
-          } | null;
+            company: string
+            url: string | null
+            logo: string | null
+            brandColor: string | null
+          } | null
           tool: {
-            name: string;
-            url: string | null;
-            icon: string | null;
-          } | null;
-          openInNewTab?: boolean;
-          _type: "link";
-          _key: string;
-        }> | null;
-        level?: number;
-        _type: "block";
-        _key: string;
+            name: string
+            url: string | null
+            icon: string | null
+          } | null
+          openInNewTab?: boolean
+          _type: 'link'
+          _key: string
+        }> | null
+        level?: number
+        _type: 'block'
+        _key: string
       }
     | {
-        _key: string;
-        _type: "code";
-        language?: string;
-        filename?: string;
-        code?: string;
-        highlightedLines?: Array<number>;
-        markDefs: null;
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+        markDefs: null
       }
     | {
-        _key: string;
-        _type: "embed";
-        url: string;
-        title?: string;
-        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-        caption?: string;
-        markDefs: null;
+        _key: string
+        _type: 'embed'
+        url: string
+        title?: string
+        aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+        caption?: string
+        markDefs: null
       }
     | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        _type: "image";
-        _key: string;
-        markDefs: null;
-        lqip: string | null;
-        aspectRatio: number | null;
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt?: string
+        caption?: string
+        _type: 'image'
+        _key: string
+        markDefs: null
+        lqip: string | null
+        aspectRatio: number | null
       }
     | {
         images: Array<{
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          caption?: string;
-          _type: "image";
-          _key: string;
-          lqip: string | null;
-          aspectRatio: number | null;
-        }>;
-        columns?: 2 | 3 | 4;
-        _type: "imageGrid";
-        _key: string;
-        markDefs: null;
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          caption?: string
+          _type: 'image'
+          _key: string
+          lqip: string | null
+          aspectRatio: number | null
+        }>
+        columns?: 2 | 3 | 4
+        _type: 'imageGrid'
+        _key: string
+        markDefs: null
       }
     | {
-        _key: string;
-        _type: "video";
-        source?: "file" | "url";
+        _key: string
+        _type: 'video'
+        source?: 'file' | 'url'
         file?: {
-          asset?: SanityFileAssetReference;
-          media?: unknown;
-          _type: "file";
-        };
-        url: string | null;
+          asset?: SanityFileAssetReference
+          media?: unknown
+          _type: 'file'
+        }
+        url: string | null
         poster: {
-          asset: SanityImageAssetReference | null;
-          hotspot: SanityImageHotspot | null;
-          crop: SanityImageCrop | null;
-          alt: null;
-          lqip: string | null;
-        } | null;
-        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-        caption?: string;
-        autoplay?: boolean;
-        markDefs: null;
+          asset: SanityImageAssetReference | null
+          hotspot: SanityImageHotspot | null
+          crop: SanityImageCrop | null
+          alt: null
+          lqip: string | null
+        } | null
+        aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+        caption?: string
+        autoplay?: boolean
+        markDefs: null
       }
-  > | null;
+  > | null
   seo: {
-    metaTitle: string | null;
-    metaDescription: string | null;
-    keywords: string | null;
-    noIndex: boolean | null;
-    noFollow: boolean | null;
-    canonicalUrl: string | null;
-    ogImage: string | null;
-    structuredData: string | null;
-  } | null;
-} | null;
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    noIndex: boolean | null
+    noFollow: boolean | null
+    canonicalUrl: string | null
+    ogImage: string | null
+    structuredData: string | null
+  } | null
+} | null
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PRODUCTS_QUERY
 // Query: *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }
 export type PRODUCTS_QUERY_RESULT = Array<{
-  _id: string;
-  name: string;
-  slug: string;
-  status: "archived" | "beta" | "inProgress" | "live";
-  version: string | null;
-  tagline: string;
-  comingSoon: boolean | null;
+  _id: string
+  name: string
+  slug: string
+  status: 'archived' | 'beta' | 'inProgress' | 'live'
+  version: string | null
+  tagline: string
+  comingSoon: boolean | null
   preview: {
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    lqip: string | null;
-  } | null;
-}>;
+    asset: SanityImageAssetReference | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    alt: string | null
+    lqip: string | null
+  } | null
+}>
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: PRODUCT_QUERY
 // Query: *[_type == "product" && slug.current == $slug && comingSoon != true && hidden != true][0]{  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },  features[]{ _key, title, description },  body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }},  changelog[]{ _key, version, date, note },  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type PRODUCT_QUERY_RESULT = {
-  _id: string;
-  _updatedAt: string;
-  name: string;
-  slug: string;
-  status: "archived" | "beta" | "inProgress" | "live";
-  version: string | null;
-  tagline: string;
+  _id: string
+  _updatedAt: string
+  name: string
+  slug: string
+  status: 'archived' | 'beta' | 'inProgress' | 'live'
+  version: string | null
+  tagline: string
   ctas: Array<{
-    _key: string;
-    _type: "cta";
-    label: string;
-    type?: string;
+    _key: string
+    _type: 'cta'
+    label: string
+    type?: string
     internal:
       | {
-          _type: "outreach";
-          slug: string;
-          comingSoon: null;
+          _type: 'outreach'
+          slug: string
+          comingSoon: null
         }
       | {
-          _type: "page";
-          slug: string;
-          comingSoon: null;
+          _type: 'page'
+          slug: string
+          comingSoon: null
         }
       | {
-          _type: "post";
-          slug: string;
-          comingSoon: boolean | null;
+          _type: 'post'
+          slug: string
+          comingSoon: boolean | null
         }
       | {
-          _type: "product";
-          slug: string;
-          comingSoon: boolean | null;
+          _type: 'product'
+          slug: string
+          comingSoon: boolean | null
         }
       | {
-          _type: "work";
-          slug: string;
-          comingSoon: boolean | null;
+          _type: 'work'
+          slug: string
+          comingSoon: boolean | null
         }
-      | null;
-    external?: string;
-    relative?: string;
-    email?: string;
-    phone?: string;
-    variant?: "default" | "secondary" | "text";
-    target?: "_blank" | "_self";
-    params?: string;
-  }> | null;
+      | null
+    external?: string
+    relative?: string
+    email?: string
+    phone?: string
+    variant?: 'default' | 'secondary' | 'text'
+    target?: '_blank' | '_self'
+    params?: string
+  }> | null
   preview: {
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    lqip: string | null;
-  } | null;
+    asset: SanityImageAssetReference | null
+    hotspot: SanityImageHotspot | null
+    crop: SanityImageCrop | null
+    alt: string | null
+    lqip: string | null
+  } | null
   features: Array<{
-    _key: string;
-    title: string;
-    description: string;
-  }> | null;
+    _key: string
+    title: string
+    description: string
+  }> | null
   body: Array<
     | {
         children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h2" | "h3" | "normal";
-        listItem?: "bullet" | "number";
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+        listItem?: 'bullet' | 'number'
         markDefs: Array<{
-          linkType?: "company" | "external" | "internal" | "tool";
-          href?: string;
+          linkType?: 'company' | 'external' | 'internal' | 'tool'
+          href?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
+                _type: 'outreach'
+                slug: string
               }
             | {
-                _type: "page";
-                slug: string;
+                _type: 'page'
+                slug: string
               }
             | {
-                _type: "post";
-                slug: string;
+                _type: 'post'
+                slug: string
               }
             | {
-                _type: "product";
-                slug: string;
+                _type: 'product'
+                slug: string
               }
             | {
-                _type: "work";
-                slug: string;
+                _type: 'work'
+                slug: string
               }
-            | null;
+            | null
           company: {
-            company: string;
-            url: string | null;
-            logo: string | null;
-            brandColor: string | null;
-          } | null;
+            company: string
+            url: string | null
+            logo: string | null
+            brandColor: string | null
+          } | null
           tool: {
-            name: string;
-            url: string | null;
-            icon: string | null;
-          } | null;
-          openInNewTab?: boolean;
-          _type: "link";
-          _key: string;
-        }> | null;
-        level?: number;
-        _type: "block";
-        _key: string;
+            name: string
+            url: string | null
+            icon: string | null
+          } | null
+          openInNewTab?: boolean
+          _type: 'link'
+          _key: string
+        }> | null
+        level?: number
+        _type: 'block'
+        _key: string
       }
     | {
-        _key: string;
-        _type: "code";
-        language?: string;
-        filename?: string;
-        code?: string;
-        highlightedLines?: Array<number>;
-        markDefs: null;
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+        markDefs: null
       }
     | {
-        _key: string;
-        _type: "embed";
-        url: string;
-        title?: string;
-        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-        caption?: string;
-        markDefs: null;
+        _key: string
+        _type: 'embed'
+        url: string
+        title?: string
+        aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+        caption?: string
+        markDefs: null
       }
     | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        _type: "image";
-        _key: string;
-        markDefs: null;
-        lqip: string | null;
-        aspectRatio: number | null;
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt?: string
+        caption?: string
+        _type: 'image'
+        _key: string
+        markDefs: null
+        lqip: string | null
+        aspectRatio: number | null
       }
     | {
         images: Array<{
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          caption?: string;
-          _type: "image";
-          _key: string;
-          lqip: string | null;
-          aspectRatio: number | null;
-        }>;
-        columns?: 2 | 3 | 4;
-        _type: "imageGrid";
-        _key: string;
-        markDefs: null;
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          caption?: string
+          _type: 'image'
+          _key: string
+          lqip: string | null
+          aspectRatio: number | null
+        }>
+        columns?: 2 | 3 | 4
+        _type: 'imageGrid'
+        _key: string
+        markDefs: null
       }
     | {
-        _key: string;
-        _type: "video";
-        source?: "file" | "url";
+        _key: string
+        _type: 'video'
+        source?: 'file' | 'url'
         file?: {
-          asset?: SanityFileAssetReference;
-          media?: unknown;
-          _type: "file";
-        };
-        url: string | null;
+          asset?: SanityFileAssetReference
+          media?: unknown
+          _type: 'file'
+        }
+        url: string | null
         poster: {
-          asset: SanityImageAssetReference | null;
-          hotspot: SanityImageHotspot | null;
-          crop: SanityImageCrop | null;
-          alt: null;
-          lqip: string | null;
-        } | null;
-        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-        caption?: string;
-        autoplay?: boolean;
-        markDefs: null;
+          asset: SanityImageAssetReference | null
+          hotspot: SanityImageHotspot | null
+          crop: SanityImageCrop | null
+          alt: null
+          lqip: string | null
+        } | null
+        aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+        caption?: string
+        autoplay?: boolean
+        markDefs: null
       }
-  > | null;
+  > | null
   changelog: Array<{
-    _key: string;
-    version: string;
-    date: string;
-    note: string;
-  }> | null;
+    _key: string
+    version: string
+    date: string
+    note: string
+  }> | null
   seo: {
-    metaTitle: string | null;
-    metaDescription: string | null;
-    keywords: string | null;
-    noIndex: boolean | null;
-    noFollow: boolean | null;
-    canonicalUrl: string | null;
-    ogImage: string | null;
-    structuredData: string | null;
-  } | null;
-} | null;
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    noIndex: boolean | null
+    noFollow: boolean | null
+    canonicalUrl: string | null
+    ogImage: string | null
+    structuredData: string | null
+  } | null
+} | null
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: POSTS_QUERY
 // Query: *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }
 export type POSTS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  readingTime: number | null;
-  excerpt: string;
-  tags: Array<string> | null;
-  comingSoon: boolean | null;
-}>;
+  _id: string
+  title: string
+  slug: string
+  publishedAt: string
+  readingTime: number | null
+  excerpt: string
+  tags: Array<string> | null
+  comingSoon: boolean | null
+}>
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: POST_SLUGS_QUERY
 // Query: *[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }
 export type POST_SLUGS_QUERY_RESULT = Array<{
-  slug: string;
-  title: string;
-}>;
+  slug: string
+  title: string
+}>
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: POST_QUERY
 // Query: *[_type == "post" && slug.current == $slug && comingSoon != true && hidden != true][0]{  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{  ...,  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) },  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),  asset->metadata.dimensions.aspectRatio) } },  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }}
 export type POST_QUERY_RESULT = {
-  _id: string;
-  _updatedAt: string;
-  title: string;
-  slug: string;
-  publishedAt: string;
-  readingTime: number | null;
-  excerpt: string;
-  tags: Array<string> | null;
+  _id: string
+  _updatedAt: string
+  title: string
+  slug: string
+  publishedAt: string
+  readingTime: number | null
+  excerpt: string
+  tags: Array<string> | null
   body: Array<
     | {
         children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "blockquote" | "h2" | "h3" | "normal";
-        listItem?: "bullet" | "number";
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h2' | 'h3' | 'normal'
+        listItem?: 'bullet' | 'number'
         markDefs: Array<{
-          linkType?: "company" | "external" | "internal" | "tool";
-          href?: string;
+          linkType?: 'company' | 'external' | 'internal' | 'tool'
+          href?: string
           internal:
             | {
-                _type: "outreach";
-                slug: string;
+                _type: 'outreach'
+                slug: string
               }
             | {
-                _type: "page";
-                slug: string;
+                _type: 'page'
+                slug: string
               }
             | {
-                _type: "post";
-                slug: string;
+                _type: 'post'
+                slug: string
               }
             | {
-                _type: "product";
-                slug: string;
+                _type: 'product'
+                slug: string
               }
             | {
-                _type: "work";
-                slug: string;
+                _type: 'work'
+                slug: string
               }
-            | null;
+            | null
           company: {
-            company: string;
-            url: string | null;
-            logo: string | null;
-            brandColor: string | null;
-          } | null;
+            company: string
+            url: string | null
+            logo: string | null
+            brandColor: string | null
+          } | null
           tool: {
-            name: string;
-            url: string | null;
-            icon: string | null;
-          } | null;
-          openInNewTab?: boolean;
-          _type: "link";
-          _key: string;
-        }> | null;
-        level?: number;
-        _type: "block";
-        _key: string;
+            name: string
+            url: string | null
+            icon: string | null
+          } | null
+          openInNewTab?: boolean
+          _type: 'link'
+          _key: string
+        }> | null
+        level?: number
+        _type: 'block'
+        _key: string
       }
     | {
-        _key: string;
-        _type: "code";
-        language?: string;
-        filename?: string;
-        code?: string;
-        highlightedLines?: Array<number>;
-        markDefs: null;
+        _key: string
+        _type: 'code'
+        language?: string
+        filename?: string
+        code?: string
+        highlightedLines?: Array<number>
+        markDefs: null
       }
     | {
-        _key: string;
-        _type: "embed";
-        url: string;
-        title?: string;
-        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-        caption?: string;
-        markDefs: null;
+        _key: string
+        _type: 'embed'
+        url: string
+        title?: string
+        aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+        caption?: string
+        markDefs: null
       }
     | {
-        asset?: SanityImageAssetReference;
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        caption?: string;
-        _type: "image";
-        _key: string;
-        markDefs: null;
-        lqip: string | null;
-        aspectRatio: number | null;
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        alt?: string
+        caption?: string
+        _type: 'image'
+        _key: string
+        markDefs: null
+        lqip: string | null
+        aspectRatio: number | null
       }
     | {
         images: Array<{
-          asset?: SanityImageAssetReference;
-          media?: unknown;
-          hotspot?: SanityImageHotspot;
-          crop?: SanityImageCrop;
-          alt?: string;
-          caption?: string;
-          _type: "image";
-          _key: string;
-          lqip: string | null;
-          aspectRatio: number | null;
-        }>;
-        columns?: 2 | 3 | 4;
-        _type: "imageGrid";
-        _key: string;
-        markDefs: null;
+          asset?: SanityImageAssetReference
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt?: string
+          caption?: string
+          _type: 'image'
+          _key: string
+          lqip: string | null
+          aspectRatio: number | null
+        }>
+        columns?: 2 | 3 | 4
+        _type: 'imageGrid'
+        _key: string
+        markDefs: null
       }
     | {
-        _key: string;
-        _type: "video";
-        source?: "file" | "url";
+        _key: string
+        _type: 'video'
+        source?: 'file' | 'url'
         file?: {
-          asset?: SanityFileAssetReference;
-          media?: unknown;
-          _type: "file";
-        };
-        url: string | null;
+          asset?: SanityFileAssetReference
+          media?: unknown
+          _type: 'file'
+        }
+        url: string | null
         poster: {
-          asset: SanityImageAssetReference | null;
-          hotspot: SanityImageHotspot | null;
-          crop: SanityImageCrop | null;
-          alt: null;
-          lqip: string | null;
-        } | null;
-        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
-        caption?: string;
-        autoplay?: boolean;
-        markDefs: null;
+          asset: SanityImageAssetReference | null
+          hotspot: SanityImageHotspot | null
+          crop: SanityImageCrop | null
+          alt: null
+          lqip: string | null
+        } | null
+        aspectRatio?: '1/1' | '16/9' | '4/3' | '9/16'
+        caption?: string
+        autoplay?: boolean
+        markDefs: null
       }
-  >;
+  >
   seo: {
-    metaTitle: string | null;
-    metaDescription: string | null;
-    keywords: string | null;
-    noIndex: boolean | null;
-    noFollow: boolean | null;
-    canonicalUrl: string | null;
-    ogImage: string | null;
-    structuredData: string | null;
-  } | null;
-} | null;
+    metaTitle: string | null
+    metaDescription: string | null
+    keywords: string | null
+    noIndex: boolean | null
+    noFollow: boolean | null
+    canonicalUrl: string | null
+    ogImage: string | null
+    structuredData: string | null
+  } | null
+} | null
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SITEMAP_QUERY
 // Query: *[  defined(slug.current) && seo.noIndex != true && (    _type == "page" ||    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)  )]{ _type, "slug": slug.current, _updatedAt }
 export type SITEMAP_QUERY_RESULT = Array<
   | {
-      _type: "page";
-      slug: string;
-      _updatedAt: string;
+      _type: 'page'
+      slug: string
+      _updatedAt: string
     }
   | {
-      _type: "post";
-      slug: string;
-      _updatedAt: string;
+      _type: 'post'
+      slug: string
+      _updatedAt: string
     }
   | {
-      _type: "product";
-      slug: string;
-      _updatedAt: string;
+      _type: 'product'
+      slug: string
+      _updatedAt: string
     }
   | {
-      _type: "work";
-      slug: string;
-      _updatedAt: string;
+      _type: 'work'
+      slug: string
+      _updatedAt: string
     }
->;
+>
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: OG_DOC_QUERY
 // Query: *[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{  _type,  "title": coalesce(seo.metaTitle, title, name),  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),  "label": coalesce(category, status, string(year)),  publishedAt, recipient, company}
 export type OG_DOC_QUERY_RESULT =
   | {
-      _type: "outreach";
-      title: string;
-      description: string | null;
-      label: null;
-      publishedAt: null;
-      recipient: string | null;
-      company: string | null;
+      _type: 'outreach'
+      title: string
+      description: string | null
+      label: null
+      publishedAt: null
+      recipient: string | null
+      company: string | null
     }
   | {
-      _type: "page";
-      title: string;
-      description: string | null;
-      label: null;
-      publishedAt: null;
-      recipient: null;
-      company: null;
+      _type: 'page'
+      title: string
+      description: string | null
+      label: null
+      publishedAt: null
+      recipient: null
+      company: null
     }
   | {
-      _type: "post";
-      title: string;
-      description: string;
-      label: null;
-      publishedAt: string;
-      recipient: null;
-      company: null;
+      _type: 'post'
+      title: string
+      description: string
+      label: null
+      publishedAt: string
+      recipient: null
+      company: null
     }
   | {
-      _type: "product";
-      title: string;
-      description: string;
-      label: "archived" | "beta" | "inProgress" | "live";
-      publishedAt: null;
-      recipient: null;
-      company: null;
+      _type: 'product'
+      title: string
+      description: string
+      label: 'archived' | 'beta' | 'inProgress' | 'live'
+      publishedAt: null
+      recipient: null
+      company: null
     }
   | {
-      _type: "work";
-      title: string;
-      description: string;
-      label: string;
-      publishedAt: null;
-      recipient: null;
-      company: null;
+      _type: 'work'
+      title: string
+      description: string
+      label: string
+      publishedAt: null
+      recipient: null
+      company: null
     }
-  | null;
+  | null
 
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_id == "siteSettings"][0]{\n  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,\n  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,\n  navigation[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': SITE_SETTINGS_QUERY_RESULT;
-    '*[_type == "page" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{\n  _key, _type, hideOnMobile, hideOnDesktop,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n    "works": select(\n      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} }\n}\n}': PAGE_QUERY_RESULT;
-    '*[_type == "outreach" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{\n  _key, _type, hideOnMobile, hideOnDesktop,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n    "works": select(\n      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} }\n}\n}': OUTREACH_QUERY_RESULT;
-    '*[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){\n  "slug": slug.current, title, category, year\n}': WORK_SLUGS_QUERY_RESULT;
-    '*[_type == "work" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,\n  links[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': WORK_QUERY_RESULT;
-    '*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }': PRODUCTS_QUERY_RESULT;
-    '*[_type == "product" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },\n  features[]{ _key, title, description },\n  body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n},\n  changelog[]{ _key, version, date, note },\n  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': PRODUCT_QUERY_RESULT;
-    '*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }': POSTS_QUERY_RESULT;
-    '*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }': POST_SLUGS_QUERY_RESULT;
-    '*[_type == "post" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': POST_QUERY_RESULT;
-    '*[\n  defined(slug.current) && seo.noIndex != true && (\n    _type == "page" ||\n    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)\n  )\n]{ _type, "slug": slug.current, _updatedAt }': SITEMAP_QUERY_RESULT;
-    '*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(seo.metaTitle, title, name),\n  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),\n  "label": coalesce(category, status, string(year)),\n  publishedAt, recipient, company\n}': OG_DOC_QUERY_RESULT;
+    '*[_id == "siteSettings"][0]{\n  displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,\n  "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,\n  navigation[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerLinks[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, footerPrompt, siteUrl, siteTitle, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, city, country, knowsAbout, languages\n}': SITE_SETTINGS_QUERY_RESULT
+    '*[_type == "page" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{\n  _key, _type, hideOnMobile, hideOnDesktop,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n    "works": select(\n      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} }\n}\n}': PAGE_QUERY_RESULT
+    '*[_type == "outreach" && slug.current == $slug][0]{\n  _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }, pageBuilder[hidden != true]{\n  _key, _type, hideOnMobile, hideOnDesktop,\n  _type == "heroSection" => { meta, heading { text, type, fontSize } },\n  _type == "pageHeading" => { heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, cta { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "worksSection" => {\n    heading { text, type, fontSize }, defaultView, limit, showFilters, link { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n    "works": select(\n      count(works) > 0 => works[@->hidden != true]-> { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "work" && defined(slug.current) && hidden != true] | order(order asc) { _id, title, "slug": slug.current, category, year, summary, comingSoon, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "productsSection" => {\n    "products": select(\n      count(products) > 0 => products[@->hidden != true]-> { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } },\n      *[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n    )\n  },\n  _type == "writingSection" => {\n    heading { text, type, fontSize }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } }, limit, layout,\n    "posts": *[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }\n  },\n  _type == "infoSection" => {\n    heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, columns[]{ _key, label, source, tools[]->{ _id, name, url, "icon": icon.path }, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n    "companies": *[_type == "experience" && hidden != true] | order(order asc){ _id, company, url, "logo": logo.asset->url, brandColor }\n  },\n  _type == "experienceSection" => {\n    heading { text, type, fontSize }, openFirst,\n    "entries": select(\n      count(entries) > 0 => entries[@->hidden != true]-> { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } },\n      *[_type == "experience" && hidden != true] | order(order asc) { _id, company, url, location, stack, roles[]{ _key, title, employmentType, startDate, endDate, highlights } }\n    )\n  },\n  _type == "introSection" => { greeting, heading { text, type, fontSize }, description[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} },\n  _type == "listColumnsSection" => { columns[]{ _key, label, items[]{ _key, text, link { ..., internal->{ _type, "slug": slug.current, comingSoon } } } } },\n  _type == "contactSection" => { heading { text, type, fontSize }, emailSubject, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } } },\n  _type == "richTextSection" => { heading { text, type, fontSize }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n} }\n}\n}': OUTREACH_QUERY_RESULT
+    '*[_type == "work" && defined(slug.current) && comingSoon != true && hidden != true] | order(order asc){\n  "slug": slug.current, title, category, year\n}': WORK_SLUGS_QUERY_RESULT
+    '*[_type == "work" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, title, "slug": slug.current, category, year, role, stack, url, client, timeline, collaborators,\n  links[] { ..., internal->{ _type, "slug": slug.current, comingSoon } }, summary, heroImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, hoverImage { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, gallery[] { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip }, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': WORK_QUERY_RESULT
+    '*[_type == "product" && defined(slug.current) && hidden != true] | order(order asc) { _id, name, "slug": slug.current, status, version, tagline, comingSoon, preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }': PRODUCTS_QUERY_RESULT
+    '*[_type == "product" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, name, "slug": slug.current, status, version, tagline, ctas[] { ..., internal->{ _type, "slug": slug.current, comingSoon } },\n  preview { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip },\n  features[]{ _key, title, description },\n  body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n},\n  changelog[]{ _key, version, date, note },\n  seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': PRODUCT_QUERY_RESULT
+    '*[_type == "post" && defined(slug.current) && hidden != true] | order(publishedAt desc) { _id, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, comingSoon }': POSTS_QUERY_RESULT
+    '*[_type == "post" && defined(slug.current) && comingSoon != true && hidden != true] | order(publishedAt desc){ "slug": slug.current, title }': POST_SLUGS_QUERY_RESULT
+    '*[_type == "post" && slug.current == $slug && comingSoon != true && hidden != true][0]{\n  _id, _updatedAt, title, "slug": slug.current, publishedAt, readingTime, excerpt, tags, body[]{\n  ...,\n  markDefs[]{ ..., internal->{ _type, "slug": slug.current }, company->{ company, url, "logo": logo.asset->url, brandColor }, tool->{ name, url, "icon": icon.path } },\n  _type == "image" => { "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) },\n  _type == "imageGrid" => { images[]{ ..., "lqip": asset->metadata.lqip, "aspectRatio": select(\n  defined(crop) => (asset->metadata.dimensions.width * (1 - crop.left - crop.right)) / (asset->metadata.dimensions.height * (1 - crop.top - crop.bottom)),\n  asset->metadata.dimensions.aspectRatio\n) } },\n  _type == "video" => { "url": coalesce(file.asset->url, url), poster { asset, hotspot, crop, alt, "lqip": asset->metadata.lqip } }\n}, seo { metaTitle, metaDescription, keywords, noIndex, noFollow, canonicalUrl, "ogImage": ogImage.asset->url, structuredData }\n}': POST_QUERY_RESULT
+    '*[\n  defined(slug.current) && seo.noIndex != true && (\n    _type == "page" ||\n    (_type in ["work", "product", "post"] && comingSoon != true && hidden != true)\n  )\n]{ _type, "slug": slug.current, _updatedAt }': SITEMAP_QUERY_RESULT
+    '*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{\n  _type,\n  "title": coalesce(seo.metaTitle, title, name),\n  "description": coalesce(seo.metaDescription, excerpt, summary, tagline),\n  "label": coalesce(category, status, string(year)),\n  publishedAt, recipient, company\n}': OG_DOC_QUERY_RESULT
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
-declare module "@sanity/client" {
+declare module '@sanity/client' {
   interface SanityQueries extends globalThis.SanityQueries {}
 }

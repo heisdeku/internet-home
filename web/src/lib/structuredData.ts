@@ -38,6 +38,18 @@ export function siteGraph(origin: string, settings: Settings): JsonLdNode[] {
       jobTitle: settings.jobTitle,
       email: settings.email,
       ...(sameAs.length > 0 && { sameAs }),
+      ...((settings.city || settings.country) && {
+        homeLocation: {
+          "@type": "Place",
+          address: {
+            "@type": "PostalAddress",
+            ...(settings.city && { addressLocality: settings.city }),
+            ...(settings.country && { addressCountry: settings.country }),
+          },
+        },
+      }),
+      ...(settings.knowsAbout?.length && { knowsAbout: settings.knowsAbout }),
+      ...(settings.languages?.length && { knowsLanguage: settings.languages }),
     },
   ];
 }

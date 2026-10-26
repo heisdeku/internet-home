@@ -68,7 +68,7 @@ const PAGE_BUILDER = `pageBuilder[hidden != true]{
 export const SITE_SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
   displayName, fullName, jobTitle, timeZone, timeZoneLabel, availableForWork, availabilityLabel, notFound, email,
   "resumeUrl": resume.asset->url, "portraitUrl": portrait.asset->url, showListeningPlayer,
-  navigation[] ${LINK}, footerLinks[] ${LINK}, footerPrompt, siteUrl, siteTitle, seo ${SEO}
+  navigation[] ${LINK}, footerLinks[] ${LINK}, footerPrompt, siteUrl, siteTitle, seo ${SEO}, city, country, knowsAbout, languages
 }`);
 
 export const PAGE_QUERY =
