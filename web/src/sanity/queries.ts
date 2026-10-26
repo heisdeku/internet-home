@@ -127,7 +127,6 @@ export const SITEMAP_QUERY = defineQuery(`*[
   )
 ]{ _type, "slug": slug.current, _updatedAt }`);
 
-/** The few fields the generated share image needs, for any document type with a slug. */
 export const OG_DOC_QUERY =
   defineQuery(`*[_type == $type && _type in ["page", "outreach", "work", "product", "post"] && slug.current == $slug][0]{
   _type,
