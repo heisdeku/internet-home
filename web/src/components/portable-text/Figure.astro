@@ -1,12 +1,10 @@
 ---
 import SanityImage from "@/components/SanityImage.astro";
-import type { SanityImageSource } from "@/sanity/image";
+import type { SanityImageField } from "@/sanity/image";
 import type { TypedObjectProps } from "astro-portabletext/types";
 
-export type FigureImage = SanityImageSource & {
-  alt?: string;
+export type FigureImage = SanityImageField & {
   caption?: string;
-  lqip?: string | null;
   aspectRatio?: number | null;
 };
 

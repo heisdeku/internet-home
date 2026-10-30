@@ -1,10 +1,19 @@
 import {
   createImageUrlBuilder,
+  type SanityImageCrop,
+  type SanityImageHotspot,
   type SanityImageSource,
 } from "@sanity/image-url";
 import { sanityClient } from "sanity:client";
 
-export type { SanityImageSource };
+// The image fields the queries select: an asset reference with the editor's crop and hotspot.
+export type SanityImageField = {
+  asset?: { _ref: string } | null;
+  crop?: SanityImageCrop | null;
+  hotspot?: SanityImageHotspot | null;
+  alt?: string | null;
+  lqip?: string | null;
+};
 
 const builder = createImageUrlBuilder(sanityClient);
 

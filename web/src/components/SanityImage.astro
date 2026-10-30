@@ -1,12 +1,9 @@
 ---
 import Placeholder from "@/components/Placeholder.astro";
-import { urlFor, type SanityImageSource } from "@/sanity/image";
+import { urlFor, type SanityImageField } from "@/sanity/image";
 
 interface Props {
-  image:
-    | (SanityImageSource & { alt?: string | null; lqip?: string | null })
-    | null
-    | undefined;
+  image: SanityImageField | null | undefined;
   placeholder: string;
   width: number;
   height: number;
@@ -26,14 +23,37 @@ const {
   sizes = "100vw",
   dark = false,
 } = Astro.props;
-const hasAsset = image != null && "asset" in image && image.asset != null;
-const CANDIDATES = [480, 720, 960, 1200, 1440, 1920, 2400];
+const hasAsset = image?.asset != null;
+const CANDIDATES = [480, 720, 960, 1200, 1440, 1920, 2400, 2880];
 const ratio = height / width;
-const widths = CANDIDATES.filter((w) => w <= width * 2);
-if (!widths.includes(width)) widths.push(width);
+// Asset ids carry the original size (image-<hash>-<width>x<height>-<format>). Asking Sanity for
+// more pixels than the crop holds only upscales, so the widest request is what the source has.
+let maxWidth = width * 2;
+if (image?.asset) {
+  const [assetWidth, assetHeight] = image.asset._ref
+    .split("-")[2]
+    .split("x")
+    .map(Number);
+  const crop = image.crop ?? { left: 0, right: 0, top: 0, bottom: 0 };
+  maxWidth = Math.floor(
+    Math.min(
+      maxWidth,
+      assetWidth * (1 - crop.left - crop.right),
+      (assetHeight * (1 - crop.top - crop.bottom)) / ratio,
+    ),
+  );
+}
+const widths = [...CANDIDATES.filter((w) => w < maxWidth), maxWidth];
+const source = image?.asset
+  ? urlFor({
+      asset: image.asset,
+      crop: image.crop ?? undefined,
+      hotspot: image.hotspot ?? undefined,
+    })
+  : undefined;
 const src = (w: number) =>
-  hasAsset
-    ? urlFor(image)
+  source
+    ? source
         .width(w)
         .height(Math.round(w * ratio))
         .fit("crop")
@@ -47,11 +67,8 @@ const src = (w: number) =>
     style={image.lqip ? `background-image:url(${image.lqip})` : undefined}
   >
     <img
-      src={src(width)}
-      srcset={widths
-        .sort((a, b) => a - b)
-        .map((w) => `${src(w)} ${w}w`)
-        .join(", ")}
+      src={src(Math.min(width, maxWidth))}
+      srcset={widths.map((w) => `${src(w)} ${w}w`).join(", ")}
       sizes={sizes}
       alt={image.alt ?? ""}
       width={width}
