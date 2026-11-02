@@ -76,8 +76,9 @@ export const PAGE_QUERY =
   _id, _type, _updatedAt, title, "slug": slug.current, theme, chrome, seo ${SEO}, ${PAGE_BUILDER}
 }`);
 
+/** Intro pages switched off in the Studio return 404 like a page that never existed. */
 export const OUTREACH_QUERY =
-  defineQuery(`*[_type == "outreach" && slug.current == $slug][0]{
+  defineQuery(`*[_type == "outreach" && slug.current == $slug && active != false][0]{
   _id, _type, _updatedAt, title, "slug": slug.current, recipient, company, theme, chrome, seo ${SEO}, ${PAGE_BUILDER}
 }`);
 

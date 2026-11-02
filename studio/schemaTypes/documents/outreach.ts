@@ -39,6 +39,13 @@ export const outreach = defineType({
     defineField({name: 'company', type: 'string', group: 'content'}),
     {...pageBuilderField, group: 'content'},
     defineField({
+      name: 'active',
+      description: 'Switch off once the application is closed. The page then returns 404 instead of the content.',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: true,
+    }),
+    defineField({
       name: 'theme',
       type: 'string',
       group: 'settings',
@@ -68,10 +75,10 @@ export const outreach = defineType({
     defineField({name: 'seo', type: 'seo', group: 'seo'}),
   ],
   preview: {
-    select: {title: 'title', slug: 'slug.current', company: 'company'},
-    prepare: ({title, slug, company}) => ({
+    select: {title: 'title', slug: 'slug.current', company: 'company', active: 'active'},
+    prepare: ({title, slug, company, active}) => ({
       title,
-      subtitle: `/intro/${slug}${company ? ` · ${company}` : ''}`,
+      subtitle: `${active === false ? 'Inactive · ' : ''}/intro/${slug}${company ? ` · ${company}` : ''}`,
     }),
   },
 })
