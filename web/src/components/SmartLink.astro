@@ -9,6 +9,8 @@ interface Props {
   resumeUrl: string | null;
   class?: string;
   icon?: "auto" | "none";
+  /** Enlarge the tap area of a small text link. Off for pills, which are already large enough. */
+  hit?: boolean;
   "aria-current"?: "page";
 }
 
@@ -17,6 +19,7 @@ const {
   resumeUrl,
   class: className,
   icon = "none",
+  hit = true,
   "aria-current": ariaCurrent,
 } = Astro.props;
 const href = resolveHref(link, resumeUrl);
@@ -41,7 +44,7 @@ const trailing =
   <a
     href={href}
     class:list={[
-      "hit",
+      hit && "hit",
       trailing && "group inline-flex items-center gap-1.5",
       className,
     ]}
