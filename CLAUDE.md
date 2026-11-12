@@ -15,3 +15,7 @@ The mutate API does not check documents against the schema, so a wrong value typ
 
 - Check the field types in `studio/schemaTypes` before writing a new kind of document or section.
 - After any content write, run `bun run content:check` (export `SANITY_AUTH_TOKEN` from `studio/.env` first) and fix every error it lists before reporting the work done.
+
+## Writing copy
+
+Every piece of site copy (page sections, intro pages, work summaries and bodies, product taglines, features and bodies, SEO fields) goes through the `unslop` and `clean-copy` skills in `.claude/skills/` before it is written to Sanity. Plain words a non-engineer follows on first read, one idea per sentence, no em dashes, straight quotes, and nothing on the page that answers a question nobody asked.
