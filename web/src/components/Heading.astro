@@ -6,6 +6,7 @@ interface Props {
     | undefined;
   class?: string;
   size?: Size;
+  transitionName?: string;
 }
 
 type Size = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "3XL";
@@ -53,7 +54,7 @@ function splitWords(markup: string) {
     .join("");
 }
 
-const { value, class: className, size } = Astro.props;
+const { value, class: className, size, transitionName } = Astro.props;
 const Tag = (value?.type ?? "h2") as "h1" | "h2" | "h3" | "h4" | "p";
 const resolvedSize =
   (value?.fontSize as Size | null) ?? size ?? DEFAULT_SIZE[Tag];
@@ -73,7 +74,7 @@ const escaped = (value?.text ?? "")
       return `<span class="whitespace-nowrap">${open}<span class="sr-only">${list[0]}</span><span class="rotate-word" data-rotate data-words="${list.join("|")}" aria-hidden="true">${list[0]}</span>${close}</span>`;
     },
   );
-  
+
 const split = SPLIT_SIZES.has(resolvedSize);
 const html = split ? splitWords(escaped) : escaped;
 const label = split
@@ -90,7 +91,13 @@ const label = split
 
 {value?.text && (
   <Tag
-    class:list={["text-pretty", SIZE_CLASS[resolvedSize], className]}
+    class:list={[
+      "text-pretty",
+      SIZE_CLASS[resolvedSize],
+      transitionName && "vt-title",
+      className,
+    ]}
+    style={transitionName && `view-transition-name:${transitionName}`}
     aria-label={label}
     set:html={html}
   />

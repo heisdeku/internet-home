@@ -20,9 +20,10 @@ export type Section = NonNullable<
 interface Props {
   sections: Section[];
   settings: Settings;
+  pageSlug: string;
 }
 
-const { sections, settings } = Astro.props;
+const { sections, settings, pageSlug } = Astro.props;
 const { resumeUrl, email } = settings;
 ---
 
@@ -39,7 +40,13 @@ const { resumeUrl, email } = settings;
         case "heroSection":
           return <HeroSection section={section} />;
         case "pageHeading":
-          return <PageHeading section={section} resumeUrl={resumeUrl} />;
+          return (
+            <PageHeading
+              section={section}
+              resumeUrl={resumeUrl}
+              pageSlug={pageSlug}
+            />
+          );
         case "worksSection":
           return <WorksSection section={section} resumeUrl={resumeUrl} />;
         case "productsSection":

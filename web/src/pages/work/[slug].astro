@@ -92,7 +92,11 @@ const facts: [string, string | null | undefined][] = [
         aria-label="Breadcrumb"
         class="flex flex-wrap gap-3 text-[13px] text-muted"
       >
-        <a href="/work" class="hit link-underline text-muted">
+        <a
+          href="/work"
+          style="view-transition-name:page-title-work"
+          class="hit link-underline text-muted"
+        >
           Work
         </a>
         <span aria-hidden="true">/</span>
@@ -102,7 +106,8 @@ const facts: [string, string | null | undefined][] = [
       </nav>
       <h1
         aria-label={work.title}
-        class="text-[clamp(44px,8vw,128px)] leading-[.95] font-medium tracking-[-.045em] text-balance"
+        style={`view-transition-name:work-title-${work.slug}`}
+        class="vt-title text-[clamp(44px,8vw,128px)] leading-[.95] font-medium tracking-[-.045em] text-balance"
       >
         {work.title?.split(" ").map((word, i) => (
           <>
@@ -118,7 +123,10 @@ const facts: [string, string | null | undefined][] = [
       </p>
     </header>
 
-    <div transition:name={`work-${work.slug}`} class="work-media relative">
+    <div
+      style={`view-transition-name:work-${work.slug}`}
+      class="vt-media work-media relative"
+    >
       <SanityImage
         image={work.heroImage}
         placeholder={`${work.slug} — hero image / video`}
@@ -131,7 +139,6 @@ const facts: [string, string | null | undefined][] = [
     </div>
 
     <div class="grid gap-x-[clamp(32px,5vw,96px)] gap-y-12 pt-[clamp(48px,6vw,96px)] pb-[clamp(64px,8vw,120px)] md:grid-cols-[minmax(0,1fr)_minmax(240px,300px)]">
-      <!-- The fact sheet stays in view beside the long read, as in a printed case study. -->
       <aside
         data-reveal-stagger
         class="flex flex-col gap-6 text-sm md:sticky md:top-24 md:order-last md:self-start"
@@ -206,7 +213,16 @@ const facts: [string, string | null | undefined][] = [
         Next project — N°{serial((index + 1) % all.length)}
       </span>
       <span class="inline-flex items-center gap-[.2em] text-[clamp(36px,6vw,96px)] leading-none font-medium tracking-[-.04em]">
-        {next.title}{" "}
+        <span
+          style={
+            next.slug !== work.slug
+              ? `view-transition-name:work-title-${next.slug}`
+              : undefined
+          }
+          class="vt-title"
+        >
+          {next.title}
+        </span>{" "}
         <ArrowRight
           class="icon-inline size-[.8em]"
           style="--icon-nudge:translateX(.15em)"

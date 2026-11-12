@@ -3,8 +3,6 @@ import Heading from "@/components/Heading.astro";
 import type { Section } from "@/components/PageBuilder.astro";
 import { monthYear } from "@/lib/format";
 import ArrowUpRight from "reicon-astro/icons/ArrowUpRight.astro";
-import Minus from "reicon-astro/icons/Minus.astro";
-import Plus from "reicon-astro/icons/Plus.astro";
 import Sparkle from "reicon-astro/icons/Sparkle.astro";
 
 interface Props {
@@ -27,7 +25,7 @@ const EMPLOYMENT: Record<string, string> = {
 
 const host = (url: string) =>
   url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-// Below md the row is company + toggle, with role and period stacked under the company.
+
 const columns =
   "grid grid-cols-[minmax(0,1fr)_24px] gap-x-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_170px_24px]";
 
@@ -78,14 +76,19 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
             class="justify-self-end text-accent max-md:col-start-2 max-md:row-start-1"
             aria-hidden="true"
           >
-            <Plus class="size-4 group-open:hidden" />
-            <Minus class="hidden size-4 group-open:block" />
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              class="size-4"
+            >
+              <path d="M4 12h16" />
+              <path d="M12 4v16" class="accordion-bar" />
+            </svg>
           </span>
         </summary>
-        <!--
-            Facts sit under the company name; the roles and their highlights get the
-            wide side under Role, so an entry with six bullets and one with none both read well.
-          -->
         <div class:list={[columns, "gap-y-6 pb-8 text-[15px] leading-[1.55]"]}>
           <dl class="flex flex-col gap-4 max-md:order-last max-md:col-span-2">
             {job.location && (
@@ -123,7 +126,6 @@ const tenure = (roles: NonNullable<(typeof experience)[number]["roles"]>) => {
           <div class="flex max-w-[64ch] flex-col gap-7 max-md:col-span-2 md:col-span-3">
             {roles.map((role) => (
               <div class="flex flex-col gap-3">
-                {/* A single role already has its title in the row above; only its type is new information. */}
                 <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   {roles.length > 1 && (
                     <span class="font-medium">{role.title}</span>

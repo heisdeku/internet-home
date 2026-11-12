@@ -89,16 +89,26 @@ const date = monthYear(post.publishedAt);
         aria-label="Breadcrumb"
         class="flex flex-wrap gap-3 text-[13px] text-muted"
       >
-        <a href="/writing" class="hit text-muted">
+        <a
+          href="/writing"
+          style="view-transition-name:page-title-writing"
+          class="hit text-muted"
+        >
           Writing
         </a>
         <span aria-hidden="true">/</span>
-        <span class="font-mono">
+        <span
+          style={`view-transition-name:post-date-${post.slug}`}
+          class="vt-title font-mono"
+        >
           {date}
           {post.readingTime && ` · ${post.readingTime} min read`}
         </span>
       </nav>
-      <h1 class="text-[clamp(34px,5vw,64px)] leading-[1.02] font-medium tracking-[-.035em] text-balance">
+      <h1
+        style={`view-transition-name:post-title-${post.slug}`}
+        class="vt-title text-[clamp(34px,5vw,64px)] leading-[1.02] font-medium tracking-[-.035em] text-balance"
+      >
         {post.title}
       </h1>
       <p class="text-[clamp(18px,1.6vw,21px)] leading-[1.45] text-body text-pretty">
@@ -139,7 +149,12 @@ const date = monthYear(post.publishedAt);
               />{" "}
               Previous
             </span>
-            <span class="font-medium">{previous.title}</span>
+            <span
+              style={`view-transition-name:post-title-${previous.slug}`}
+              class="vt-title font-medium"
+            >
+              {previous.title}
+            </span>
           </a>
         )}
         {next && (
@@ -154,7 +169,12 @@ const date = monthYear(post.publishedAt);
                 style="--icon-nudge:translateX(4px)"
               />
             </span>
-            <span class="font-medium">{next.title}</span>
+            <span
+              style={`view-transition-name:post-title-${next.slug}`}
+              class="vt-title font-medium"
+            >
+              {next.title}
+            </span>
           </a>
         )}
       </nav>

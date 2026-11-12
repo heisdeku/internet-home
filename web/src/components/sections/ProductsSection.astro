@@ -30,7 +30,10 @@ const products = section.products ?? [];
           ]}
           aria-disabled={product.comingSoon ? "true" : undefined}
         >
-          <span class="relative block">
+          <span
+            style={`view-transition-name:product-${product.slug}`}
+            class="vt-media relative block"
+          >
             <SanityImage
               image={product.preview}
               placeholder={`${product.slug} — preview`}
@@ -48,7 +51,12 @@ const products = section.products ?? [];
             )}
           </span>
           <div class="grid grid-cols-[1fr_auto] items-baseline gap-4 text-[13px]">
-            <span class="font-medium">{product.name}</span>
+            <span
+              style={`view-transition-name:product-name-${product.slug}`}
+              class="vt-title font-medium"
+            >
+              {product.name}
+            </span>
             <span class="font-mono text-faint">
               {product.comingSoon
                 ? "Coming soon"

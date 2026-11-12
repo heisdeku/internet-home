@@ -23,7 +23,10 @@ const activeKey = settings.navigation?.find(
 )?._key;
 ---
 
-<header class="px-gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 bg-paper/90 py-4.5 text-[13px] backdrop-blur-[10px]">
+<header
+  style="view-transition-name:site-header"
+  class="px-gutter sticky top-0 z-10 flex flex-wrap items-center gap-x-8 bg-paper/90 py-4.5 text-[13px] backdrop-blur-[10px]"
+>
   <a
     href="/"
     class="hit shrink-0 text-sm font-semibold tracking-[.08em] uppercase"
@@ -56,7 +59,16 @@ const activeKey = settings.navigation?.find(
           link._key === activeKey && "text-accent",
         ]}
         aria-current={link._key === activeKey ? "page" : undefined}
-      />
+      >
+        {link.label}
+        {link._key === activeKey && (
+          <span
+            class="nav-indicator"
+            style="view-transition-name:nav-indicator"
+            aria-hidden="true"
+          />
+        )}
+      </SmartLink>
     ))}
   </nav>
   <div class="hidden shrink-0 font-mono text-muted lg:block">

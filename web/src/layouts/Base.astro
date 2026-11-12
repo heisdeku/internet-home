@@ -125,6 +125,7 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
       import { startLenis } from "@/scripts/lenis";
       import { startReveal } from "@/scripts/reveal";
       import { startRotate } from "@/scripts/rotate";
+      import { startTransitions } from "@/scripts/transitions";
 
       document.addEventListener("astro:page-load", () => {
         startLenis();
@@ -135,6 +136,7 @@ const qualitySiteId = import.meta.env.PUBLIC_QUALITY_SITE_ID;
         startGreeting();
       });
       trackPageViews();
+      startTransitions();
     </script>
   </body>
 </html>

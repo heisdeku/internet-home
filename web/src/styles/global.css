@@ -58,8 +58,6 @@
   }
 }
 
-/* Small inline links and buttons get a 24px+ hit area without changing the layout. */
-/* Skip link: visible only when focused. */
 .skip-link {
   position: absolute;
   left: clamp(20px, 4vw, 48px);
@@ -246,11 +244,20 @@
     transition: transform 0.45s var(--ease-out-soft);
   }
   &:hover::after,
-  &:focus-visible::after,
-  &[aria-current="page"]::after {
+  &:focus-visible::after {
     transform: scaleX(1);
     transform-origin: left;
   }
+}
+
+/* The current nav item's underline is a real element so it can travel to the next item. */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
 }
 
 @utility row-slide {
@@ -265,7 +272,6 @@
   }
 }
 
-/* Hovering one item fades its siblings well back, as on victorwilliams.me: a quick 0.3s ease to 25%. */
 @utility dim-siblings {
   & > * {
     transition: opacity 0.3s var(--ease-out-soft);
@@ -324,6 +330,27 @@
 
 details[data-accordion] > summary + * {
   overflow: clip;
+}
+
+@keyframes accordion-content-in {
+  from,
+  45% {
+    opacity: 0;
+  }
+}
+details[data-accordion][data-opening] > summary + * {
+  animation: accordion-content-in 420ms var(--ease-out-soft) both;
+}
+details[data-accordion][data-closing] > summary + * {
+  animation: vt-out 130ms ease-out both;
+}
+.accordion-bar {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.3s var(--ease-out-soft);
+}
+details[open]:not([data-closing]) .accordion-bar {
+  transform: scaleY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -590,7 +617,8 @@ details[data-accordion] > summary + * {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rotate-word {
+  .rotate-word,
+  .accordion-bar {
     transition: none;
   }
   .animate-eq,
@@ -611,4 +639,127 @@ details[data-accordion] > summary + * {
 }
 .js .img-frame > img[data-fade-in]:not(.is-loaded) {
   animation: reveal-fallback 0.6s ease-out 1.2s forwards;
+}
+
+/* Continuity between states. Shared elements carry an inline view-transition-name and one of
+   these classes; the same element then travels from where it is to where it goes, between pages
+   (ClientRouter) and between in-page states (filters, grid/index). Everything else holds, then
+   dissolves in the second half of the move. */
+:root {
+  --vt-duration: 520ms;
+  @media (min-width: 48rem) {
+    --vt-duration: 350ms;
+  }
+}
+html[data-vt="sort"] {
+  --vt-duration: 400ms;
+}
+.vt-media {
+  view-transition-class: media;
+}
+.vt-title {
+  view-transition-class: title;
+  width: fit-content;
+}
+.vt-card {
+  view-transition-class: card;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+  }
+}
+::view-transition-group(*) {
+  animation-duration: var(--vt-duration);
+  animation-timing-function: var(--ease-out-soft);
+}
+html[data-vt="sort"]::view-transition-group(*) {
+  animation-timing-function: var(--ease-in-out-soft);
+}
+::view-transition-old(root) {
+  animation: vt-out calc(var(--vt-duration) * 0.4) ease-out
+    calc(var(--vt-duration) * 0.4) both;
+}
+::view-transition-new(root) {
+  animation: vt-in calc(var(--vt-duration) * 0.4) ease-out
+    calc(var(--vt-duration) * 0.4) both;
+}
+/* A shared element's two snapshots dissolve into each other early, while the box is still moving. */
+::view-transition-old(.media),
+::view-transition-old(.title),
+::view-transition-old(.card) {
+  animation: vt-out calc(var(--vt-duration) * 0.45) ease-out both;
+}
+::view-transition-new(.media),
+::view-transition-new(.title),
+::view-transition-new(.card) {
+  animation: vt-in calc(var(--vt-duration) * 0.45) ease-out both;
+}
+::view-transition-image-pair(.media) {
+  overflow: clip;
+  border-radius: 0.25rem;
+}
+::view-transition-old(.media),
+::view-transition-new(.media) {
+  height: 100%;
+  object-fit: cover;
+}
+::view-transition-old(.title),
+::view-transition-new(.title) {
+  height: 100%;
+  object-fit: contain;
+  object-position: 0 0;
+}
+/* The header never moves and stays above whatever travels under it. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 1;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+::view-transition-group(nav-indicator) {
+  animation-duration: calc(var(--vt-duration) * 0.8);
+  z-index: 2;
+}
+::view-transition-old(nav-indicator) {
+  display: none;
+}
+::view-transition-new(nav-indicator) {
+  animation: none;
+  height: 100%;
+  object-fit: fill;
+}
+/* Named elements that exist on only one side leave early and arrive late. */
+::view-transition-old(*):only-child {
+  animation: vt-out calc(var(--vt-duration) * 0.3) ease-out both;
+}
+::view-transition-new(*):only-child {
+  animation: vt-in calc(var(--vt-duration) * 0.5) ease-out
+    calc(var(--vt-duration) * 0.5) both;
+}
+/* An element that just morphed in is already in place; its entrance animation must not replay. */
+[data-vt-shared],
+[data-vt-shared] .split-word {
+  animation: none !important;
+}
+/* Focus lands on the new page's heading after a client-side navigation. */
+main h1[tabindex="-1"]:focus {
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root) {
+    animation: vt-out 150ms ease-out both !important;
+  }
+  ::view-transition-new(root) {
+    animation: vt-in 150ms ease-out both !important;
+  }
 }

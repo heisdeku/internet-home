@@ -57,10 +57,16 @@ const hasAside = section.heading?.text || section.link;
           ]}
           aria-disabled={post.comingSoon ? "true" : undefined}
         >
-          <span class="text-[clamp(17px,1.6vw,22px)] font-medium tracking-[-.015em] text-pretty">
+          <span
+            style={`view-transition-name:post-title-${post.slug}`}
+            class="vt-title text-[clamp(17px,1.6vw,22px)] font-medium tracking-[-.015em] text-pretty"
+          >
             {post.title}
           </span>
-          <span class="font-mono text-xs text-faint">
+          <span
+            style={`view-transition-name:post-date-${post.slug}`}
+            class="vt-title font-mono text-xs text-faint"
+          >
             {post.comingSoon ? (
               <span class="soon-badge">Coming soon</span>
             ) : (

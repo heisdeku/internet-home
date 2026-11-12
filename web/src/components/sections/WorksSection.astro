@@ -14,7 +14,7 @@ interface Props {
 
 const { section, resumeUrl } = Astro.props;
 const all = section.works ?? [];
-// The home page shows a handful; the Work page shows everything with filters.
+
 const works = section.limit ? all.slice(0, section.limit) : all;
 
 const categories = section.showFilters
@@ -102,8 +102,9 @@ const categories = section.showFilters
       return (
         <Tag
           href={work.comingSoon ? undefined : pathFor("work", work.slug)}
+          style={`view-transition-name:work-card-${work.slug}`}
           class:list={[
-            "group flex flex-col gap-3",
+            "vt-card group flex flex-col gap-3",
             work.comingSoon && "is-soon",
           ]}
           data-work-item
@@ -111,8 +112,8 @@ const categories = section.showFilters
           aria-disabled={work.comingSoon ? "true" : undefined}
         >
           <span
-            class="work-media relative block"
-            transition:name={work.comingSoon ? undefined : `work-${work.slug}`}
+            style={`view-transition-name:work-${work.slug}`}
+            class="vt-media work-media relative block"
           >
             <SanityImage
               image={work.heroImage}
@@ -141,7 +142,12 @@ const categories = section.showFilters
             )}
           </span>
           <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-4 text-[13px]">
-            <span class="font-medium">{work.title}</span>
+            <span
+              style={`view-transition-name:work-title-${work.slug}`}
+              class="vt-title font-medium"
+            >
+              {work.title}
+            </span>
             <span class="text-muted">{work.category}</span>
             <span class="font-mono text-faint">N°{serial(i)}</span>
           </div>
@@ -157,8 +163,9 @@ const categories = section.showFilters
       return (
         <Tag
           href={work.comingSoon ? undefined : pathFor("work", work.slug)}
+          style={`view-transition-name:work-card-${work.slug}`}
           class:list={[
-            "group grid gap-x-6 gap-y-2 text-sm max-md:py-4 md:border-b md:border-line md:py-5.5 md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]",
+            "vt-card group grid gap-x-6 gap-y-2 text-sm max-md:py-4 md:border-b md:border-line md:py-5.5 md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]",
             !work.comingSoon &&
               "md:row-slide md:transition-colors md:duration-300",
             work.comingSoon && "is-soon",
@@ -170,7 +177,10 @@ const categories = section.showFilters
           <span class="font-mono text-xs text-faint max-md:hidden">
             N°{serial(i)} — {work.year}
           </span>
-          <span class="text-lg font-medium tracking-[-.01em] max-md:w-fit max-md:text-[17px] max-md:underline max-md:decoration-line max-md:decoration-dotted max-md:underline-offset-6">
+          <span
+            style={`view-transition-name:work-title-${work.slug}`}
+            class="vt-title text-lg font-medium tracking-[-.01em] max-md:text-[17px] max-md:underline max-md:decoration-line max-md:decoration-dotted max-md:underline-offset-6"
+          >
             {work.title}
           </span>
           <span class="max-w-[60ch] leading-normal text-muted text-pretty md:col-span-2">
@@ -210,6 +220,19 @@ const categories = section.showFilters
 </style>
 
 <script>
+  // The cards travel to their new slots instead of snapping; without the API the update is plain.
+  let pending = 0;
+  function animate(update: () => void) {
+    if (!("startViewTransition" in document)) return update();
+    pending++;
+    document.documentElement.dataset.vt = "sort";
+    // `finished` rejects when a navigation skips the transition; that is not an error here.
+    const settle = () => {
+      if (--pending === 0) delete document.documentElement.dataset.vt;
+    };
+    document.startViewTransition(update).finished.then(settle, settle);
+  }
+
   function init() {
     for (const section of document.querySelectorAll<HTMLElement>(
       "[data-works]:not([data-ready])",
@@ -267,11 +290,11 @@ const categories = section.showFilters
         setFilter(wanted);
       for (const button of viewButtons)
         button.addEventListener("click", () =>
-          setView(button.dataset.setView!),
+          animate(() => setView(button.dataset.setView!)),
         );
       for (const button of filterButtons)
         button.addEventListener("click", () =>
-          setFilter(button.dataset.filter!),
+          animate(() => setFilter(button.dataset.filter!)),
         );
     }
   }

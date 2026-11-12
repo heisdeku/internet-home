@@ -80,7 +80,10 @@ const jsonLd = [
             Product{product.version && ` · ${product.version}`}
           </span>
         </div>
-        <h1 class="text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em]">
+        <h1
+          style={`view-transition-name:product-name-${product.slug}`}
+          class="vt-title text-[clamp(44px,8vw,120px)] leading-[.95] font-medium tracking-[-.045em]"
+        >
           {product.name}
         </h1>
       </div>
@@ -99,16 +102,21 @@ const jsonLd = [
     </section>
 
     <div data-reveal class="rounded-md bg-ink p-[clamp(16px,3vw,40px)]">
-      <SanityImage
-        image={product.preview}
-        placeholder="product preview — video / screenshot"
-        width={1600}
-        height={900}
-        priority
-        sizes="100vw"
-        dark
-        class="aspect-video w-full"
-      />
+      <div
+        style={`view-transition-name:product-${product.slug}`}
+        class="vt-media"
+      >
+        <SanityImage
+          image={product.preview}
+          placeholder="product preview — video / screenshot"
+          width={1600}
+          height={900}
+          priority
+          sizes="100vw"
+          dark
+          class="aspect-video w-full"
+        />
+      </div>
     </div>
 
     {product.features && product.features.length > 0 && (

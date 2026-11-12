@@ -17,8 +17,16 @@ export function startAccordions() {
     if (!summary || !panel || reduce) continue;
 
     let animation: Animation | null = null;
-    const animate = (from: number, to: number, onFinish: () => void) => {
+    const animate = (
+      from: number,
+      to: number,
+      phase: "opening" | "closing",
+      onFinish: () => void,
+    ) => {
       animation?.cancel();
+      delete details.dataset.opening;
+      delete details.dataset.closing;
+      details.dataset[phase] = "";
       details.style.overflow = "hidden";
       animation = details.animate(
         { height: [`${from}px`, `${to}px`] },
@@ -26,6 +34,7 @@ export function startAccordions() {
       );
       animation.onfinish = () => {
         details.style.overflow = "";
+        delete details.dataset[phase];
         animation = null;
         onFinish();
       };
@@ -33,12 +42,18 @@ export function startAccordions() {
     const open = () => {
       const closed = details.offsetHeight;
       details.open = true;
-      animate(closed, summary.offsetHeight + panel.offsetHeight, () => {});
+      animate(
+        closed,
+        summary.offsetHeight + panel.offsetHeight,
+        "opening",
+        () => {},
+      );
     };
     const close = () =>
       animate(
         details.offsetHeight,
         summary.offsetHeight,
+        "closing",
         () => (details.open = false),
       );
 

@@ -76,14 +76,22 @@ const jsonLd = [
     <div class="flex min-h-screen flex-col">
       <MinimalHeader settings={settings} />
       <main id="main" class="flex flex-1 flex-col">
-        <PageBuilder sections={sections} settings={settings} />
+        <PageBuilder
+          sections={sections}
+          settings={settings}
+          pageSlug={page.slug}
+        />
       </main>
     </div>
   </Base>
 ) : (
   <Site meta={meta} jsonLd={jsonLd} settings={settings}>
     <main id="main">
-      <PageBuilder sections={sections} settings={settings} />
+      <PageBuilder
+        sections={sections}
+        settings={settings}
+        pageSlug={page.slug}
+      />
     </main>
   </Site>
 )}

@@ -7,9 +7,10 @@ import PortableText from "@/components/portable-text/PortableText.astro";
 interface Props {
   section: Extract<Section, { _type: "pageHeading" }>;
   resumeUrl: string | null;
+  pageSlug: string;
 }
 
-const { section, resumeUrl } = Astro.props;
+const { section, resumeUrl, pageSlug } = Astro.props;
 const aside =
   (section.description && section.description.length > 0) || section.cta;
 ---
@@ -22,7 +23,11 @@ const aside =
       "grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] items-end gap-10",
   ]}
 >
-  <Heading value={section.heading} size="3XL" />
+  <Heading
+    value={section.heading}
+    size="3XL"
+    transitionName={`page-title-${pageSlug}`}
+  />
   {aside && (
     <div class="flex flex-col items-start gap-5">
       {section.description && section.description.length > 0 && (
